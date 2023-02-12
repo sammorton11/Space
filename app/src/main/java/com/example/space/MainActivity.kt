@@ -10,12 +10,18 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImage
-import com.example.space.presentation.mars_rover.components.MarsImages
-import com.example.space.presentation.mars_rover.components.PhotoList
 import com.example.space.presentation.nasa_media_library.ImageVideoScreen
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
+
+/*
+    Todo:
+        - Video issue
+        - Crashes sometimes because of some null value
+        - Details Screen - When list item is clicked
+        - Navigation graph
+ */
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {

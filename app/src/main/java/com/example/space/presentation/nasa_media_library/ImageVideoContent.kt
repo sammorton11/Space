@@ -1,9 +1,8 @@
 package com.example.space.presentation.nasa_media_library
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import android.net.Uri
+import android.util.Log
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
@@ -17,30 +16,39 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
 import com.example.space.presentation.view_model.NasaLibraryViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.extractor.ExtractorsFactory
+import com.google.android.exoplayer2.source.ProgressiveMediaSource
+import com.google.android.exoplayer2.ui.PlayerView
 import com.google.android.exoplayer2.ui.StyledPlayerView
+import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.util.Util
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 @Composable
 fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
     val state = viewModel.state
-    Column() {
-//        Button(onClick = {
-//            viewModel.getData("galaxy") // fake search - todo: build search field with search action
-//        }) {
-//            Text(text = "Get Data")
-//        }
+    Column {
+        Title("Image Video Library", 15.dp)
         SearchField(onSearch = { query ->
             viewModel.getData(query)
         })
 
-        if(state.value.error.isNotBlank()) {
+        if (state.value.error.isNotBlank()) {
+            // Error Text Component
             Text(
                 text = state.value.error,
                 textAlign = TextAlign.Center,
@@ -53,7 +61,8 @@ fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
                     },
             )
         }
-        if(state.value.isLoading) {
+        if (state.value.isLoading) {
+            // Progress Bar Component
             CircularProgressIndicator(modifier = Modifier
                 .semantics {
                     contentDescription = "Progress Bar"
@@ -61,23 +70,64 @@ fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
                 })
         }
 
+        // List Component - Image, Title, Description Components
         LazyColumn(
-            //columns = GridCells.Adaptive(minSize = 128.dp),
             modifier = Modifier.fillMaxSize()
         ) {
             items(state.value.data) { item ->
-                //val mediaType = state.value.data.first().data.first().media_type
-                val itemMedia = item.links.first().href
+                val links = item.links
+                val data = item.data.first()
                 val title = item.data.first().title
                 val description = item.data.first().description
+                var isImage = false
 
                 Column(modifier = Modifier.padding(10.dp)) {
+                    var videoLink: String? = null
+                    var imageLink: String? = null
+                    for (link in links) {
+                        when (item.data.first().media_type) {
+                            "image" -> {
+                                isImage = true
+                                imageLink = link.href
+                            }
+                            "video" -> {
+//                                if (link.href?.endsWith(".mp4") == true) {
+//                                    videoLink = getVideo(viewModel, link.href)
+//                                }
 
-                    AsyncImage(
-                        model = itemMedia,
-                        contentDescription = "",
-                        modifier = Modifier.padding(25.dp)
-                    )
+                                link.href?.let { url ->
+                                    runBlocking {
+                                        videoLink = getVideo(viewModel, url)
+                                        Log.d("Post getVideo", videoLink!!)
+                                    }
+                                }
+//                                videoLink = link.href?.let { getVideo(viewModel, it) }
+//                                if (videoLink != null) {
+//                                    MyVideo(videoUri = videoLink)
+//                                }
+                            }
+                        }
+                    }
+                    if (isImage) {
+                        AsyncImage(
+                            model = imageLink,
+                            contentDescription = "",
+                            modifier = Modifier.padding(25.dp)
+                        )
+                    } else if (videoLink != null){
+                        MyVideo(videoUri = videoLink.toString())
+                    }
+//                    if (videoLink != null) {
+//                        MyVideo(videoUri = videoLink)
+//                    }
+//
+//                    if (imageLink != null) {
+//                        AsyncImage(
+//                            model = imageLink,
+//                            contentDescription = "",
+//                            modifier = Modifier.padding(25.dp)
+//                        )
+//                    }
 
                     title?.let { text ->
                         Text(
@@ -92,40 +142,23 @@ fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
                         )
                     }
                 }
-
-
-//                if (mediaType == "video"){
-//                    VideoView(videoUri = item.links.first().href)
-//                }
-//                if (mediaType == "image"){
-//                    AsyncImage(
-//                        model = item.links.first().href,
-//                        contentDescription = "",
-//                        modifier = Modifier.padding(25.dp)
-//                    )
-//                }
-//                itemMedia?.let { uri ->
-//                    AsyncImage(
-//                        model = uri,
-//                        contentDescription = "",
-//                        modifier = Modifier.padding(25.dp)
-//                    )
-//                }
             }
         }
     }
-
 }
-
 @Composable
-fun VideoView(videoUri: String) {
+fun MyVideo(videoUri: String) {
     val context = LocalContext.current
 
     val exoPlayer = ExoPlayer.Builder(LocalContext.current)
         .build()
         .also { exoPlayer ->
+            val uri = Uri.parse("https://images-assets.nasa.gov/video/Space-Exploration-Video-1/Space-Exploration-Video-1~mobile.mp4")
+            val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
+            val videoUrl = videoUri.replace("http://", "https://")
+            Log.d("Replaced Video Url", videoUrl)
             val mediaItem = MediaItem.Builder()
-                .setUri(videoUri)
+                .setUri(uri)
                 .build()
             exoPlayer.setMediaItem(mediaItem)
             exoPlayer.prepare()
@@ -136,10 +169,50 @@ fun VideoView(videoUri: String) {
             StyledPlayerView(context).apply {
                 player = exoPlayer
             }
-        })
+        },
+        modifier = Modifier.height(500.dp))
     ) {
         onDispose { exoPlayer.release() }
     }
+
+//    // Fetching the Local Context
+//    val mContext = LocalContext.current
+//
+//    // Declaring a string value
+//    // that stores raw video url
+//    val mVideoUrl = "http://images-assets.nasa.gov/video/Space-Exploration-Video-1/Space-Exploration-Video-1~mobile.mp4"
+//
+//    // Declaring ExoPlayer
+//    val mExoPlayer = remember(mContext) {
+//
+//        val mediaItem = MediaItem.Builder().setUri(videoUri)
+//
+//        ExoPlayer.Builder(mContext).build().apply {
+//            val dataSourceFactory = DefaultDataSourceFactory(mContext, Util.getUserAgent(mContext, mContext.packageName))
+//            val source = ProgressiveMediaSource.Factory(dataSourceFactory).createMediaSource(mediaItem.build())
+//            this.setMediaSource(source)
+//            this.prepare()
+//        }
+//    }
+//
+////    // Implementing ExoPlayer
+////    AndroidView(factory = { context ->
+////        PlayerView(context).apply {
+////            player = mExoPlayer
+////        }
+////    })
+//
+//        DisposableEffect(
+//        AndroidView(factory = {
+//            StyledPlayerView(context).apply {
+//                player = mExoPlayer
+//            }
+//        },
+//        modifier = Modifier.height(500.dp))
+//    ) {
+//        onDispose { mExoPlayer.release() }
+//    }
+
 }
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -151,7 +224,9 @@ fun SearchField(onSearch: (query: String) -> Unit) {
     OutlinedTextField(
         value = query,
         onValueChange = { query = it },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp),
         label = { Text("Search") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {
@@ -159,4 +234,21 @@ fun SearchField(onSearch: (query: String) -> Unit) {
             keyboardController?.hide()
         }),
     )
+}
+
+@Composable
+fun Title(text: String, paddingValue: Dp) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Start,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(paddingValue)
+    )
+}
+
+suspend fun getVideo(viewModel: NasaLibraryViewModel, url: String): String {
+    return viewModel.getVideoData(url)
 }

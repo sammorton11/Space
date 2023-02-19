@@ -2,6 +2,7 @@ package com.example.space.presentation.nasa_media_library
 
 import android.net.Uri
 import android.util.Log
+import android.webkit.URLUtil
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewModelScope
 import coil.compose.AsyncImage
+import com.example.space.domain.models.Metadata
 import com.example.space.presentation.view_model.NasaLibraryViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -37,6 +39,8 @@ import com.google.android.exoplayer2.util.Util
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import org.json.JSONArray
+import retrofit2.Response
 
 @Composable
 fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
@@ -95,10 +99,9 @@ fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
 //                                    videoLink = getVideo(viewModel, link.href)
 //                                }
 
-                                link.href?.let { url ->
+                                item.href?.let { url ->
                                     runBlocking {
-                                        videoLink = getVideo(viewModel, url)
-                                        Log.d("Post getVideo", videoLink!!)
+                                        videoLink = getVideo(viewModel, url).body()
                                     }
                                 }
 //                                videoLink = link.href?.let { getVideo(viewModel, it) }
@@ -108,6 +111,7 @@ fun ImageVideoContent(viewModel: NasaLibraryViewModel) {
                             }
                         }
                     }
+
                     if (isImage) {
                         AsyncImage(
                             model = imageLink,
@@ -153,15 +157,38 @@ fun MyVideo(videoUri: String) {
     val exoPlayer = ExoPlayer.Builder(LocalContext.current)
         .build()
         .also { exoPlayer ->
-            val uri = Uri.parse("https://images-assets.nasa.gov/video/Space-Exploration-Video-1/Space-Exploration-Video-1~mobile.mp4")
+            val uri = "https://images-assets.nasa.gov/video/Space-Exploration-Video-1/Space-Exploration-Video-1~mobile.mp4"
             val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory()
-            val videoUrl = videoUri.replace("http://", "https://")
-            Log.d("Replaced Video Url", videoUrl)
-            val mediaItem = MediaItem.Builder()
-                .setUri(uri)
-                .build()
-            exoPlayer.setMediaItem(mediaItem)
-            exoPlayer.prepare()
+            //val videoUrl = videoUri.replace("http://", "https://")
+
+            var mobileVideo: String = ""
+            val jsonArray = JSONArray(videoUri)
+            val urls = ArrayList<String>()
+            for (i in 0 until jsonArray.length()) {
+                val url = jsonArray.getString(i)
+                urls.add(url)
+            }
+            urls.forEach {
+                Log.d("Urls:", it)
+            }
+
+            for (i in 0 until urls.size) {
+                when {
+                    urls[i].contains("~mobile.mp4") -> {
+                        mobileVideo = urls[i]
+                    }
+                }
+            }
+
+            val videoUrlHTTPS = mobileVideo.replace("http://", "https://")
+            Log.d("videoUrlHTTPS", videoUrlHTTPS)
+            if (URLUtil.isValidUrl(uri)) {
+                val mediaItem = MediaItem.Builder()
+                    .setUri(videoUrlHTTPS)
+                    .build()
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
+            }
         }
 
     DisposableEffect(
@@ -249,6 +276,13 @@ fun Title(text: String, paddingValue: Dp) {
     )
 }
 
-suspend fun getVideo(viewModel: NasaLibraryViewModel, url: String): String {
+suspend fun getVideo(viewModel: NasaLibraryViewModel, url: String): Response<String> {
     return viewModel.getVideoData(url)
 }
+
+data class VideoData(
+    var captions: String? = null,
+    var mobile: String? = null,
+    var imagePreview: String? = null,
+    var original: String? = null,
+)

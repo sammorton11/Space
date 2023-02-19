@@ -20,7 +20,7 @@ class RepositoryImpl @Inject constructor(
         return api.fetchData(query)
     }
 
-    override suspend fun getVideoData(url: String): String {
+    override suspend fun getVideoData(url: String): Response<String> {
         return apiMetaData.fetchData(url)
     }
 }

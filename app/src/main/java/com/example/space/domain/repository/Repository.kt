@@ -8,5 +8,5 @@ import retrofit2.Response
 
 interface Repository {
     suspend fun getData(query: String): Response<NasaLibraryResponse>
-    suspend fun getVideoData(url: String): String
+    suspend fun getVideoData(url: String): Response<String>
 }

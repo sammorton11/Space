@@ -32,13 +32,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMetaApi(): MetadataApi {
-//        val gson = GsonBuilder()
-//            .setLenient()
-//            .create()
+        val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(ScalarsConverterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(MetadataApi::class.java)
     }

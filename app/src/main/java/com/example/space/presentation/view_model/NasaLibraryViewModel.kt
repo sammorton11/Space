@@ -12,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,12 +58,11 @@ class NasaLibraryViewModel @Inject constructor (private val repository: Reposito
         }.launchIn(viewModelScope)
     }
 
-    suspend fun getVideoData(url: String): String {
+    suspend fun getVideoData(url: String): Response<String> {
         val metadata = repository.getVideoData(url)
 //        for (element in metadata) {
 //            Log.d("VIDEO DATA", element)
 //        }
-        Log.d("Pre getVideo", metadata)
         return metadata
     }
 }

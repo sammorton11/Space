@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.space.presentation.nasa_media_library.ImageVideoScreen
+import com.example.space.presentation.navigation.AppNavigation
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +35,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    ImageVideoScreen()
+                    //LibrarySearchScreen()
+                    AppNavigation()
                 }
             }
         }

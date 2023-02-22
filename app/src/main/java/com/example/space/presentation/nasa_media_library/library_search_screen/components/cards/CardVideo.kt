@@ -43,13 +43,9 @@ fun CardVideo(videoUri: String, videoViewModel: VideoDataViewModel) {
 
                     for (i in 0 until urls.size) {
                         when {
-                            urls[i].contains("mobile.mp4") ||
-                                    urls[i].contains(".mp4") -> { mobileVideo = urls[i] }
+                            urls[i].contains("mobile.mp4") -> { mobileVideo = urls[i] }
                             urls[i].contains("orig.mp4") -> {
                                 mobileVideo = urls[i]
-                            }
-                            urls[i].contains("~preview_thumb_00001.png") -> {
-                                preview = urls[i]
                             }
                         }
                     }

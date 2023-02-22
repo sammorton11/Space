@@ -94,6 +94,7 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
                         when {
                             link.href?.contains(".jpg") == true -> {
                                 imageLink = link.href
+                                url.value = imageLink
                             }
                             mediaType == "video" -> {
                                 url.value = item.href.toString()

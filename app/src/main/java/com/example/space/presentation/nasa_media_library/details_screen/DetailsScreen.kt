@@ -6,6 +6,6 @@ import com.example.space.presentation.navigation.CardData
 import com.example.space.presentation.view_model.VideoDataViewModel
 
 @Composable
-fun DetailsScreen(data: CardData, viewModel: VideoDataViewModel = hiltViewModel()) {
-    DetailsScreenContent(data = data, viewModel = viewModel)
+fun DetailsScreen(url: String, viewModel: VideoDataViewModel = hiltViewModel()) {
+    DetailsScreenContent(url = url, viewModel = viewModel)
 }

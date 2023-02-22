@@ -27,8 +27,16 @@ import com.example.space.presentation.nasa_media_library.library_search_screen.c
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardVideo
 import com.example.space.presentation.navigation.CardData
 import com.example.space.presentation.view_model.VideoDataViewModel
+import com.google.gson.Gson
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
-// Todo: - Details navigation arguments - not sure how to pass multiple values to details screen
+/*
+    Todo: 
+        - Details navigation arguments - not sure how to pass multiple values to details screen
+        - This is a mess lol. FIX IT..
+
+ */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,18 +56,21 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
             Card(
                 modifier = Modifier.padding(15.dp),
                 onClick = {
-                    // Todo: open the details screen for the selected card using the nasa_id
+                    // Todo: open the details screen for the selected card
                     val details = CardData(
                         id = id!!,
                         title = title!!,
-                        url = url.toString()
+                        url = url.value
                     )
-                    val bundle = Bundle().apply {
-                        putString("id", details.id)
-                        putString("title", details.title)
-                        putString("url", details.url)
-                    }
-                    navController.navigate("cardDetails/${bundle}")
+//                    val bundle = Bundle().apply {
+//                        putString("id", details.id)
+//                        putString("title", details.title)
+//                        putString("url", details.url)
+//                    }
+                    Log.d("url value", url.value)
+                    val encodedUrl = URLEncoder.encode(url.value, StandardCharsets.UTF_8.toString())
+                    navController.navigate("cardDetails/$encodedUrl")
+
                 }
             ) {
                 Column(modifier = Modifier.padding(10.dp)) {
@@ -84,8 +95,8 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
                             link.href?.contains(".jpg") == true -> {
                                 imageLink = link.href
                             }
-                            link.href?.contains(".mp4") == true -> {
-
+                            mediaType == "video" -> {
+                                url.value = item.href.toString()
                             }
                         }
                     }
@@ -94,7 +105,6 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
                     //CardDescription(description = description)
                 }
             }
-
         }
     }
 }

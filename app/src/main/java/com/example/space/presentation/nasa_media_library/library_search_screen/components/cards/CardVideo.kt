@@ -20,6 +20,9 @@ fun CardVideo(videoUri: String, videoViewModel: VideoDataViewModel) {
     Log.d("Video URI json link?:", videoUri)
     val state = videoViewModel.state.value.data
 
+
+    Log.d("STATE - video screen", state)
+
     if (state.isNotBlank()) {
         val exoPlayer = ExoPlayer.Builder(LocalContext.current)
             .build()

@@ -1,5 +1,6 @@
 package com.example.space.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -8,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.space.presentation.nasa_media_library.details_screen.DetailsScreen
+import com.example.space.presentation.nasa_media_library.details_screen.DetailsScreenContent
 import com.example.space.presentation.nasa_media_library.library_search_screen.LibrarySearchScreen
 import com.example.space.presentation.view_model.NasaLibraryViewModel
 import com.example.space.presentation.view_model.VideoDataViewModel
@@ -26,11 +28,18 @@ fun AppNavigation() {
                 navController = navController)
         }
         composable(
-            "cardDetails/{cardData}",
-            arguments = listOf(navArgument("cardData") { type = NavType.StringType })
+            "cardDetails/{url}",
+            arguments = listOf(navArgument("url") {
+                type = NavType.StringType
+            })
         ) { backStackEntry ->
-
+            backStackEntry.arguments?.getString("url")
+                ?.let {
+                    Log.d("Url from navigation args", it)
+                    DetailsScreen(url = it, viewModel = videoViewModel)
+                }
         }
+
     }
 
 }

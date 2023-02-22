@@ -10,6 +10,7 @@ import com.example.space.core.Resource
 import com.example.space.data.repository.RepositoryImpl
 import com.example.space.presentation.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -24,16 +25,14 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
     val state: State<VideoDataState> = _state // expose this to composable because immutable
 
     private fun videoDataFlow(url: String) = flow {
-
-        try {
-            emit(Resource.Loading())
-            val response = repository.getVideoData(url)
-            val rawJson = response.body()
-            Log.d("RAW JSON RESPONSE VIDEO", response!!.toString())
-            emit(Resource.Success(response))
-        } catch (e: Exception) {
-            emit(Resource.Error(e.toString()))
-        }
+        Log.d("URL before flow", "$url")
+        emit(Resource.Loading())
+        val response = repository.getVideoData(url)
+        val rawJson = response.body()
+        Log.d("RESPONSE VIDEO", response.toString())
+        emit(Resource.Success(response))
+    }.catch { throwable ->
+        emit(Resource.Error(throwable.toString()))
     }
 
     fun getVideoData(url: String) {
@@ -42,15 +41,16 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
                 is Resource.Success -> {
 
                     _state.value = response.data?.body()?.let {
-                        Log.d("Response Strings", it)
-                        var x = ""
-                        if (it.contains(".mp4")){
-                            x = it
-                        }
+//                        Log.d("Response Strings", it)
+//                        var x = ""
+//                        if (it.contains(".mp4")){
+//                            x = it
+//                        }
                         VideoDataState(
-                            data = x
+                            data = it
                         )
                     }!!
+                    Log.d("SUCCESS idk what to do tho", "${response.data?.body()}")
                 }
                 is Resource.Error -> {
                     _state.value = VideoDataState(

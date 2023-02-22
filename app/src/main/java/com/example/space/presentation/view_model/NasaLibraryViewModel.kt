@@ -7,15 +7,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.space.core.Resource
 import com.example.space.data.repository.RepositoryImpl
-import com.example.space.domain.models.ItemData
-import com.example.space.domain.repository.Repository
 import com.example.space.presentation.NasaLibraryState
-import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import retrofit2.HttpException
+import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,12 +40,13 @@ class NasaLibraryViewModel @Inject constructor (private val repository: Reposito
 
             when(response) {
                 is Resource.Success -> {
-
-                    _state.value = NasaLibraryState(data = response.data?.body()?.collection?.items ?: emptyList())
+                    _state.value = NasaLibraryState(
+                        data = response.data?.body()?.collection?.items ?: emptyList()
+                    )
                 }
                 is Resource.Error -> {
                     _state.value = NasaLibraryState(
-                        error = response.data?.errorBody().toString() ?: "Error Getting Data"
+                        error = response.data?.errorBody().toString()
                     )
                     Log.d("ITEM ERROR", "${response.message}")
                 }
@@ -59,4 +57,12 @@ class NasaLibraryViewModel @Inject constructor (private val repository: Reposito
             }
         }.launchIn(viewModelScope)
     }
+
+//    fun getVideoData(url: String): Response<String> {
+//        val metadata = repository.getVideoData(url)
+////        for (element in metadata) {
+////            Log.d("VIDEO DATA", element)
+////        }
+//        return metadata
+//    }
 }

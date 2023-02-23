@@ -27,6 +27,7 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
     private fun videoDataFlow(url: String) = flow {
         emit(Resource.Loading())
         val response = repository.getVideoData(url)
+        Log.d("Response Video or Audio", "${response.body()}")
         emit(Resource.Success(response))
     }.catch { throwable ->
         emit(Resource.Error(throwable.toString()))
@@ -36,7 +37,6 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
         videoDataFlow(url).onEach { response ->
             when(response) {
                 is Resource.Success -> {
-
                     _state.value = VideoDataState(
                             data = response.data?.body()
                     )

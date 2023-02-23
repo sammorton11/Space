@@ -7,7 +7,7 @@ data class NasaLibraryResponse(
 data class Collection(
     val version: String?,
     val href: String?,
-    val items: List<Item>?
+    val items: List<Item?>
 )
 
 data class Item(

@@ -13,15 +13,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardVideo
+import com.example.space.presentation.nasa_media_library.library_search_screen.components.other.AudioPlayer
 import com.example.space.presentation.view_model.VideoDataViewModel
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun DetailsScreenContent(url: String, description: String, viewModel: VideoDataViewModel) {
+fun DetailsScreenContent(
+    url: String, 
+    description: String, 
+    mediaType: String,
+    viewModel: VideoDataViewModel
+) {
     val decodedDescription = URLDecoder.decode(description, StandardCharsets.US_ASCII.toString())
     LazyColumn (
         modifier = Modifier
@@ -33,14 +40,29 @@ fun DetailsScreenContent(url: String, description: String, viewModel: VideoDataV
         viewModel.getVideoData(url)
 
         item {
-            if(url.contains(".json")){
-                CardVideo(videoUri = url, videoViewModel = viewModel)
-                Text(text = decodedDescription)
+            when (mediaType) {
+                "video" -> {
+
+                    if(url.contains(".json")){
+                        CardVideo(videoViewModel = viewModel)
+                        Text(text = decodedDescription)
+                    }
+                }
+                "audio" -> {
+
+                    Log.d("Putting this url into Audio Player Comp", url)
+                    AudioPlayer(url, viewModel)
+                    Text(text = decodedDescription)
+                }
+                "image" -> {
+                    if (url.contains(".jpg")) {
+                        CardImage(imageLink = url, 450.dp, 480.dp)
+                        Text(text = decodedDescription)
+                    }
+                }
             }
-            if (url.contains(".jpg")) {
-                CardImage(imageLink = url, 450.dp, 480.dp)
-                Text(text = decodedDescription)
-            }
+            
+            
         }
     }
 }

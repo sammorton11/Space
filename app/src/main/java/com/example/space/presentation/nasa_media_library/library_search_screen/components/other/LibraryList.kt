@@ -1,63 +1,53 @@
 package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
 
-import android.graphics.drawable.shapes.Shape
+import android.media.MediaPlayer
+import android.net.Uri
 import android.util.Log
-import android.webkit.URLUtil
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
+import com.example.space.R.*
 import com.example.space.domain.models.Item
 import com.example.space.domain.models.Link
 import com.example.space.presentation.NasaLibraryState
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardTitle
-import com.example.space.presentation.navigation.CardData
+import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.fileTypeCheck
+import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.getUrlList
+import com.example.space.presentation.view_model.VideoDataViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 /*
     Todo: 
-        - Details navigation arguments - not sure how to pass multiple values to details screen
-        - This is a mess lol. FIX IT..
-
+        - handle null pointer exceptions better
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
+fun LibraryList(navController: NavController, data: List<Item?>) {
 
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
-        items(state.value.data) { item ->
-            val links = item.links
-            val itemData = item.data.first()
-            val id = item.data.first().nasa_id
-
-            val title = itemData.title
-            val description = itemData.description
-            val mediaType = itemData.media_type
-            val dateCreated = itemData.date_created
-            val secondaryCreator = itemData.secondary_creator
-            val description508 = itemData.description_508
-            val center = itemData.center
-
-            var url = remember { mutableStateOf("") }
+        items(data) { item ->
+            val links = item?.links
+            val itemData = item?.data?.first()
+            val title = itemData?.title
+            val description = itemData?.description
+            val mediaType = itemData?.media_type
+            val url = remember { mutableStateOf("") }
 
             Card(
                 modifier = Modifier.padding(8.dp),
@@ -65,7 +55,7 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
                     Log.d("url value", url.value)
                     var encodedUrl = URLEncoder.encode(url.value, StandardCharsets.UTF_8.toString())
                     val encodedDescription = URLEncoder.encode(description, StandardCharsets.UTF_8.toString())
-                    navController.navigate("cardDetails/$encodedUrl/$encodedDescription")
+                    navController.navigate("cardDetails/$encodedUrl/$encodedDescription/$mediaType")
                 },
                 shape = AbsoluteRoundedCornerShape(10)
             ) {
@@ -75,29 +65,34 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
                 ) {
                     var imageLink: String? = null
 
-                    for (link in links) {
-                        Log.d("LINKS!", link.toString())
-                        when {
-                            link.href?.contains(".jpg") == true -> {
-                                imageLink = link.href
-                                url.value = imageLink
-                            }
-                            mediaType == "video" -> {
-                                url.value = item.href.toString()
-                            }
-                        }
+//                    for (link in links) {
+//                        Log.d("LINKS!", link.toString())
+//                        when {
+//                            link.href?.contains(".jpg") == true -> {
+//                                imageLink = link.href
+//                                url.value = imageLink
+//                            }
+//                            mediaType == "video" -> {
+//                                url.value = item.href.toString()
+//                            }
+//                        }
+//                    }
+                    if (item != null) {
+                        processLinks(links, mediaType, url, item)
                     }
                     Card(
                         modifier = Modifier.padding(10.dp),
                         shape = AbsoluteRoundedCornerShape(10)
                     ) {
-                        CardImage(imageLink = imageLink, height = 110.dp, width = 150.dp)
+                        CardImage(imageLink = url.value, height = 110.dp, width = 150.dp)
                     }
 
                     CardTitle(title = title)
                     if (mediaType != null) {
                         Spacer(modifier = Modifier.padding(10.dp))
-                        Text(text = mediaType)
+                        Text(
+                            text = mediaType
+                        )
                     }
                 }
             }
@@ -105,14 +100,103 @@ fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
     }
 }
 
-fun encodeUrl(url: String): String {
-    var encodedUrl = URLEncoder.encode(url, StandardCharsets.UTF_8.toString())
-    if (encodedUrl.endsWith("/")) {
-        encodedUrl = encodedUrl.substring(0, encodedUrl.length - 1)
+fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<String>, item: Item) {
+
+    mediaType?.let {
+//        if (it == "video" || it == "audio") {
+//            url.value = item.href ?: ""
+//            return
+//        }
+        when (it) {
+            "video" -> {
+                url.value = item.href ?: ""
+                return
+            }
+            "audio" -> {
+                url.value = item.href ?: ""
+                return
+            }
+            "image" -> {
+                if (links != null) {
+                    for (link in links) {
+                        if (!link.href.isNullOrEmpty()) {
+                            Log.d("Links", link.href)
+                            link.href.let { href ->
+                                if (href.contains(".jpg")) {
+                                    url.value = href
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
-    if (URLUtil.isValidUrl(url)) {
-        return encodedUrl
+}
+
+@Composable
+fun AudioPlayer(url: String, viewModel: VideoDataViewModel) {
+    val state = viewModel.state.value.data
+
+    // Fetching the local context
+    val mContext = LocalContext.current
+    var uri = ""
+    val iconSize = 300.dp
+
+    if (state != null) {
+        if (state.isNotEmpty()) {
+            val uriList = getUrlList(state)
+            uri = fileTypeCheck(uriList)
+        }
     }
-    Log.d("encodedUrl", encodedUrl)
-    return "Not Found"
+    Log.d("audioUrlHTTPS", uri)
+
+    // Declaring and Initializing
+    // the MediaPlayer to play "audio.mp3"
+    val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        val paused = remember { mutableStateOf(true) }
+
+        Row {
+            // IconButton for Start Action
+            IconButton(onClick = {
+                paused.value = false
+                mMediaPlayer?.let {
+                    it.start()
+                }
+            }) {
+                if (paused.value) {
+                    Icon(
+                        painter = painterResource(id = drawable.baseline_play_circle_24),
+                        contentDescription = "",
+                        Modifier.size(iconSize),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+
+            // IconButton for Pause Action
+            IconButton(onClick = {
+                paused.value = true
+                mMediaPlayer?.let {
+                    it.pause()
+                }
+            }) {
+                if (!paused.value) {
+                    Icon(
+                        painter = painterResource(id = drawable.baseline_pause_circle_outline_24),
+                        contentDescription = "",
+                        Modifier.size(iconSize),
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
+    }
 }

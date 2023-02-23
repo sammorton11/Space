@@ -14,9 +14,9 @@ import androidx.compose.ui.unit.dp
 import com.example.space.presentation.NasaLibraryState
 
 @Composable
-fun ErrorText(state: State<NasaLibraryState>) {
+fun ErrorText(error: String) {
     Text(
-        text = state.value.error,
+        text = error,
         textAlign = TextAlign.Center,
         modifier = Modifier
             .fillMaxWidth()

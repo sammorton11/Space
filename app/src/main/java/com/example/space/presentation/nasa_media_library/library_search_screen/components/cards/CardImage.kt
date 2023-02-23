@@ -20,7 +20,7 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp) {
         modifier = Modifier
             .height(height)
             .width(width),
-        contentScale = ContentScale.FillBounds,
+        contentScale = ContentScale.None,
         colorFilter = ColorFilter.colorMatrix(ColorMatrix())
     )
 }

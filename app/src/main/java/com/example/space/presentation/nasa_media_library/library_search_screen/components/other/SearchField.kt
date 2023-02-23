@@ -1,4 +1,4 @@
-package com.example.space.presentation.nasa_media_library.library_search_screen.components
+package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +24,7 @@ fun SearchField(onSearch: (query: String) -> Unit) {
         onValueChange = { query = it },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(15.dp),
+            .padding(horizontal = 15.dp, vertical = 10.dp),
         label = { Text("Search") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {

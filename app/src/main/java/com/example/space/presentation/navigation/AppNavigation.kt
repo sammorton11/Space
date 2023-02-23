@@ -28,18 +28,16 @@ fun AppNavigation() {
                 navController = navController)
         }
         composable(
-            "cardDetails/{url}",
+            "cardDetails/{url}/{description}",
             arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
         ) { backStackEntry ->
-            backStackEntry.arguments?.getString("url")
-                ?.let {
-                    Log.d("Url from navigation args", it)
-                    DetailsScreen(url = it, viewModel = videoViewModel)
-                }
+            val descriptionId = backStackEntry.arguments?.getString("description")
+            val urlId = backStackEntry.arguments?.getString("url")
+            if (urlId != null && descriptionId != null) {
+                DetailsScreen(url = urlId, description = descriptionId, viewModel = videoViewModel)
+            }
         }
-
     }
-
 }

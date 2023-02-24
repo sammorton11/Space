@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
@@ -42,27 +43,21 @@ fun DetailsScreenContent(
         item {
             when (mediaType) {
                 "video" -> {
-
-                    if(url.contains(".json")){
-                        CardVideo(videoViewModel = viewModel)
-                        Text(text = decodedDescription)
-                    }
+                    CardVideo(videoViewModel = viewModel)
+                    Text(text = decodedDescription)
                 }
                 "audio" -> {
-
                     Log.d("Putting this url into Audio Player Comp", url)
                     AudioPlayer(url, viewModel)
                     Text(text = decodedDescription)
                 }
                 "image" -> {
                     if (url.contains(".jpg")) {
-                        CardImage(imageLink = url, 450.dp, 480.dp)
+                        CardImage(imageLink = url, 300.dp, 480.dp, ContentScale.Fit)
                         Text(text = decodedDescription)
                     }
                 }
             }
-            
-            
         }
     }
 }

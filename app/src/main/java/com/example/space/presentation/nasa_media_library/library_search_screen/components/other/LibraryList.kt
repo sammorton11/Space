@@ -14,6 +14,7 @@ import androidx.compose.runtime.R
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -77,14 +78,13 @@ fun LibraryList(navController: NavController, data: List<Item?>) {
 //                            }
 //                        }
 //                    }
-                    if (item != null) {
-                        processLinks(links, mediaType, url, item)
+                    item?.let { processLinks(links, mediaType, url, item) }
+
+                    if (mediaType == "image") {
+                        CardImage(imageLink = url.value, height = 115.dp, width = 165.dp, ContentScale.FillBounds)
                     }
-                    Card(
-                        modifier = Modifier.padding(10.dp),
-                        shape = AbsoluteRoundedCornerShape(10)
-                    ) {
-                        CardImage(imageLink = url.value, height = 110.dp, width = 150.dp)
+                    if (mediaType == "video") {
+                        CardImage(imageLink = getImageLink(links), height = 110.dp, width = 150.dp, ContentScale.FillBounds)
                     }
 
                     CardTitle(title = title)
@@ -117,21 +117,28 @@ fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<Strin
                 return
             }
             "image" -> {
-                if (links != null) {
-                    for (link in links) {
-                        if (!link.href.isNullOrEmpty()) {
-                            Log.d("Links", link.href)
-                            link.href.let { href ->
-                                if (href.contains(".jpg")) {
-                                    url.value = href
-                                }
-                            }
-                        }
+                url.value = getImageLink(links = links)
+            }
+        }
+    }
+}
+
+fun getImageLink(links: List<Link>?): String {
+    var url = ""
+    if (links != null) {
+        for (link in links) {
+            if (!link.href.isNullOrEmpty()) {
+                Log.d("Links", link.href)
+                link.href.let { href ->
+                    if (href.contains(".jpg")) {
+                        url = href
+                        Log.d("Image for Preview", url)
                     }
                 }
             }
         }
     }
+    return url
 }
 
 @Composable

@@ -1,7 +1,10 @@
 package com.example.space.presentation.nasa_media_library.library_search_screen
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.other.*
@@ -14,24 +17,29 @@ fun LibraryScreenContent(
     videoViewModel: VideoDataViewModel,
     navController: NavController
 ){
-    val state = viewModel.state
     val list = viewModel.state.value.data
     val error = viewModel.state.value.error
     val isLoading = viewModel.state.value.isLoading
     val title = "NASA Media Library"
 
-    Column {
+    val scrollState = rememberScrollState()
+
+    Column(modifier = Modifier.verticalScroll(scrollState)) {
         Title(title, 15.dp)
-        SearchField(onSearch = { query ->
-            viewModel.getData(query)
-        })
+        if (scrollState.value > 0) {
+            SearchField(onSearch = { query ->
+                viewModel.getData(query)
+            })
+        }
+
         when {
             error.isNotBlank() -> { ErrorText(error = error) }
             isLoading -> { ProgressBar() }
             !list.isNullOrEmpty() -> {
                 LibraryList(
                     navController = navController,
-                    data = list
+                    data = list,
+                    scrollState = scrollState
                 )
             }
         }

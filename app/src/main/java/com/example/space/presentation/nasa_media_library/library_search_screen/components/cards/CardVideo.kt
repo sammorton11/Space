@@ -57,12 +57,14 @@ fun CardVideo(videoViewModel: VideoDataViewModel) {
                         player = exoPlayer
                     }
                 },
-                modifier = Modifier
-                    .height(650.dp)
-//                    .padding(top = 25.dp)
+                modifier = Modifier.height(650.dp)
             )
         ) {
-            onDispose { exoPlayer.release() }
+            onDispose {
+                exoPlayer.stop()
+                exoPlayer.release()
+                Log.d("Is exoplayer Playing?", exoPlayer.isPlaying.toString())
+            }
         }
     }
 }

@@ -1,130 +1,231 @@
 package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
 
-import android.os.Bundle
-import android.provider.Settings.Global.putString
+import android.media.MediaPlayer
 import android.util.Log
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
+import com.example.space.R.*
 import com.example.space.domain.models.Item
 import com.example.space.domain.models.Link
-import com.example.space.presentation.NasaLibraryState
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardTitle
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardVideo
-import com.example.space.presentation.navigation.CardData
+import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.fileTypeCheck
+import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.getUrlList
 import com.example.space.presentation.view_model.VideoDataViewModel
-import com.google.gson.Gson
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 /*
     Todo: 
-        - Details navigation arguments - not sure how to pass multiple values to details screen
-        - This is a mess lol. FIX IT..
-
+        - handle null pointer exceptions better
  */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LibraryList(navController: NavController, state: State<NasaLibraryState>) {
+fun LibraryList(navController: NavController, data: List<Item?>) {
+
+    val imageScaleType = ContentScale.FillBounds
+    val primaryColor = MaterialTheme.colorScheme.primary
+    val imageCardHeight= 115.dp
+    val imageCardWidth = 165.dp
+    val videoCardHeight= 110.dp
+    val videoCardWidth = 150.dp
 
     LazyVerticalGrid(columns = GridCells.Fixed(2), modifier = Modifier.fillMaxSize()) {
-        items(state.value.data) { item ->
-            val links = item.links
-            val itemData = item.data.first()
-            val id = item.data.first().nasa_id
-
-            val title = itemData.title
-            val description = itemData.description
-            val mediaType = itemData.media_type
-            var url = remember { mutableStateOf("") }
+        items(data) { item ->
+            val links = item?.links
+            val itemData = item?.data?.first()
+            val title = itemData?.title
+            val description = itemData?.description
+            val mediaType = itemData?.media_type
+            val url = remember { mutableStateOf("") }
 
             Card(
-                modifier = Modifier.padding(15.dp),
+                modifier = Modifier.padding(8.dp),
                 onClick = {
-                    // Todo: open the details screen for the selected card
-                    val details = CardData(
-                        id = id!!,
-                        title = title!!,
-                        url = url.value
-                    )
-//                    val bundle = Bundle().apply {
-//                        putString("id", details.id)
-//                        putString("title", details.title)
-//                        putString("url", details.url)
-//                    }
                     Log.d("url value", url.value)
                     val encodedUrl = URLEncoder.encode(url.value, StandardCharsets.UTF_8.toString())
-                    navController.navigate("cardDetails/$encodedUrl")
-
-                }
+                    val encodedDescription = URLEncoder.encode(description, StandardCharsets.UTF_8.toString())
+                    navController.navigate("cardDetails/$encodedUrl/$encodedDescription/$mediaType")
+                },
+                border = BorderStroke(1.dp, Brush.sweepGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.background), Offset.Zero)),
+                shape = AbsoluteRoundedCornerShape(10),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 15.dp
+                )
             ) {
-                Column(modifier = Modifier.padding(10.dp)) {
-                    //val (videoLink, imageLink, isImage) = extractLinks(links, mediaType!!, item)
+                Column(
+                    modifier = Modifier.padding(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
 
-//                    if (isImage) {
-//                        CardImage(imageLink = imageLink!!)
-//                    } else if (!videoLink.isNullOrEmpty()){
-//                       // videoViewModel.getVideoData(videoLink) // Todo: trying to get data here - if not try somewhere else.
-////                        CardVideo(
-////                            videoUri = videoLink,
-////                            videoViewModel = videoViewModel
-////                        )
-//                        CardImage(imageLink = imageLink)
-//                    }
-                    var videoLink: String? = null
-                    var imageLink: String? = null
-                    var isImage = false
-                    for (link in links) {
-                        Log.d("LINKS!", link.toString())
-                        when {
-                            link.href?.contains(".jpg") == true -> {
-                                imageLink = link.href
-                                url.value = imageLink
-                            }
-                            mediaType == "video" -> {
-                                url.value = item.href.toString()
-                            }
+                    item?.let { processLinks(links, mediaType, url, item) }
+
+                    when (mediaType) {
+                        "image" -> {
+                            CardImage(
+                                imageLink = url.value,
+                                height = imageCardHeight,
+                                width = imageCardWidth,
+                                scale = imageScaleType
+                            )
+                        }
+                        "video" -> {
+                            CardImage(
+                                imageLink = getImageLink(links),
+                                height = videoCardHeight,
+                                width = videoCardWidth,
+                                scale = imageScaleType
+                            )
                         }
                     }
-                    CardImage(imageLink = imageLink)
-                    CardTitle(title = title)
-                    //CardDescription(description = description)
+
+                    CardTitle(title = title, color = primaryColor)
+                    if (mediaType != null) {
+                        Spacer(modifier = Modifier.padding(10.dp))
+                        Text(
+                            text = mediaType,
+                            color = primaryColor
+                        )
+                    }
                 }
             }
         }
     }
 }
 
+fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<String>, item: Item) {
 
-private fun extractLinks(links: List<Link>, mediaType: String, item: Item): Triple<String?, String?, Boolean> {
-    var videoLink: String? = null
-    var imageLink: String? = null
-    var isImage = false
-    for (link in links) {
-        when (mediaType) {
-            "image" -> {
-                isImage = true
-                imageLink = link.href
-            }
+    mediaType?.let {
+        when (it) {
             "video" -> {
-                videoLink = link.href
+                url.value = item.href ?: ""
+                return
+            }
+            "audio" -> {
+                url.value = item.href ?: ""
+                return
+            }
+            "image" -> {
+                url.value = getImageLink(links = links)
             }
         }
     }
-    return Triple(videoLink, imageLink, isImage)
 }
+
+fun getImageLink(links: List<Link>?): String {
+    return links?.let { findImageLink(it) } ?: ""
+}
+
+fun findImageLink(links: List<Link>): String {
+    links.forEach { url ->
+        url.href?.let { nonNullUrl ->
+            if (nonNullUrl.contains(".jpg")) {
+                return url.href
+            }
+        }
+    }
+    return ""
+}
+
+@Composable
+fun AudioPlayer(viewModel: VideoDataViewModel) {
+    val state = viewModel.state.value.data
+
+    // Fetching the local context
+    val mContext = LocalContext.current
+    var uri = ""
+    val iconSize = 150.dp
+
+    if (state != null) {
+        if (state.isNotEmpty()) {
+            val uriList = getUrlList(state)
+            uri = fileTypeCheck(uriList)
+        }
+    }
+    Log.d("audioUrlHTTPS", uri)
+    val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
+    val paused = remember { mutableStateOf(true) }
+
+    Row(
+        modifier = Modifier.padding(45.dp)
+    ) {
+
+        // IconButton for Start Action
+        IconButton(
+            onClick = {
+                paused.value = false
+                mMediaPlayer?.start()
+            },
+        ) {
+            if (paused.value) {
+                Icon(
+                    painter = painterResource(id = drawable.baseline_play_circle_24),
+                    contentDescription = "",
+                    Modifier.size(iconSize),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        // IconButton for Pause Action
+        IconButton(
+            onClick = {
+                paused.value = true
+                mMediaPlayer?.pause()
+            }
+        ) {
+            if (!paused.value) {
+                Icon(
+                    painter = painterResource(id = drawable.baseline_pause_circle_outline_24),
+                    contentDescription = "",
+                    modifier = Modifier.size(iconSize),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        // IconButton for Pause Action
+        IconButton(
+            onClick = {
+                paused.value = true
+                mMediaPlayer?.let {
+                    it.seekTo(0)
+                    it.pause()
+                }
+            }
+        ) {
+            Icon(
+                painter = painterResource(id = drawable.baseline_restore_25),
+                contentDescription = "",
+                modifier = Modifier.size(iconSize),
+                tint = MaterialTheme.colorScheme.primary
+            )
+
+        }
+    }
+
+    DisposableEffect(mMediaPlayer) {
+        onDispose {
+            mMediaPlayer?.stop()
+            mMediaPlayer?.release()
+        }
+    }
+}
+

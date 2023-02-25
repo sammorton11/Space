@@ -9,6 +9,7 @@ import com.example.space.core.Resource
 import com.example.space.data.repository.RepositoryImpl
 import com.example.space.presentation.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -22,17 +23,14 @@ class NasaLibraryViewModel @Inject constructor (private val repository: Reposito
     val state: State<NasaLibraryState> = _state // expose this to composable because immutable
 
     private fun searchImageVideoLibrary(query: String) = flow {
+        emit(Resource.Loading())
+        val response = repository.getData(query)
+        val rawJson = response.body()?.toString() ?: ""
+        Log.d("RAW JSON RESPONSE", rawJson)
+        emit(Resource.Success(response))
 
-        try {
-            emit(Resource.Loading())
-            val response = repository.getData(query)
-            val rawJson = response.body()?.toString() ?: ""
-            Log.d("RAW JSON RESPONSE", rawJson)
-            emit(Resource.Success(response))
-
-        } catch (e: Exception) {
-            emit(Resource.Error(e.toString()))
-        }
+    }.catch { error ->
+        emit(Resource.Error(error.toString()))
     }
 
     fun getData(query: String) {

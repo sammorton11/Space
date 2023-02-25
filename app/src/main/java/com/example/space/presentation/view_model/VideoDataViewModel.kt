@@ -25,11 +25,9 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
     val state: State<VideoDataState> = _state // expose this to composable because immutable
 
     private fun videoDataFlow(url: String) = flow {
-        Log.d("URL before flow", "$url")
         emit(Resource.Loading())
         val response = repository.getVideoData(url)
-        val rawJson = response.body()
-        Log.d("RESPONSE VIDEO", response.toString())
+        Log.d("Response Video or Audio", "${response.body()}")
         emit(Resource.Success(response))
     }.catch { throwable ->
         emit(Resource.Error(throwable.toString()))
@@ -39,18 +37,10 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
         videoDataFlow(url).onEach { response ->
             when(response) {
                 is Resource.Success -> {
-
-                    _state.value = response.data?.body()?.let {
-//                        Log.d("Response Strings", it)
-//                        var x = ""
-//                        if (it.contains(".mp4")){
-//                            x = it
-//                        }
-                        VideoDataState(
-                            data = it
-                        )
-                    }!!
-                    Log.d("SUCCESS idk what to do tho", "${response.data?.body()}")
+                    _state.value = VideoDataState(
+                            data = response.data?.body()
+                    )
+                    Log.d("SUCCESS", "${response.data?.body()}")
                 }
                 is Resource.Error -> {
                     _state.value = VideoDataState(
@@ -65,12 +55,4 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
             }
         }.launchIn(viewModelScope)
     }
-
-//    fun getVideoData(url: String): Response<String> {
-//        val metadata = repository.getVideoData(url)
-////        for (element in metadata) {
-////            Log.d("VIDEO DATA", element)
-////        }
-//        return metadata
-//    }
 }

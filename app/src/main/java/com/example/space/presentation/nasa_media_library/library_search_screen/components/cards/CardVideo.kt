@@ -2,9 +2,12 @@ package com.example.space.presentation.nasa_media_library.library_search_screen.
 
 import android.util.Log
 import android.webkit.URLUtil
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.space.presentation.view_model.VideoDataViewModel
 import com.google.android.exoplayer2.ExoPlayer
@@ -15,62 +18,83 @@ import org.json.JSONArray
 // Todo: fix all of this business logic
 
 @Composable
-fun CardVideo(videoUri: String, videoViewModel: VideoDataViewModel) {
+fun CardVideo(videoViewModel: VideoDataViewModel) {
     val context = LocalContext.current
-    Log.d("Video URI json link?:", videoUri)
     val state = videoViewModel.state.value.data
 
+    if (state != null) {
+        Log.d("STATE - video screen", state)
+    }
 
-    Log.d("STATE - video screen", state)
-
-    if (state.isNotBlank()) {
+    if (state?.isNotBlank() == true) {
         val exoPlayer = ExoPlayer.Builder(LocalContext.current)
             .build()
             .also { exoPlayer ->
-                var mobileVideo = ""
-                var preview = ""
-                Log.d("Video Uri new:", state)
-                if (state.isNotEmpty()) {
-                    val jsonArray = JSONArray(state)
-                    val urls = ArrayList<String>()
-                    for (i in 0 until jsonArray.length()) {
-                        val url = jsonArray.getString(i)
-                        urls.add(url)
-                    }
-                    urls.forEach {
-                        Log.d("Urls:", it)
-                    }
+                var uri = ""
 
-                    for (i in 0 until urls.size) {
-                        when {
-                            urls[i].contains("mobile.mp4") -> { mobileVideo = urls[i] }
-                            urls[i].contains("orig.mp4") -> {
-                                mobileVideo = urls[i]
-                            }
-                        }
-                    }
+                if (state.isNotEmpty()) {
+                    val uriList = getUrlList(state)
+                    uri = fileTypeCheck(uriList)
                 }
 
-                val videoUrlHTTPS = mobileVideo.replace("http://", "https://")
-                Log.d("videoUrlHTTPS", videoUrlHTTPS)
+               // val videoUrlHTTPS = uri.replace("http://", "https://")
+                Log.d("videoUrlHTTPS", uri)
 
-                if (URLUtil.isValidUrl(videoUrlHTTPS)) {
+                if (URLUtil.isValidUrl(uri)) {
                     val mediaItem = MediaItem.Builder()
-                        .setUri(videoUrlHTTPS)
+                        .setUri(uri)
                         .build()
                     exoPlayer.setMediaItem(mediaItem)
+                    exoPlayer.playWhenReady = true
                     exoPlayer.prepare()
                 }
             }
 
         DisposableEffect(
-            AndroidView(factory = {
-                StyledPlayerView(context).apply {
-                    player = exoPlayer
-                }
-            })
+            AndroidView(
+                factory = {
+                    StyledPlayerView(context).apply {
+                        player = exoPlayer
+                    }
+                },
+                modifier = Modifier.height(650.dp)
+            )
         ) {
-            onDispose { exoPlayer.release() }
+            onDispose {
+                exoPlayer.stop()
+                exoPlayer.release()
+                Log.d("Is exoplayer Playing?", exoPlayer.isPlaying.toString())
+            }
         }
     }
+}
+
+fun fileTypeCheck(array: ArrayList<String>): String {
+    var file = ""
+    for (i in 0 until array.size) {
+        when {
+            array[i].contains("mobile.mp4") -> { file = array[i] }
+            array[i].contains(".mp4") -> { file = array[i] }
+            array[i].contains(".wav") -> { file = array[i] }
+            array[i].contains(".mp4a") -> { file = array[i] }
+            array[i].contains(".mp3") -> { file = array[i] }
+        }
+    }
+    file = file.replace("http://", "https://")
+
+    return file
+}
+
+fun getUrlList(state: String): ArrayList<String> {
+    Log.d("STATE for getUrlLIst", state)
+    val jsonArray = JSONArray(state)
+    val urls = ArrayList<String>()
+    for (i in 0 until jsonArray.length()) {
+        val url = jsonArray.getString(i)
+        urls.add(url)
+    }
+    urls.forEach {
+        Log.d("Urls:", it)
+    }
+    return urls
 }

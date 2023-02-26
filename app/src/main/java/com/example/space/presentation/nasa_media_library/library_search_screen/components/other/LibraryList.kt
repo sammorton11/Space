@@ -1,15 +1,13 @@
 package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
 
-import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,18 +15,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.navigation.NavController
 import com.example.space.R.*
 import com.example.space.domain.models.Item
-import com.example.space.domain.models.Link
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardTitle
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.fileTypeCheck
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.getUrlList
 import com.example.space.presentation.view_model.VideoDataViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -43,11 +35,16 @@ import java.nio.charset.StandardCharsets
 fun LibraryList(
     navController: NavController,
     data: List<Item?>,
-    scrollState: ScrollState
+    scrollState: LazyGridState,
+    viewModel: VideoDataViewModel
 ) {
 
     val imageScaleType = ContentScale.FillBounds
     val primaryColor = MaterialTheme.colorScheme.primary
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val sweepGradientColors = listOf(primaryColor, backgroundColor)
+    val utf8 = StandardCharsets.UTF_8.toString()
+    val cardElevation = 15.dp
     val imageCardHeight= 115.dp
     val imageCardWidth = 165.dp
     val videoCardHeight= 110.dp
@@ -55,9 +52,11 @@ fun LibraryList(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
+        modifier = Modifier.fillMaxSize(),
+        state = scrollState
     ) {
         items(data) { item ->
+            Log.d("Scroll State Value", scrollState.toString())
             val links = item?.links
             val itemData = item?.data?.first()
             val title = itemData?.title
@@ -68,23 +67,23 @@ fun LibraryList(
             Card(
                 modifier = Modifier.padding(8.dp),
                 onClick = {
-                    Log.d("url value", url.value)
-                    val encodedUrl = URLEncoder.encode(url.value, StandardCharsets.UTF_8.toString())
-                    val encodedDescription = URLEncoder.encode(description, StandardCharsets.UTF_8.toString())
-                    navController.navigate("cardDetails/$encodedUrl/$encodedDescription/$mediaType")
+                    val encodedUrl = URLEncoder.encode(url.value, utf8)
+                    val encodedDescription = URLEncoder.encode(description, utf8)
+                    navController.navigate(
+                        "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
+                    )
                 },
-                border = BorderStroke(1.dp, Brush.sweepGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.background), Offset.Zero)),
+                border = BorderStroke(1.dp, Brush.sweepGradient(sweepGradientColors, Offset.Zero)),
                 shape = AbsoluteRoundedCornerShape(10),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 15.dp
-                )
+                elevation = CardDefaults.cardElevation(defaultElevation = cardElevation)
             ) {
+
                 Column(
                     modifier = Modifier.padding(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    item?.let { processLinks(links, mediaType, url, item) }
+                    item?.let { viewModel.processLinks(links, mediaType, url, item) }
 
                     when (mediaType) {
                         "image" -> {
@@ -97,7 +96,7 @@ fun LibraryList(
                         }
                         "video" -> {
                             CardImage(
-                                imageLink = getImageLink(links),
+                                imageLink = viewModel.getImageLink(links),
                                 height = videoCardHeight,
                                 width = videoCardWidth,
                                 scale = imageScaleType
@@ -115,125 +114,6 @@ fun LibraryList(
                     }
                 }
             }
-        }
-    }
-}
-
-fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<String>, item: Item) {
-
-    mediaType?.let {
-        when (it) {
-            "video" -> {
-                url.value = item.href ?: ""
-                return
-            }
-            "audio" -> {
-                url.value = item.href ?: ""
-                return
-            }
-            "image" -> {
-                url.value = getImageLink(links = links)
-            }
-        }
-    }
-}
-
-fun getImageLink(links: List<Link>?): String {
-    return links?.let { findImageLink(it) } ?: ""
-}
-
-fun findImageLink(links: List<Link>): String {
-    links.forEach { url ->
-        url.href?.let { nonNullUrl ->
-            if (nonNullUrl.contains(".jpg")) {
-                return url.href
-            }
-        }
-    }
-    return ""
-}
-
-@Composable
-fun AudioPlayer(viewModel: VideoDataViewModel) {
-    val state = viewModel.state.value.data
-
-    // Fetching the local context
-    val mContext = LocalContext.current
-    var uri = ""
-    val iconSize = 150.dp
-
-    if (state != null) {
-        if (state.isNotEmpty()) {
-            val uriList = getUrlList(state)
-            uri = fileTypeCheck(uriList)
-        }
-    }
-    Log.d("audioUrlHTTPS", uri)
-    val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
-    val paused = remember { mutableStateOf(true) }
-
-    Row(
-        modifier = Modifier.padding(45.dp)
-    ) {
-
-        // IconButton for Start Action
-        IconButton(
-            onClick = {
-                paused.value = false
-                mMediaPlayer?.start()
-            },
-        ) {
-            if (paused.value) {
-                Icon(
-                    painter = painterResource(id = drawable.baseline_play_circle_24),
-                    contentDescription = "",
-                    Modifier.size(iconSize),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-
-        // IconButton for Pause Action
-        IconButton(
-            onClick = {
-                paused.value = true
-                mMediaPlayer?.pause()
-            }
-        ) {
-            if (!paused.value) {
-                Icon(
-                    painter = painterResource(id = drawable.baseline_pause_circle_outline_24),
-                    contentDescription = "",
-                    modifier = Modifier.size(iconSize),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-        }
-
-        // IconButton for Pause Action
-        IconButton(
-            onClick = {
-                paused.value = true
-                mMediaPlayer?.let {
-                    it.seekTo(0)
-                    it.pause()
-                }
-            }
-        ) {
-            Icon(
-                painter = painterResource(id = drawable.baseline_restore_25),
-                contentDescription = "",
-                modifier = Modifier.size(iconSize),
-                tint = MaterialTheme.colorScheme.primary
-            )
-
-        }
-    }
-
-    DisposableEffect(mMediaPlayer) {
-        onDispose {
-            mMediaPlayer?.stop()
-            mMediaPlayer?.release()
         }
     }
 }

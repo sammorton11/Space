@@ -1,4 +1,4 @@
-package com.example.space.presentation.nasa_media_library.library_search_screen.components.cards
+package com.example.space.presentation.nasa_media_library.components.cards
 
 import android.util.Log
 import android.webkit.URLUtil

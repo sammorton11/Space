@@ -1,4 +1,4 @@
-package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
+package com.example.space.presentation.nasa_media_library.components.other
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

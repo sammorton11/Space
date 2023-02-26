@@ -10,9 +10,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardImage
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.cards.CardVideo
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.other.AudioPlayer
+import com.example.space.presentation.nasa_media_library.components.cards.CardDescription
+import com.example.space.presentation.nasa_media_library.components.cards.CardImage
+import com.example.space.presentation.nasa_media_library.components.cards.CardVideo
+import com.example.space.presentation.nasa_media_library.components.other.AudioPlayer
 import com.example.space.presentation.view_model.VideoDataViewModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
@@ -39,15 +40,16 @@ fun DetailsScreenContent(
                 "video" -> {
                     CardVideo(videoViewModel = viewModel)
                     Text(text = decodedDescription)
+                    CardDescription(decodedDescription)
                 }
                 "audio" -> {
                     AudioPlayer(viewModel)
-                    Text(text = decodedDescription)
+                    CardDescription(decodedDescription)
                 }
                 "image" -> {
                     if (url.contains(".jpg")) {
                         CardImage(imageLink = url, 300.dp, 480.dp, ContentScale.Fit)
-                        Text(text = decodedDescription)
+                        CardDescription(decodedDescription)
                     }
                 }
             }

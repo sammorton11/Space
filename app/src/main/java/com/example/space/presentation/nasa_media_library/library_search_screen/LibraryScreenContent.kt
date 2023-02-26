@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.space.presentation.nasa_media_library.library_search_screen.components.other.*
+import com.example.space.presentation.nasa_media_library.components.other.*
 import com.example.space.presentation.view_model.NasaLibraryViewModel
 import com.example.space.presentation.view_model.VideoDataViewModel
 
@@ -41,7 +41,8 @@ fun LibraryScreenContent(
                 LibraryList(
                     navController = navController,
                     data = list,
-                    scrollState = lazyGridState
+                    scrollState = lazyGridState,
+                    viewModel = videoViewModel
                 )
             }
         }

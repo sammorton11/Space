@@ -1,4 +1,4 @@
-package com.example.space.presentation.nasa_media_library.library_search_screen.components.other
+package com.example.space.presentation.nasa_media_library.components.other
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable

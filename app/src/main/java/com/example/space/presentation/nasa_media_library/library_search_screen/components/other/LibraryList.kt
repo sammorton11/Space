@@ -3,13 +3,12 @@ package com.example.space.presentation.nasa_media_library.library_search_screen.
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,7 +42,7 @@ import java.nio.charset.StandardCharsets
 fun LibraryList(
     navController: NavController,
     data: List<Item?>,
-    scrollState: ScrollState
+    scrollState: LazyGridState
 ) {
 
     val imageScaleType = ContentScale.FillBounds
@@ -55,7 +54,7 @@ fun LibraryList(
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        modifier = Modifier.fillMaxSize().verticalScroll(scrollState)
+        state = scrollState
     ) {
         items(data) { item ->
             val links = item?.links

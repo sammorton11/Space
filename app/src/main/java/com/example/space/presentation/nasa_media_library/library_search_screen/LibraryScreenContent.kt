@@ -1,10 +1,9 @@
 package com.example.space.presentation.nasa_media_library.library_search_screen
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.presentation.nasa_media_library.library_search_screen.components.other.*
@@ -22,11 +21,14 @@ fun LibraryScreenContent(
     val isLoading = viewModel.state.value.isLoading
     val title = "NASA Media Library"
 
-    val scrollState = rememberScrollState()
+    val lazyGridState = rememberLazyGridState()
 
-    Column(modifier = Modifier.verticalScroll(scrollState)) {
+    Column() {
         Title(title, 15.dp)
-        if (scrollState.value > 0) {
+       val scrollState = derivedStateOf {
+           lazyGridState.firstVisibleItemIndex
+        }
+        if ( scrollState.value == 0) {
             SearchField(onSearch = { query ->
                 viewModel.getData(query)
             })
@@ -39,7 +41,7 @@ fun LibraryScreenContent(
                 LibraryList(
                     navController = navController,
                     data = list,
-                    scrollState = scrollState
+                    scrollState = lazyGridState
                 )
             }
         }

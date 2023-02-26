@@ -14,7 +14,7 @@ import com.example.space.presentation.nasa_media_library.components.cards.CardDe
 import com.example.space.presentation.nasa_media_library.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.components.cards.CardVideo
 import com.example.space.presentation.nasa_media_library.components.other.AudioPlayer
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.view_model.library.VideoDataViewModel
 import java.net.URLDecoder
 import java.nio.charset.StandardCharsets
 

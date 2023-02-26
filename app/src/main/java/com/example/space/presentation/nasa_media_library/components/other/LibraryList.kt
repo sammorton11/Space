@@ -21,7 +21,7 @@ import com.example.space.R.*
 import com.example.space.domain.models.Item
 import com.example.space.presentation.nasa_media_library.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.components.cards.CardTitle
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.view_model.library.VideoDataViewModel
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 

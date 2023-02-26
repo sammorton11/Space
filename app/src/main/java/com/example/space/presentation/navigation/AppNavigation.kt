@@ -1,6 +1,5 @@
 package com.example.space.presentation.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
@@ -8,17 +7,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.space.presentation.mars_weather.MarsWeatherScreen
 import com.example.space.presentation.nasa_media_library.details_screen.DetailsScreen
-import com.example.space.presentation.nasa_media_library.details_screen.DetailsScreenContent
 import com.example.space.presentation.nasa_media_library.library_search_screen.LibrarySearchScreen
-import com.example.space.presentation.view_model.NasaLibraryViewModel
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.view_model.library.NasaLibraryViewModel
+import com.example.space.presentation.view_model.library.VideoDataViewModel
+import com.example.space.presentation.view_model.mars_weather.MarsWeatherViewModel
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
     val libraryViewModel: NasaLibraryViewModel = hiltViewModel()
     val videoViewModel: VideoDataViewModel = hiltViewModel()
+    val marsWeatherViewModel: MarsWeatherViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "library_search_screen") {
         composable("library_search_screen") {
@@ -45,6 +46,10 @@ fun AppNavigation() {
                     viewModel = videoViewModel
                 )
             }
+        }
+
+        composable("mars_weather_screen") {
+            MarsWeatherScreen(marsWeatherViewModel)
         }
     }
 }

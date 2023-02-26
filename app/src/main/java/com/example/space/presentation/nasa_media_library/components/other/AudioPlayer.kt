@@ -20,7 +20,7 @@ import androidx.core.net.toUri
 import com.example.space.R
 import com.example.space.presentation.nasa_media_library.components.cards.fileTypeCheck
 import com.example.space.presentation.nasa_media_library.components.cards.getUrlList
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.view_model.library.VideoDataViewModel
 
 @Composable
 fun AudioPlayer(viewModel: VideoDataViewModel) {

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.space.presentation.navigation.AppNavigation
-import com.example.space.presentation.view_model.NasaLibraryViewModel
+import com.example.space.presentation.view_model.library.NasaLibraryViewModel
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 

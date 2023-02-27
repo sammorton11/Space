@@ -1,6 +1,4 @@
-package com.example.space
-
-import com.example.space.domain.models.Item
+package com.example.space.presentation.nasa_media_library.state
 
 data class VideoDataState(
     val isLoading: Boolean = false,

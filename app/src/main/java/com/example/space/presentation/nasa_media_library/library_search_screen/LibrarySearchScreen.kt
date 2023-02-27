@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.space.presentation.view_model.NasaLibraryViewModel
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.nasa_media_library.view_models.NasaLibraryViewModel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 
 @Composable
 fun LibrarySearchScreen(

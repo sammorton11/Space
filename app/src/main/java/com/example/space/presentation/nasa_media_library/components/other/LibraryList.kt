@@ -18,12 +18,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.R.*
+import com.example.space.core.Constants.utf8Encoding
 import com.example.space.domain.models.Item
 import com.example.space.presentation.nasa_media_library.components.cards.CardImage
 import com.example.space.presentation.nasa_media_library.components.cards.CardTitle
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.nasa_media_library.components.cards.MediaTypeLabel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,6 +37,7 @@ fun LibraryList(
 
     val imageScaleType = ContentScale.FillBounds
     val primaryColor = MaterialTheme.colorScheme.primary
+    val backgroundColor = MaterialTheme.colorScheme.background
     val imageCardHeight= 115.dp
     val imageCardWidth = 165.dp
     val videoCardHeight= 110.dp
@@ -57,23 +59,35 @@ fun LibraryList(
                 modifier = Modifier.padding(8.dp),
                 onClick = {
                     Log.d("url value", url.value)
-                    val encodedUrl = URLEncoder.encode(url.value, StandardCharsets.UTF_8.toString())
-                    val encodedDescription = URLEncoder.encode(description, StandardCharsets.UTF_8.toString())
-                    navController.navigate("cardDetails/$encodedUrl/$encodedDescription/$mediaType")
+                    val encodedUrl = URLEncoder.encode(url.value, utf8Encoding)
+                    val encodedDescription = URLEncoder.encode(description, utf8Encoding)
+                    navController.navigate(
+                        "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
+                    )
                 },
-                border = BorderStroke(1.dp, Brush.sweepGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.background), Offset.Zero)),
+                border = BorderStroke(
+                    width = 1.dp,
+                    brush = Brush.sweepGradient(
+                        colors = listOf(primaryColor, backgroundColor),
+                        center = Offset.Zero
+                    )
+                ),
                 shape = AbsoluteRoundedCornerShape(10),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 15.dp
-                )
+                elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
             ) {
                 Column(
                     modifier = Modifier.padding(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    item?.let { viewModel.processLinks(links, mediaType, url, item) }
-
+                    item?.let {
+                        viewModel.processLinks(
+                            links = links,
+                            mediaType = mediaType,
+                            url = url,
+                            item = item
+                        )
+                    }
                     when (mediaType) {
                         "image" -> {
                             CardImage(
@@ -92,52 +106,10 @@ fun LibraryList(
                             )
                         }
                     }
-
                     CardTitle(title = title, color = primaryColor)
-                    if (mediaType != null) {
-                        Spacer(modifier = Modifier.padding(10.dp))
-                        Text(
-                            text = mediaType,
-                            color = primaryColor
-                        )
-                    }
+                    MediaTypeLabel(mediaType = mediaType, color = primaryColor)
                 }
             }
         }
     }
 }
-
-//fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<String>, item: Item) {
-//
-//    mediaType?.let {
-//        when (it) {
-//            "video" -> {
-//                url.value = item.href ?: ""
-//                return
-//            }
-//            "audio" -> {
-//                url.value = item.href ?: ""
-//                return
-//            }
-//            "image" -> {
-//                url.value = getImageLink(links = links)
-//            }
-//        }
-//    }
-//}
-//
-//fun getImageLink(links: List<Link>?): String {
-//    return links?.let { findImageLink(it) } ?: ""
-//}
-//
-//fun findImageLink(links: List<Link>): String {
-//    links.forEach { url ->
-//        url.href?.let { nonNullUrl ->
-//            if (nonNullUrl.contains(".jpg")) {
-//                return url.href
-//            }
-//        }
-//    }
-//    return ""
-//}
-

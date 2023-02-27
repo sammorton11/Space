@@ -1,7 +1,6 @@
-package com.example.space.presentation.nasa_media_library.components.other
+package com.example.space.presentation.nasa_media_library.components.cards
 
 import android.media.MediaPlayer
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -18,26 +17,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.R
-import com.example.space.presentation.nasa_media_library.components.cards.fileTypeCheck
-import com.example.space.presentation.nasa_media_library.components.cards.getUrlList
-import com.example.space.presentation.view_model.VideoDataViewModel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 
 @Composable
-fun AudioPlayer(viewModel: VideoDataViewModel) {
-    val state = viewModel.state.value.data
+fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
+    val jsonArrayAsString = viewModel.state.value.data
 
     // Fetching the local context
     val mContext = LocalContext.current
     var uri = ""
     val iconSize = 150.dp
 
-    if (state != null) {
-        if (state.isNotEmpty()) {
-            val uriList = getUrlList(state)
-            uri = fileTypeCheck(uriList)
+    jsonArrayAsString?.let {
+        if (it.isNotEmpty()) {
+            val uriList = viewModel.getUrlList(jsonArrayAsString)
+            uri = viewModel.fileTypeCheck(uriList, mediaType)
         }
     }
-    Log.d("audioUrlHTTPS", uri)
     val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
     val paused = remember { mutableStateOf(true) }
 

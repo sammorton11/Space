@@ -1,4 +1,4 @@
-package com.example.space.presentation.view_model.library
+package com.example.space.presentation.nasa_media_library.view_models
 
 import android.util.Log
 import androidx.compose.runtime.State
@@ -6,8 +6,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.space.core.Resource
-import com.example.space.data.repository.RepositoryImpl
-import com.example.space.presentation.NasaLibraryState
+import com.example.space.domain.repository.Repository
+import com.example.space.presentation.nasa_media_library.state.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class NasaLibraryViewModel @Inject constructor (private val repository: RepositoryImpl): ViewModel() {
+class NasaLibraryViewModel @Inject constructor (private val repository: Repository): ViewModel() {
 
     private val _state = mutableStateOf(NasaLibraryState()) // not exposed because mutable
     val state: State<NasaLibraryState> = _state // expose this to composable because immutable
@@ -54,12 +54,4 @@ class NasaLibraryViewModel @Inject constructor (private val repository: Reposito
             }
         }.launchIn(viewModelScope)
     }
-
-//    fun getVideoData(url: String): Response<String> {
-//        val metadata = repository.getVideoData(url)
-////        for (element in metadata) {
-////            Log.d("VIDEO DATA", element)
-////        }
-//        return metadata
-//    }
 }

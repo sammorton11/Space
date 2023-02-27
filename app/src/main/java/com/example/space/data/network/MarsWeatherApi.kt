@@ -1,7 +1,8 @@
 package com.example.space.data.network
 
-import com.example.space.domain.models.mars_weather_models.MarsWeatherData
 import com.example.space.core.Constants.API_KEY
+import com.example.space.domain.models.mars_weather_models.MarsWeatherData
+import io.ktor.client.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

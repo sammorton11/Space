@@ -1,15 +1,13 @@
-package com.example.space.presentation.view_model.mars_weather
+package com.example.space.presentation.mars_weather.view_models
 
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.space.MarsWeatherState
+import com.example.space.presentation.mars_weather.MarsWeatherState
 import com.example.space.core.Resource
 import com.example.space.data.repository.MarsWeatherRepositoryImpl
-import com.example.space.data.repository.RepositoryImpl
-import com.example.space.presentation.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -28,7 +26,7 @@ class MarsWeatherViewModel @Inject constructor (private val repository: MarsWeat
         val response = repository.getData()
         val rawJson = response.body()?.toString() ?: ""
         val code = response.code().toString()
-        Log.d("RAW JSON RESPONSE", response.toString())
+        Log.d("RAW JSON RESPONSE", rawJson)
         Log.d("Response Message", code)
         emit(Resource.Success(response))
 

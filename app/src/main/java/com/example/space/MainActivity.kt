@@ -12,16 +12,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.space.presentation.navigation.AppNavigation
-import com.example.space.presentation.view_model.library.NasaLibraryViewModel
+import com.example.space.presentation.nasa_media_library.view_models.NasaLibraryViewModel
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /*
     Todo:
-        - Video issue
-        - Crashes sometimes because of some null value
-        - Details Screen - When list item is clicked
-        - Navigation graph
+        - Add test tags to everything - yes.. everything
  */
 
 
@@ -37,7 +34,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val viewModel: NasaLibraryViewModel = hiltViewModel()
-                    viewModel.getData("Audio")
+                    viewModel.getData("Nasa Videos")
                     AppNavigation()
                 }
             }

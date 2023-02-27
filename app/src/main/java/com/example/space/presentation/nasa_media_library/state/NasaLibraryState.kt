@@ -1,4 +1,4 @@
-package com.example.space.presentation
+package com.example.space.presentation.nasa_media_library.state
 
 import com.example.space.domain.models.Item
 

@@ -9,8 +9,8 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.presentation.nasa_media_library.components.other.*
-import com.example.space.presentation.view_model.library.NasaLibraryViewModel
-import com.example.space.presentation.view_model.library.VideoDataViewModel
+import com.example.space.presentation.nasa_media_library.view_models.NasaLibraryViewModel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 
 @Composable
 fun LibraryScreenContent(
@@ -27,7 +27,7 @@ fun LibraryScreenContent(
 
     Column() {
         Button(onClick = { navController.navigate("mars_weather_screen")}) {
-            Text("Go to Weather Screen")
+            Text("Mars Weather")
         }
 
         Title(title, 15.dp)
@@ -43,7 +43,7 @@ fun LibraryScreenContent(
         when {
             error.isNotBlank() -> { ErrorText(error = error) }
             isLoading -> { ProgressBar() }
-            !list.isNullOrEmpty() -> {
+            list.isNotEmpty() -> {
                 LibraryList(
                     navController = navController,
                     data = list,

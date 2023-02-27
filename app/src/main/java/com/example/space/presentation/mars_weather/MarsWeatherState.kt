@@ -1,4 +1,4 @@
-package com.example.space
+package com.example.space.presentation.mars_weather
 
 import com.example.space.domain.models.mars_weather_models.MarsWeatherData
 

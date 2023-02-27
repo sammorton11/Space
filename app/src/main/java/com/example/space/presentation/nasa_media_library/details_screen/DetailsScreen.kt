@@ -2,7 +2,7 @@ package com.example.space.presentation.nasa_media_library.details_screen
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.space.presentation.view_model.library.VideoDataViewModel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 
 @Composable
 fun DetailsScreen(

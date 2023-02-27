@@ -10,9 +10,9 @@ import androidx.navigation.navArgument
 import com.example.space.presentation.mars_weather.MarsWeatherScreen
 import com.example.space.presentation.nasa_media_library.details_screen.DetailsScreen
 import com.example.space.presentation.nasa_media_library.library_search_screen.LibrarySearchScreen
-import com.example.space.presentation.view_model.library.NasaLibraryViewModel
-import com.example.space.presentation.view_model.library.VideoDataViewModel
-import com.example.space.presentation.view_model.mars_weather.MarsWeatherViewModel
+import com.example.space.presentation.nasa_media_library.view_models.NasaLibraryViewModel
+import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
+import com.example.space.presentation.mars_weather.view_models.MarsWeatherViewModel
 
 @Composable
 fun AppNavigation() {

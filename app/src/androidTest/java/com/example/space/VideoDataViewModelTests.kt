@@ -1,5 +1,6 @@
 package com.example.space
 
+import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +40,13 @@ class VideoDataViewModelTests {
     private val testWAVAfter = "https://images-assets.nasa.gov/audio/367-AAA/367-AAA~orig.wav"
     private val fileTestList = arrayListOf(testMP3, testMP4, testJPEG, testWAVBefore)
 
+    private val itemJsonLinkForVideo = "[\"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~orig.mp4\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123.vtt\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~medium.mp4\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~mobile.mp4\"]"
+    private val expectedJsonArrayConversion = arrayListOf(
+        "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~orig.mp4",
+        "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123.vtt",
+        "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~medium.mp4",
+        "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~mobile.mp4"
+    )
     @Before
     fun setUp() {
         mainActivity = composeTestRule.activity
@@ -71,5 +79,14 @@ class VideoDataViewModelTests {
     fun fileTypeCheckTestVideo() {
         val result = videoDataViewModel.fileTypeCheck(fileTestList, "video")
         assert(result == testMP4After)
+    }
+
+    @Test
+    fun testJsonArrayToArrayList() {
+        val result = videoDataViewModel.getUrlList(itemJsonLinkForVideo)
+        result.forEach {
+            Log.d("itemJsonLinkForVideo", it)
+        }
+        assert(result == expectedJsonArrayConversion)
     }
 }

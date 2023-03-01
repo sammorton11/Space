@@ -16,7 +16,8 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class NasaLibraryViewModel @Inject constructor (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
+class MediaLibraryViewModel
+@Inject constructor (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
 
     private val _state = mutableStateOf(NasaLibraryState())
     val state: State<NasaLibraryState> = _state

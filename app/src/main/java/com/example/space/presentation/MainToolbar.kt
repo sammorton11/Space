@@ -6,14 +6,13 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.space.presentation.nasa_media_library.components.other.Title
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyToolbar(gridCells: MutableState<Int>, navController: NavController, drawerState: DrawerState) {
+fun MyToolbar(filterType: MutableState<String>, drawerState: DrawerState) {
     var expanded by remember { mutableStateOf(false) }
 
     val scope = rememberCoroutineScope()
@@ -28,10 +27,18 @@ fun MyToolbar(gridCells: MutableState<Int>, navController: NavController, drawer
                 expanded = expanded,
                 onDismissRequest = { expanded = false },
                 content = {
-                    DropdownMenuItem(text = { Text(text = "1 column") }, onClick = { gridCells.value = 1 })
-                    DropdownMenuItem(text = { Text(text = "2 columns") }, onClick = { gridCells.value = 2 })
-                    DropdownMenuItem(text = { Text(text = "3 columns") }, onClick = { gridCells.value = 3 })
-                    DropdownMenuItem(text = { Text(text = "4 columns") }, onClick = { gridCells.value = 4 })
+                    DropdownMenuItem(
+                        text = { Text(text = "Images") },
+                        onClick = { filterType.value = "image" }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = "Videos") },
+                        onClick = { filterType.value = "video" }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = "Audio") },
+                        onClick = { filterType.value = "audio" }
+                    )
                 }
             )
         },
@@ -45,7 +52,7 @@ fun MyToolbar(gridCells: MutableState<Int>, navController: NavController, drawer
             ) {
                 Icon(
                     imageVector = Icons.Default.Menu,
-                    contentDescription = "stringResource(R.string.drawer_toggle)"
+                    contentDescription = "List Filter Types Menu"
                 )
             }
         }

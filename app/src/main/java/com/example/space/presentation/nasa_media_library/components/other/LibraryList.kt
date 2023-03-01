@@ -1,6 +1,5 @@
 package com.example.space.presentation.nasa_media_library.components.other
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -33,6 +32,7 @@ fun LibraryList(
     data: List<Item?>,
     scrollState: LazyGridState,
     viewModel: VideoDataViewModel,
+    filterType: MutableState<String>,
     gridCells: Int
 ) {
 
@@ -48,7 +48,7 @@ fun LibraryList(
         columns = GridCells.Fixed(gridCells),
         state = scrollState
     ) {
-        items(data) { item ->
+        items(data.filter { it!!.data.first().media_type?.contains(filterType.value) ?: true }) { item ->
             val links = item?.links
             val itemData = item?.data?.first()
             val title = itemData?.title

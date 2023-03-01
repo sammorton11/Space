@@ -50,8 +50,6 @@ android {
 }
 
 dependencies {
-
-    testImplementation 'org.junit.jupiter:junit-jupiter'
     def ktor_version = '2.2.0'
 
     implementation 'androidx.core:core-ktx:1.7.0'
@@ -68,7 +66,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 
     //Mockk
-    testImplementation "io.mockk:mockk:1.13.2"
+    androidTestImplementation ("io.mockk:mockk-android:1.12.5")
     // Coroutines Test
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     // Retrofit Mock

@@ -3,6 +3,8 @@ package com.example.space
 import com.example.space.domain.models.*
 import com.example.space.domain.models.Collection
 import com.example.space.domain.repository.MediaLibraryRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
 class FakeMediaLibraryRepository: MediaLibraryRepository {
@@ -37,7 +39,14 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
         ))
     }
 
+    fun getDataError(): Response<NasaLibraryResponse> {
+        return Response.error(404,
+            "Resource not found".toResponseBody("application/json".toMediaTypeOrNull())
+        ) // simulate error
+    }
+
     override suspend fun getVideoData(url: String): Response<String> {
-        return Response.success("")
+        val itemJsonLinkForVideo = "[\"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~orig.mp4\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123.vtt\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~medium.mp4\", \"http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~mobile.mp4\"]"
+        return Response.success(itemJsonLinkForVideo)
     }
 }

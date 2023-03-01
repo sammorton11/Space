@@ -2,12 +2,15 @@ package com.example.space
 
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.navigation.compose.rememberNavController
 import com.example.space.di.AppModule
-import com.example.space.presentation.nasa_media_library.view_models.NasaLibraryViewModel
+import com.example.space.domain.models.*
+import com.example.space.presentation.nasa_media_library.view_models.MediaLibraryViewModel
 import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
 import com.example.space.presentation.navigation.AppNavigation
 import com.example.space.ui.theme.SpaceTheme
@@ -17,6 +20,7 @@ import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyString
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
@@ -28,7 +32,7 @@ class ViewModelTests {
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
     private lateinit var mainActivity: MainActivity
-    private lateinit var libraryViewModel: NasaLibraryViewModel
+    private lateinit var libraryViewModel: MediaLibraryViewModel
     private lateinit var videoDataViewModel: VideoDataViewModel
     private val repository = FakeMediaLibraryRepository()
 
@@ -47,14 +51,15 @@ class ViewModelTests {
         "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~medium.mp4",
         "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~mobile.mp4"
     )
+
+    @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
         mainActivity = composeTestRule.activity
         hiltRule.inject()
-        libraryViewModel = NasaLibraryViewModel(repository)
-        libraryViewModel.getData("test")
+        libraryViewModel = MediaLibraryViewModel(repository)
         videoDataViewModel = VideoDataViewModel(repository)
-
+        libraryViewModel.getData(anyString())
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
@@ -62,11 +67,31 @@ class ViewModelTests {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        AppNavigation()
+                        val navController = rememberNavController()
+                        val filterType = remember { mutableStateOf("") }
+                        AppNavigation(filterType, navController)
                     }
                 }
             }
         }
+    }
+
+    @Test
+    fun test_getData_success() {
+        val list = libraryViewModel.state.value.data
+        assert(list.isNotEmpty())
+    }
+    @Test
+    fun test_getData_error() {
+        val list = libraryViewModel.state.value.data
+        assert(list.isNotEmpty())
+    }
+
+    @Test
+    fun test_items_are_not_null() {
+        libraryViewModel.getData(anyString())
+        val list = libraryViewModel.state.value.data
+        list.forEach { item -> assert(item != null) }
     }
 
     @Test

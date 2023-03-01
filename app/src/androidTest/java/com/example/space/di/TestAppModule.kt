@@ -1,11 +1,11 @@
 package com.example.space.di
 
-import com.example.space.FakeRepository
+import com.example.space.FakeMediaLibraryRepository
 import com.example.space.core.Constants
 import com.example.space.data.network.MarsWeatherApi
 import com.example.space.data.network.MetadataApi
 import com.example.space.data.network.NasaApi
-import com.example.space.domain.repository.Repository
+import com.example.space.domain.repository.MediaLibraryRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -25,8 +25,8 @@ object TestAppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(): Repository {
-        return FakeRepository()
+    fun provideRepository(): MediaLibraryRepository {
+        return FakeMediaLibraryRepository()
     }
 
     @Provides

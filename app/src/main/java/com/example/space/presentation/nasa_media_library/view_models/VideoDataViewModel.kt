@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.space.core.Resource
 import com.example.space.domain.models.Item
 import com.example.space.domain.models.Link
-import com.example.space.domain.repository.Repository
+import com.example.space.domain.repository.MediaLibraryRepository
 import com.example.space.presentation.nasa_media_library.state.VideoDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
@@ -20,15 +20,14 @@ import org.json.JSONArray
 import javax.inject.Inject
 
 @HiltViewModel
-class VideoDataViewModel @Inject constructor (private val repository: Repository): ViewModel() {
+class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
 
-    private val _state = mutableStateOf(VideoDataState()) // not exposed because mutable
-    val state: State<VideoDataState> = _state // expose this to composable because immutable
+    private val _state = mutableStateOf(VideoDataState())
+    val state: State<VideoDataState> = _state
 
     private fun videoDataFlow(url: String) = flow {
         emit(Resource.Loading())
-        val response = repository.getVideoData(url)
-        Log.d("Response Video or Audio", "${response.body()}")
+        val response = mediaLibraryRepository.getVideoData(url)
         emit(Resource.Success(response))
     }.catch { throwable ->
         emit(Resource.Error(throwable.toString()))
@@ -37,17 +36,14 @@ class VideoDataViewModel @Inject constructor (private val repository: Repository
     fun getVideoData(url: String) {
         videoDataFlow(url).onEach { response ->
             val videoData = response.data?.body()
-            val message = response.message
             val error = response.data?.errorBody()
 
             when(response) {
                 is Resource.Success -> {
                     _state.value = VideoDataState(data = videoData)
-                    Log.d("SUCCESS", "$videoData")
                 }
                 is Resource.Error -> {
                     _state.value = VideoDataState(error = error.toString())
-                    Log.d("ITEM ERROR", "$error")
                 }
                 is Resource.Loading -> {
                     _state.value = VideoDataState(isLoading = true)

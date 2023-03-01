@@ -5,8 +5,8 @@ import com.example.space.core.Constants.BASE_URL_MARS_DATA
 import com.example.space.data.network.MarsWeatherApi
 import com.example.space.data.network.MetadataApi
 import com.example.space.data.network.NasaApi
-import com.example.space.data.repository.RepositoryImpl
-import com.example.space.domain.repository.Repository
+import com.example.space.data.repository.MediaLibraryRepositoryImpl
+import com.example.space.domain.repository.MediaLibraryRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -55,7 +55,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRepository(api: NasaApi, metadataApi: MetadataApi): Repository {
-        return RepositoryImpl(api, metadataApi)
+    fun provideRepository(api: NasaApi, metadataApi: MetadataApi): MediaLibraryRepository {
+        return MediaLibraryRepositoryImpl(api, metadataApi)
     }
 }

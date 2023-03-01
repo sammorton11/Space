@@ -32,7 +32,8 @@ fun LibraryList(
     navController: NavController,
     data: List<Item?>,
     scrollState: LazyGridState,
-    viewModel: VideoDataViewModel
+    viewModel: VideoDataViewModel,
+    gridCells: Int
 ) {
 
     val imageScaleType = ContentScale.FillBounds
@@ -44,7 +45,7 @@ fun LibraryList(
     val videoCardWidth = 150.dp
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(gridCells),
         state = scrollState
     ) {
         items(data) { item ->
@@ -56,9 +57,10 @@ fun LibraryList(
             val url = remember { mutableStateOf("") }
 
             Card(
-                modifier = Modifier.padding(8.dp),
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
                 onClick = {
-                    Log.d("url value", url.value)
                     val encodedUrl = URLEncoder.encode(url.value, utf8Encoding)
                     val encodedDescription = URLEncoder.encode(description, utf8Encoding)
                     navController.navigate(
@@ -76,7 +78,7 @@ fun LibraryList(
                 elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(10.dp),
+                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -106,6 +108,11 @@ fun LibraryList(
                             )
                         }
                     }
+                }
+                Column(
+                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     CardTitle(title = title, color = primaryColor)
                     MediaTypeLabel(mediaType = mediaType, color = primaryColor)
                 }

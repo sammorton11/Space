@@ -2,10 +2,10 @@ package com.example.space
 
 import com.example.space.domain.models.*
 import com.example.space.domain.models.Collection
-import com.example.space.domain.repository.Repository
+import com.example.space.domain.repository.MediaLibraryRepository
 import retrofit2.Response
 
-class FakeRepository: Repository {
+class FakeMediaLibraryRepository: MediaLibraryRepository {
     override suspend fun getData(query: String): Response<NasaLibraryResponse> {
         return Response.success(NasaLibraryResponse(
             collection = Collection(

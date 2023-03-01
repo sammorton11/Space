@@ -13,7 +13,8 @@ fun CardTitle(title: String?, color: Color) {
         Text(
             text = text,
             modifier = Modifier.padding(5.dp),
-            color = color
+            color = color,
+            maxLines = 6
         )
     }
 }

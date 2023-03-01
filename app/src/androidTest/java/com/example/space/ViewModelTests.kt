@@ -1,6 +1,5 @@
 package com.example.space
 
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -21,16 +20,17 @@ import org.junit.Test
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
-class VideoDataViewModelTests {
+class ViewModelTests {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
+
     private lateinit var mainActivity: MainActivity
     private lateinit var libraryViewModel: NasaLibraryViewModel
     private lateinit var videoDataViewModel: VideoDataViewModel
-    private val repository = FakeRepository()
+    private val repository = FakeMediaLibraryRepository()
 
     private val testMP3 = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
     private val testMP4 = "http://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~orig.mp4"
@@ -54,10 +54,10 @@ class VideoDataViewModelTests {
         libraryViewModel = NasaLibraryViewModel(repository)
         libraryViewModel.getData("test")
         videoDataViewModel = VideoDataViewModel(repository)
+
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
-                    // A surface container using the 'background' color from the theme
                     Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
@@ -84,9 +84,6 @@ class VideoDataViewModelTests {
     @Test
     fun testJsonArrayToArrayList() {
         val result = videoDataViewModel.getUrlList(itemJsonLinkForVideo)
-        result.forEach {
-            Log.d("itemJsonLinkForVideo", it)
-        }
         assert(result == expectedJsonArrayConversion)
     }
 }

@@ -6,7 +6,6 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
-import com.example.space.presentation.nasa_media_library.components.other.Title
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -38,6 +37,10 @@ fun MyToolbar(filterType: MutableState<String>, drawerState: DrawerState) {
                     DropdownMenuItem(
                         text = { Text(text = "Audio") },
                         onClick = { filterType.value = "audio" }
+                    )
+                    DropdownMenuItem(
+                        text = { Text(text = "All") },
+                        onClick = { filterType.value = "" }
                     )
                 }
             )

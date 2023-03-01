@@ -16,19 +16,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
+import com.example.space.navigation.AppNavigation
 import com.example.space.presentation.MyToolbar
 import com.example.space.presentation.SideNavigationDrawer
-import com.example.space.presentation.navigation.AppNavigation
-import com.example.space.presentation.nasa_media_library.view_models.MediaLibraryViewModel
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /*
     Todo:
-        - Add test tags to everything - yes.. everything
-        - Landscape mode causing issues for videos in description screen
-            - Video restarts when phone switches orientation
-            - Video screen is too large when in landscape
+        -
  */
 
 
@@ -44,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel: MediaLibraryViewModel = hiltViewModel()
+                    val viewModel:  MediaLibraryViewModel = hiltViewModel()
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
@@ -56,7 +53,9 @@ class MainActivity : ComponentActivity() {
                             topBar = {
                                 MyToolbar(filterType, drawerState)
                             }) { padding ->
-                            Box(modifier = Modifier.fillMaxSize().padding(padding)) {
+                            Box(modifier = Modifier
+                                .fillMaxSize()
+                                .padding(padding)) {
                                 AppNavigation(filterType, navController)
                             }
                         }

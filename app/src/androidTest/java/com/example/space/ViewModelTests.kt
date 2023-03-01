@@ -9,10 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.rememberNavController
 import com.example.space.di.AppModule
-import com.example.space.domain.models.*
-import com.example.space.presentation.nasa_media_library.view_models.MediaLibraryViewModel
-import com.example.space.presentation.nasa_media_library.view_models.VideoDataViewModel
-import com.example.space.presentation.navigation.AppNavigation
+import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
+import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.example.space.navigation.AppNavigation
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -52,7 +51,6 @@ class ViewModelTests {
         "http://images-assets.nasa.gov/video/GRC-2022-CM-0123/GRC-2022-CM-0123~mobile.mp4"
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
         mainActivity = composeTestRule.activity

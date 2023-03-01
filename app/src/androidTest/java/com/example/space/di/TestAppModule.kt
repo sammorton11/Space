@@ -2,10 +2,10 @@ package com.example.space.di
 
 import com.example.space.FakeMediaLibraryRepository
 import com.example.space.core.Constants
-import com.example.space.data.network.MarsWeatherApi
-import com.example.space.data.network.MetadataApi
-import com.example.space.data.network.NasaApi
-import com.example.space.domain.repository.MediaLibraryRepository
+import com.example.space.mars_weather.data.MarsWeatherApi
+import com.example.space.nasa_media_library.data.network.MetadataApi
+import com.example.space.nasa_media_library.data.network.NasaApi
+import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides

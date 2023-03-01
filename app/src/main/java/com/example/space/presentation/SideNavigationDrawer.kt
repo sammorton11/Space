@@ -20,12 +20,28 @@ import kotlinx.coroutines.launch
             drawerState = drawerState,
             drawerContent = {
                 Button(onClick = {
+                    navController.navigate("library_search_screen")
+                    scope.launch(Dispatchers.Main) {
+                        drawerState.close()
+                    }
+                }) {
+                    Text(text = "Media Library")
+                }
+                Button(onClick = {
                     navController.navigate("mars_weather_screen")
                     scope.launch(Dispatchers.Main) {
                         drawerState.close()
                     }
                 }) {
                     Text(text = "Mars Weather")
+                }
+                Button(onClick = {
+                    navController.navigate("apod_screen")
+                    scope.launch(Dispatchers.Main) {
+                        drawerState.close()
+                    }
+                }) {
+                    Text(text = "Picture of the Day")
                 }
             },
             gesturesEnabled = true

@@ -2,11 +2,14 @@ package com.example.space.di
 
 import com.example.space.core.Constants.BASE_URL
 import com.example.space.core.Constants.BASE_URL_MARS_DATA
-import com.example.space.data.network.MarsWeatherApi
-import com.example.space.data.network.MetadataApi
-import com.example.space.data.network.NasaApi
-import com.example.space.data.repository.MediaLibraryRepositoryImpl
-import com.example.space.domain.repository.MediaLibraryRepository
+import com.example.space.mars_weather.data.MarsWeatherApi
+import com.example.space.nasa_media_library.data.network.MetadataApi
+import com.example.space.nasa_media_library.data.network.NasaApi
+import com.example.space.nasa_media_library.data.repository.MediaLibraryRepositoryImpl
+import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
+import com.example.space.picture_of_the_day.data.ApodApi
+import com.example.space.picture_of_the_day.data.repository.ApodRepositoryImpl
+import com.example.space.picture_of_the_day.domain.repository.ApodRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -57,5 +60,21 @@ object AppModule {
     @Singleton
     fun provideRepository(api: NasaApi, metadataApi: MetadataApi): MediaLibraryRepository {
         return MediaLibraryRepositoryImpl(api, metadataApi)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApodApi(): ApodApi {
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL_MARS_DATA)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(ApodApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApodRepository(api: ApodApi): ApodRepository {
+        return ApodRepositoryImpl(api)
     }
 }

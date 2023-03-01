@@ -1,14 +1,23 @@
 package com.example.space.nasa_media_library.presentation.components.other
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -16,7 +25,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.space.R.*
 import com.example.space.core.Constants.utf8Encoding
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
 import com.example.space.nasa_media_library.presentation.components.cards.CardImage
@@ -25,12 +33,12 @@ import com.example.space.nasa_media_library.presentation.components.cards.MediaT
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import java.net.URLEncoder
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun LibraryList(
     navController: NavController,
     data: List<Item?>,
-    scrollState: LazyGridState,
+    scrollState: LazyStaggeredGridState,
     viewModel: VideoDataViewModel,
     filterType: MutableState<String>,
     gridCells: Int
@@ -45,11 +53,13 @@ fun LibraryList(
     val videoCardWidth = 150.dp
 
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(gridCells),
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(gridCells),
         state = scrollState
     ) {
-        items(data.filter { it!!.data.first().media_type?.contains(filterType.value) ?: true }) { item ->
+        items(data.filter {
+            it!!.data.first().media_type?.contains(filterType.value) ?: true
+        }) { item ->
             val links = item?.links
             val itemData = item?.data?.first()
             val title = itemData?.title
@@ -79,7 +89,9 @@ fun LibraryList(
                 elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -111,7 +123,9 @@ fun LibraryList(
                     }
                 }
                 Column(
-                    modifier = Modifier.fillMaxWidth().padding(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CardTitle(title = title, color = primaryColor)

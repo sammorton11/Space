@@ -1,5 +1,6 @@
 package com.example.space.nasa_media_library.presentation.details_screen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -9,10 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import com.example.space.nasa_media_library.presentation.components.cards.*
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.DownloadFile
+import com.example.space.presentation.ShareButton
 import java.net.URLDecoder
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
@@ -22,7 +26,16 @@ fun DetailsScreenContent(
     mediaType: String,
     viewModel: VideoDataViewModel
 ) {
-    val decodedDescription = URLDecoder.decode(description, StandardCharsets.US_ASCII.toString())
+    /*
+        Todo: - fix this error - caused by the encoding and decoding below
+        E/AndroidRuntime: FATAL EXCEPTION: main
+    Process: com.example.space, PID: 23787
+    java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern : %+o
+     */
+
+    Log.d("DESCRIPTION", description)
+   // val encodedDescription = URLEncoder.encode(description, StandardCharsets.US_ASCII.toString())
+    val decodedDescription = decodeText(description)
     val context = LocalContext.current
 
     LazyColumn (
@@ -46,6 +59,7 @@ fun DetailsScreenContent(
                         mimeType = "video/mp4",
                         subPath = "video.mp4"
                     )
+                    ShareButton(uri = mUri.toUri(), type = "video/mp4")
                 }
                 "audio" -> {
                     val mUri = getUri(viewModel, mediaType)
@@ -58,22 +72,36 @@ fun DetailsScreenContent(
                         mimeType = "audio/x-wav",
                         subPath = "audio.wav"
                     )
+                    ShareButton(uri = mUri.toUri(), type = "audio/x-wav")
                 }
                 "image" -> {
-                    val mUri = getUri(viewModel, mediaType)
-                    if (mUri.contains(".jpg")) {
-                        CardImage(imageLink = mUri, 300.dp, 480.dp, ContentScale.Fit)
+                    //val mUri = getUri(viewModel, mediaType)
+                    if (url.contains(".jpg")) {
+                        CardImage(imageLink = url, 300.dp, 480.dp, ContentScale.Fit)
                         CardDescription(decodedDescription)
                         DownloadFile(
-                            url = mUri,
+                            url = url,
                             context = context,
-                            filename = mUri,
+                            filename = url,
                             mimeType = "image/jpeg",
                             subPath = "image.jpeg"
                         )
+                        ShareButton(uri = url.toUri(), type = "image/jpeg")
                     }
                 }
             }
         }
     }
+}
+
+fun decodeText(text: String): String {
+    var decodedText = "Decoding Failed"
+    try {
+        decodedText = URLDecoder.decode(text, StandardCharsets.UTF_8.toString())
+    } catch (e: Exception) {
+        //decodedText = text
+        e.printStackTrace()
+    }
+
+    return decodedText
 }

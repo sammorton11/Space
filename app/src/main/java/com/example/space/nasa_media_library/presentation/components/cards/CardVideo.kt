@@ -58,7 +58,7 @@ fun CardVideo(videoViewModel: VideoDataViewModel, uri: String) {
     }
 }
 
-fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String{
+fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
     val state = videoViewModel.state.value.data
     var uri = ""
     if (state != null) {

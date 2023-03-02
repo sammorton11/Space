@@ -12,8 +12,7 @@ fun CardDescription(description: String?) {
         Text(
             text = text,
             modifier = Modifier.padding(20.dp),
-            softWrap = true,
-            maxLines = 5
+            softWrap = true
         )
     }
 }

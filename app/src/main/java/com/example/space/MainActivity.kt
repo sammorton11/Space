@@ -25,7 +25,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /*
     Todo:
-        -
+        - App icon
+        - Broadcast Receiver
  */
 
 

@@ -18,6 +18,7 @@ import coil.compose.AsyncImage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale) {
+
     Card(
         modifier = Modifier.padding(10.dp),
         shape = AbsoluteRoundedCornerShape(10)

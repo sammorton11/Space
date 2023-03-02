@@ -15,28 +15,14 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.audio.AudioSink.UnexpectedDiscontinuityException
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
-// Todo: fix all of this business logic
-
 @Composable
-fun CardVideo(videoViewModel: VideoDataViewModel, mediaType: String) {
+fun CardVideo(videoViewModel: VideoDataViewModel, uri: String) {
     val context = LocalContext.current
 
     val state = videoViewModel.state.value.data
 
-    if (state != null) {
-        Log.d("STATE - video screen", state)
-    }
-
     if (state?.isNotBlank() == true) {
         val exoPlayer = ExoPlayer.Builder(LocalContext.current).build()
-
-        var uri = ""
-        if (state.isNotEmpty()) {
-            val uriList = videoViewModel.getUrlList(state)
-            uri = videoViewModel.fileTypeCheck(uriList, mediaType)
-        }
-
-        Log.d("videoUrlHTTPS", uri)
 
         if (URLUtil.isValidUrl(uri)) {
             try {
@@ -70,5 +56,16 @@ fun CardVideo(videoViewModel: VideoDataViewModel, mediaType: String) {
             }
         }
     }
+}
 
+fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String{
+    val state = videoViewModel.state.value.data
+    var uri = ""
+    if (state != null) {
+        if (state.isNotEmpty()) {
+            val uriList = videoViewModel.getUrlList(state)
+            uri = videoViewModel.fileTypeCheck(uriList, mediaType)
+        }
+    }
+    return uri
 }

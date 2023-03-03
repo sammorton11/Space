@@ -18,6 +18,7 @@ import com.example.space.nasa_media_library.presentation.library_search_screen.L
 /*
     Todo:
         - Animations aren't working with staggered grid
+        - Make a separate
  */
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)

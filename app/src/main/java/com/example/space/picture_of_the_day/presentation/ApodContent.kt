@@ -11,11 +11,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.space.picture_of_the_day.presentation.components.ApedExplanation
 import com.example.space.picture_of_the_day.presentation.components.PictureOfTheDay
-import com.example.space.presentation.DownloadFile
+import com.example.space.presentation.util.DownloadFile
 import com.example.space.presentation.ErrorText
 import com.example.space.presentation.ProgressBar
 import com.example.space.presentation.Title
-import org.michaelbel.movies.common.converter.DateConverter
+import com.example.space.presentation.util.DateConverter
 
 @Composable
 fun ApodContent(viewModel: ApodViewModel) {

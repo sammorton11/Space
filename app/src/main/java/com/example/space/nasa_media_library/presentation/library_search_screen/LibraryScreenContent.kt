@@ -1,23 +1,19 @@
 package com.example.space.nasa_media_library.presentation.library_search_screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.space.core.DataStoreManager
-import com.example.space.core.WindowInfo
-import com.example.space.core.rememberWindowInfo
 import com.example.space.nasa_media_library.presentation.components.other.LibraryList
 import com.example.space.nasa_media_library.presentation.components.other.SearchField
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ErrorText
 import com.example.space.presentation.ProgressBar
-import kotlinx.coroutines.launch
+import com.example.space.presentation.util.WindowInfo
+import com.example.space.presentation.util.rememberWindowInfo
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -34,6 +30,7 @@ fun LibraryScreenContent(
     val lazyGridState = rememberLazyStaggeredGridState()
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex }}
     val window = rememberWindowInfo()
+    var isVisible by remember { mutableStateOf(true) }
 
     Column(Modifier.fillMaxSize()) {
 
@@ -51,41 +48,44 @@ fun LibraryScreenContent(
                 ProgressBar()
             }
             list.isNotEmpty() -> {
-                Box(modifier = Modifier.weight(1f, fill = true)) {
 
-                    when(window.screenWidthInfo) {
-                        is WindowInfo.WindowType.Compact -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                viewModel = videoViewModel,
-                                filterType = filterType,
-                                gridCells = 2
-                            )
-                        }
-                        is WindowInfo.WindowType.Medium -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                viewModel = videoViewModel,
-                                filterType = filterType,
-                                gridCells = 3
-                            )
-                        }
-                        is WindowInfo.WindowType.Expanded -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                viewModel = videoViewModel,
-                                filterType = filterType,
-                                gridCells = 4
-                            )
+                    Box(
+                        modifier = Modifier.fillMaxWidth()
+                    ){
+
+                        when(window.screenWidthInfo) {
+                            is WindowInfo.WindowType.Compact -> {
+                                LibraryList(
+                                    navController = navController,
+                                    data = list,
+                                    scrollState = lazyGridState,
+                                    viewModel = videoViewModel,
+                                    filterType = filterType,
+                                    gridCells = 2
+                                )
+                            }
+                            is WindowInfo.WindowType.Medium -> {
+                                LibraryList(
+                                    navController = navController,
+                                    data = list,
+                                    scrollState = lazyGridState,
+                                    viewModel = videoViewModel,
+                                    filterType = filterType,
+                                    gridCells = 3
+                                )
+                            }
+                            is WindowInfo.WindowType.Expanded -> {
+                                LibraryList(
+                                    navController = navController,
+                                    data = list,
+                                    scrollState = lazyGridState,
+                                    viewModel = videoViewModel,
+                                    filterType = filterType,
+                                    gridCells = 4
+                                )
+                            }
                         }
                     }
-                }
             }
         }
     }

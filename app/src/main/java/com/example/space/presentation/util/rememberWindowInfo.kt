@@ -1,4 +1,4 @@
-package com.example.space.core
+package com.example.space.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration

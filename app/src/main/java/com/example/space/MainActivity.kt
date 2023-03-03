@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
-                    viewModel.getData("Nasa Videos")
+                    viewModel.getData("Nasa Audio")
 
                     SideNavigationDrawer(navController, drawerState, scope) {
                         Scaffold(

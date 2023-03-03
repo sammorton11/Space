@@ -60,10 +60,11 @@ fun CardVideo(videoViewModel: VideoDataViewModel, uri: String) {
 
 fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
     val state = videoViewModel.state.value.data
+    state?.let { Log.d("State in getUri", it) }
     var uri = ""
     if (state != null) {
         if (state.isNotEmpty()) {
-            val uriList = videoViewModel.getUrlList(state)
+            val uriList = videoViewModel.getUrlList(state.toString())
             uri = videoViewModel.fileTypeCheck(uriList, mediaType)
         }
     }

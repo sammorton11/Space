@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.nasa_media_library.presentation.components.cards.*
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.presentation.DownloadFile
+import com.example.space.presentation.util.DownloadFile
+import com.example.space.presentation.ProgressBar
 import com.example.space.presentation.ShareButton
 import java.net.URLDecoder
-import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
@@ -35,6 +35,9 @@ fun DetailsScreenContent(
     val decodedDescription = decodeText(description)
     val context = LocalContext.current
 
+
+    Log.d("Media Type: ", " Media Type: $mediaType -- Url: $url")
+
     LazyColumn (
         modifier = Modifier
             .fillMaxSize(),
@@ -47,6 +50,7 @@ fun DetailsScreenContent(
 //        val mUri = getUri(viewModel, mediaType)
         viewModel.getVideoData(url)
         item {
+            if (viewModel.state.value.isLoading) { ProgressBar() }
             when (mediaType) {
                 "video" -> {
 
@@ -80,7 +84,13 @@ fun DetailsScreenContent(
                 "image" -> {
                     //viewModel.getVideoData(url)
                     val mUri = getUri(viewModel, mediaType)
-                    CardImage(imageLink = mUri, 300.dp, 480.dp, ContentScale.Fit)
+                    CardImage(
+                        imageLink = mUri,
+                        height = 400.dp,
+                        width = 450.dp,
+                        scale = ContentScale.FillBounds,
+                        mediaType = mediaType
+                    )
                     CardDescription(decodedDescription)
                     DownloadFile(
                         url = url,

@@ -1,7 +1,6 @@
 package com.example.space.nasa_media_library.presentation.view_models
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -70,10 +69,12 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
      */
     fun processLinks(links: List<Link>?, mediaType: String?, item: Item): String? {
         mediaType?.let { type ->
+
             when (type) {
                 "video" -> {
 //                    Log.d("Item Link:", item.href.toString())
 //                    url.value = item.href ?: ""
+                    item.href?.let { Log.d("Video url from process links", it) }
                     return item.href
                 }
                 "audio" -> {
@@ -149,7 +150,7 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
         Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
     fun getUrlList(state: String): ArrayList<String> {
-        Log.d("Can't convert to JSON Array", state.toString())
+        Log.d("State to JSON Array", state.toString())
         var urls: ArrayList<String> = arrayListOf()
         try {
             val jsonArray = JSONArray(state)

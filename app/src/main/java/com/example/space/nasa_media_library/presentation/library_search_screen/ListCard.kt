@@ -77,7 +77,6 @@ fun ListCard(
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 if (mediaType != null) {
                     CardImage(
                         imageLink = links?.first()?.href,
@@ -103,7 +102,6 @@ fun ListCard(
                         maxLines = 1
                     )
                 }
-
                 MediaTypeLabel(mediaType = mediaType, color = primaryColor)
             }
         }

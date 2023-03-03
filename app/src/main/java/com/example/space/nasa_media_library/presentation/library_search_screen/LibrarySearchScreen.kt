@@ -14,12 +14,16 @@ fun LibrarySearchScreen(
     viewModel: MediaLibraryViewModel = hiltViewModel(),
     videoViewModel: VideoDataViewModel = hiltViewModel(),
     navController: NavController,
-    filterType: MutableState<String>
+    filterType: MutableState<String>,
+    backgroundType: MutableState<Int>,
+    backgroundList: List<Int>
 ) {
     LibraryScreenContent(
         viewModel = viewModel,
         videoViewModel = videoViewModel,
         navController = navController,
-        filterType = filterType
+        filterType = filterType,
+        backgroundType = backgroundType,
+        backgroundList = backgroundList
     )
 }

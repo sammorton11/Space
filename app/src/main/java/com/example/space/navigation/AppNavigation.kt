@@ -20,6 +20,8 @@ import com.example.space.picture_of_the_day.presentation.ApodViewModel
 @Composable
 fun AppNavigation(
     filterType: MutableState<String>,
+    backgroundType: MutableState<Int>,
+    backgroundList: List<Int>,
     navController: NavHostController,
     libraryViewModel: MediaLibraryViewModel
 ) {
@@ -33,7 +35,9 @@ fun AppNavigation(
                 viewModel = libraryViewModel,
                 videoViewModel = videoViewModel,
                 navController = navController,
-                filterType = filterType
+                filterType = filterType,
+                backgroundType = backgroundType,
+                backgroundList = backgroundList
             )
         }
         composable(

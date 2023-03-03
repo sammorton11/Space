@@ -41,7 +41,12 @@ class MainActivity : ComponentActivity() {
             val dataStore = DataStoreManager
             dataStore.init(applicationContext)
         }
-
+        val backgroundList = listOf(
+            R.drawable.space_background_01,
+            R.drawable.space_background_02,
+            R.drawable.space_background_03,
+            4
+        )
         setContent {
             SpaceTheme {
                 Surface(
@@ -53,6 +58,7 @@ class MainActivity : ComponentActivity() {
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
+                    val backgroundType = remember { mutableStateOf(1) }
                     viewModel.getData("Nasa Audio")
 
                     SideNavigationDrawer(navController, drawerState, scope) {
@@ -61,7 +67,9 @@ class MainActivity : ComponentActivity() {
                                 MyToolbar(
                                     filterType = filterType,
                                     drawerState = drawerState,
-                                    scope = scope
+                                    scope = scope,
+                                    backgroundType = backgroundType,
+                                    backgroundList = backgroundList
                                 )
                             }
                         ){ padding ->
@@ -74,7 +82,9 @@ class MainActivity : ComponentActivity() {
                                 AppNavigation(
                                     filterType = filterType,
                                     navController = navController,
-                                    libraryViewModel = viewModel
+                                    libraryViewModel = viewModel,
+                                    backgroundType = backgroundType,
+                                    backgroundList = backgroundList
                                 )
                             }
                         }

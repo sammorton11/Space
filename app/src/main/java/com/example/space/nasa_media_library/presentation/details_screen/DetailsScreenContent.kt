@@ -11,13 +11,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.space.nasa_media_library.presentation.components.cards.*
+import com.example.space.nasa_media_library.presentation.components.cards.CardImage
+import com.example.space.nasa_media_library.presentation.components.cards.CardMediaPlayer
+import com.example.space.nasa_media_library.presentation.components.cards.ExpandableDetailsCard
+import com.example.space.nasa_media_library.presentation.components.cards.getUri
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.presentation.util.DownloadFile
 import com.example.space.presentation.ProgressBar
 import com.example.space.presentation.ShareButton
-import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
+import com.example.space.presentation.util.DownloadFile
 
 @Composable
 fun DetailsScreenContent(
@@ -26,17 +27,8 @@ fun DetailsScreenContent(
     mediaType: String,
     viewModel: VideoDataViewModel
 ) {
-    /*
-        Todo: - fix this error - caused by the encoding and decoding below
-        E/AndroidRuntime: FATAL EXCEPTION: main
-    Process: com.example.space, PID: 23787
-    java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern : %+o
-     */
-    val decodedDescription = decodeText(description)
+    val decodedDescription = viewModel.decodeText(description)
     val context = LocalContext.current
-
-
-    Log.d("Media Type: ", " Media Type: $mediaType -- Url: $url")
 
     LazyColumn (
         modifier = Modifier
@@ -45,19 +37,18 @@ fun DetailsScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Log.d("URL passed to details composable", url)
-//        viewModel.getVideoData(url)
-//        viewModel.getVideoData(url)
-//        val mUri = getUri(viewModel, mediaType)
         viewModel.getVideoData(url)
+
         item {
             if (viewModel.state.value.isLoading) { ProgressBar() }
             when (mediaType) {
                 "video" -> {
 
                     val mUri = getUri(viewModel, mediaType)
-                    Log.d("URL into CardVideo details screen", mUri)
-                    CardVideo(videoViewModel = viewModel, uri = mUri)
-                    CardDescription(decodedDescription)
+                    Log.d("URL into CardMediaPlayer details screen", mUri)
+                    CardMediaPlayer(videoViewModel = viewModel, uri = mUri)
+                    //CardDescription(decodedDescription)
+                    ExpandableDetailsCard(content = decodedDescription)
                     DownloadFile(
                         url = mUri,
                         context = context,
@@ -68,10 +59,10 @@ fun DetailsScreenContent(
                     ShareButton(uri = mUri.toUri(), type = "video/mp4")
                 }
                 "audio" -> {
-                    //viewModel.getVideoData(url)
                     val mUri = getUri(viewModel, mediaType)
-                    AudioPlayer(viewModel = viewModel, mediaType = mediaType)
-                    CardDescription(decodedDescription)
+
+                    CardMediaPlayer(videoViewModel = viewModel, uri = mUri)
+                    ExpandableDetailsCard(content = decodedDescription)
                     DownloadFile(
                         url = mUri,
                         context = context,
@@ -82,8 +73,8 @@ fun DetailsScreenContent(
                     ShareButton(uri = mUri.toUri(), type = "audio/x-wav")
                 }
                 "image" -> {
-                    //viewModel.getVideoData(url)
                     val mUri = getUri(viewModel, mediaType)
+
                     CardImage(
                         imageLink = mUri,
                         height = 400.dp,
@@ -91,7 +82,7 @@ fun DetailsScreenContent(
                         scale = ContentScale.FillBounds,
                         mediaType = mediaType
                     )
-                    CardDescription(decodedDescription)
+                    ExpandableDetailsCard(content = decodedDescription)
                     DownloadFile(
                         url = url,
                         context = context,
@@ -104,16 +95,4 @@ fun DetailsScreenContent(
             }
         }
     }
-}
-
-fun decodeText(text: String): String {
-    var decodedText = "Decoding Failed"
-    try {
-        decodedText = URLDecoder.decode(text, StandardCharsets.UTF_8.toString())
-    } catch (e: Exception) {
-        //decodedText = text
-        e.printStackTrace()
-    }
-
-    return decodedText
 }

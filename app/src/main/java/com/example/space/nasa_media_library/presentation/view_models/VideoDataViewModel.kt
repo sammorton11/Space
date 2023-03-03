@@ -6,8 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.space.core.Resource
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Link
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.state.VideoDataState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +15,8 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.json.JSONArray
 import org.json.JSONException
+import java.net.URLDecoder
+import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,65 +50,6 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    /**
-     *   When the media type is image we need to go through the list of uri's from the response
-     *   to retrieve an image.
-     *
-     *   If it is a video or an audio type, we just need to use the .json link from the response
-     *   to get the metadata for the video or audio.
-     *
-     *   For some reason, the API does not initially provide the data for "video" or "audio" types.
-     *   It expects you to use the .json links to request the metadata.
-     *
-     *   "image" types can also use the .json links to retrieve its image data, but jpeg files are
-     *   already provided so I'm just using those. I decided not to use them though.
-     *   That way I don't have to make additional requests for the image types.
-     *
-     */
-    fun processLinks(links: List<Link>?, mediaType: String?, item: Item): String? {
-        mediaType?.let { type ->
-
-            when (type) {
-                "video" -> {
-//                    Log.d("Item Link:", item.href.toString())
-//                    url.value = item.href ?: ""
-                    item.href?.let { Log.d("Video url from process links", it) }
-                    return item.href
-                }
-                "audio" -> {
-//                    Log.d("Item Link:", item.href.toString())
-//                    url.value =  ?: ""
-                    return item.href
-                }
-                "image" -> {
-                   // Log.d("Item Link:", item.href.toString())
-                    //url.value = getImageLink(links = links)
-                    return getImageLink(links = links)
-                }
-                else -> {}
-            }
-        }
-        return ""
-    }
-
-    /**
-     *  Some Items do not contain the same type of images
-     *  - to be safe this method just gets any jpeg that is available
-     */
-    private fun findImageLink(links: List<Link>): String {
-        links.forEach { url ->
-            url.href?.let { nonNullUrl ->
-                if (nonNullUrl.contains(".jpg") || nonNullUrl.contains(".png")) {
-                    return url.href
-                }
-            }
-        }
-        return ""
-    }
-    fun getImageLink(links: List<Link>?): String {
-        return links?.let { findImageLink(it) } ?: ""
     }
 
     /**
@@ -151,7 +92,7 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
      */
     fun getUrlList(state: String): ArrayList<String> {
         Log.d("State to JSON Array", state.toString())
-        var urls: ArrayList<String> = arrayListOf()
+        val urls: ArrayList<String> = arrayListOf()
         try {
             val jsonArray = JSONArray(state)
             for (i in 0 until jsonArray.length()) {
@@ -162,6 +103,18 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
             Log.d("Can't convert to JSON Array", e.toString())
         }
         return urls
+    }
+
+    fun decodeText(text: String): String {
+        var decodedText = "Decoding Failed"
+        try {
+            decodedText = URLDecoder.decode(text, StandardCharsets.UTF_8.toString())
+        } catch (e: Exception) {
+            //decodedText = text
+            e.printStackTrace()
+        }
+
+        return decodedText
     }
 }
 

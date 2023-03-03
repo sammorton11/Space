@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
 import com.example.space.nasa_media_library.presentation.library_search_screen.ListCard
-import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 
 /*
     Todo:
@@ -27,16 +26,13 @@ fun LibraryList(
     navController: NavController,
     data: List<Item?>,
     scrollState: LazyStaggeredGridState,
-    viewModel: VideoDataViewModel,
     filterType: MutableState<String>,
-    gridCells: Int
+    gridCells: Int,
+    imageScaleType: ContentScale
 ) {
 
-    val imageScaleType = ContentScale.FillBounds
     val primaryColor = MaterialTheme.colorScheme.primary
     val backgroundColor = MaterialTheme.colorScheme.background
-    val imageCardHeight= 115.dp
-    val imageCardWidth = 165.dp
     val videoCardHeight= 110.dp
     val videoCardWidth = 150.dp
 

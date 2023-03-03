@@ -4,13 +4,8 @@ import android.media.MediaPlayer
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,10 +31,21 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
     }
     val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
     val paused = remember { mutableStateOf(true) }
+   // var position by remember { mutableStateOf(mMediaPlayer.currentPosition.toFloat()) }
 
     Row(
         modifier = Modifier.padding(45.dp)
     ) {
+
+//        val cPosition = mMediaPlayer.currentPosition
+//        if (cPosition != null) {
+//
+//        }
+//
+
+//        Slider(value = mMediaPlayer.currentPosition.toFloat(), onValueChange = {
+//            position = it
+//        })
 
         // IconButton for Start Action
         IconButton(
@@ -55,6 +61,10 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
                     Modifier.size(iconSize),
                     tint = MaterialTheme.colorScheme.primary
                 )
+//
+//                if (mMediaPlayer.isPlaying) {
+//                    Text(text = mMediaPlayer)
+//                }
             }
         }
 

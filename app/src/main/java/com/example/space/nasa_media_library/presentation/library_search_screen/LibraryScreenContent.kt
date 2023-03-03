@@ -5,6 +5,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.example.space.nasa_media_library.presentation.components.other.LibraryList
 import com.example.space.nasa_media_library.presentation.components.other.SearchField
@@ -21,7 +24,9 @@ fun LibraryScreenContent(
     viewModel: MediaLibraryViewModel,
     videoViewModel: VideoDataViewModel,
     navController: NavController,
-    filterType: MutableState<String>
+    filterType: MutableState<String>,
+    backgroundType: MutableState<Int>,
+    backgroundList: List<Int>
 ){
     val list = viewModel.state.value.data
     val error = viewModel.state.value.error
@@ -30,24 +35,40 @@ fun LibraryScreenContent(
     val lazyGridState = rememberLazyStaggeredGridState()
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex }}
     val window = rememberWindowInfo()
-    var isVisible by remember { mutableStateOf(true) }
+    val imageScaleType = ContentScale.FillBounds
+    val backgroundImages = backgroundList[backgroundType.value - 1]
 
-    Column(Modifier.fillMaxSize()) {
-
-        if ( scrollState.value == 0) {
-            SearchField(onSearch = { query ->
-                viewModel.getData(query)},
-                viewModel.getSavedSearchQuery()
-            )
+    val mod = if (backgroundType.value == 4) {
+        Modifier.fillMaxSize()
+    } else {
+        backgroundImages.let { painterResource(id = it) }.let {
+            Modifier
+                .fillMaxSize()
+                .paint(
+                    painter = it,
+                    contentScale = imageScaleType
+                )
         }
-        when {
-            error.isNotBlank() -> {
-                ErrorText(error = error)
+    }
+
+    Column(
+            modifier = mod
+        ) {
+
+            if (scrollState.value == 0) {
+                SearchField(onSearch = { query ->
+                    viewModel.getData(query)},
+                    viewModel.getSavedSearchQuery()
+                )
             }
-            isLoading -> {
-                ProgressBar()
-            }
-            list.isNotEmpty() -> {
+            when {
+                error.isNotBlank() -> {
+                    ErrorText(error = error)
+                }
+                isLoading -> {
+                    ProgressBar()
+                }
+                list.isNotEmpty() -> {
 
                     Box(
                         modifier = Modifier.fillMaxWidth()
@@ -59,9 +80,10 @@ fun LibraryScreenContent(
                                     navController = navController,
                                     data = list,
                                     scrollState = lazyGridState,
-                                    viewModel = videoViewModel,
                                     filterType = filterType,
-                                    gridCells = 2
+                                    gridCells = 2,
+                                    imageScaleType = imageScaleType
+
                                 )
                             }
                             is WindowInfo.WindowType.Medium -> {
@@ -69,9 +91,9 @@ fun LibraryScreenContent(
                                     navController = navController,
                                     data = list,
                                     scrollState = lazyGridState,
-                                    viewModel = videoViewModel,
                                     filterType = filterType,
-                                    gridCells = 3
+                                    gridCells = 3,
+                                    imageScaleType = imageScaleType
                                 )
                             }
                             is WindowInfo.WindowType.Expanded -> {
@@ -79,14 +101,14 @@ fun LibraryScreenContent(
                                     navController = navController,
                                     data = list,
                                     scrollState = lazyGridState,
-                                    viewModel = videoViewModel,
                                     filterType = filterType,
-                                    gridCells = 4
+                                    gridCells = 4,
+                                    imageScaleType = imageScaleType
                                 )
                             }
                         }
                     }
+                }
             }
         }
-    }
 }

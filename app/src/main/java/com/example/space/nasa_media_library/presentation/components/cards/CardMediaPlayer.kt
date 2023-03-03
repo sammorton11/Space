@@ -2,12 +2,11 @@ package com.example.space.nasa_media_library.presentation.components.cards
 
 import android.util.Log
 import android.webkit.URLUtil
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.google.android.exoplayer2.ExoPlayer
@@ -16,7 +15,7 @@ import com.google.android.exoplayer2.audio.AudioSink.UnexpectedDiscontinuityExce
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
-fun CardVideo(videoViewModel: VideoDataViewModel, uri: String) {
+fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
     val context = LocalContext.current
 
     val state = videoViewModel.state.value.data
@@ -45,7 +44,7 @@ fun CardVideo(videoViewModel: VideoDataViewModel, uri: String) {
                     player = exoPlayer
                 }
             },
-            modifier = Modifier.height(650.dp)
+            modifier = Modifier.aspectRatio(1f)
         )
 
         DisposableEffect(exoPlayer) {

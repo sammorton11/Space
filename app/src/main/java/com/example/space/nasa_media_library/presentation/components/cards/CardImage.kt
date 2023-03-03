@@ -1,5 +1,6 @@
 package com.example.space.nasa_media_library.presentation.components.cards
 
+import android.util.Log
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,6 +19,8 @@ import coil.compose.AsyncImage
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale) {
+
+    imageLink?.let { Log.d("Image Link", it) }
 
     Card(
         modifier = Modifier.padding(10.dp),

@@ -5,15 +5,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.space.picture_of_the_day.presentation.components.ApodExplantation
+import com.example.space.picture_of_the_day.presentation.components.ApedExplanation
 import com.example.space.picture_of_the_day.presentation.components.PictureOfTheDay
 import com.example.space.presentation.DownloadFile
 import com.example.space.presentation.ErrorText
 import com.example.space.presentation.ProgressBar
 import com.example.space.presentation.Title
+import org.michaelbel.movies.common.converter.DateConverter
 
 @Composable
 fun ApodContent(viewModel: ApodViewModel) {
@@ -24,14 +26,16 @@ fun ApodContent(viewModel: ApodViewModel) {
     val explanation = data?.explanation
     val title = data?.title
     val copywrite = data?.copyright
-    val date = data?.date
+    var date = data?.date
     val context = LocalContext.current
 
 
     LazyColumn(
-        Modifier
+        modifier = Modifier
             .fillMaxSize()
-            .padding(15.dp)) {
+            .padding(15.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         item {
             when {
                 state.value.isLoading -> {
@@ -40,7 +44,7 @@ fun ApodContent(viewModel: ApodViewModel) {
                 state.value.data?.url?.isNotEmpty() == true -> {
                     Title(text = title.toString(), paddingValue = 15.dp)
                     PictureOfTheDay(imageLink = hdImage)
-                    ApodExplantation(explanation)
+                    ApedExplanation(explanation)
                     if (hdImage != null) {
                         DownloadFile(
                             url = hdImage,
@@ -50,7 +54,10 @@ fun ApodContent(viewModel: ApodViewModel) {
                             subPath = "image.jpeg"
                         )
                     }
-                    Text(text = date.toString(), modifier = Modifier.padding(5.dp))
+                    date?.let {
+                        date = DateConverter.formatDisplayDate(date!!)
+                        Text(text = date!!, modifier = Modifier.padding(5.dp))
+                    }
                     Text(text = copywrite.toString(), modifier = Modifier.padding(5.dp))
                 }
                 state.value.error.isNotBlank() -> {

@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.json.JSONArray
+import org.json.JSONException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -67,23 +68,28 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
      *   That way I don't have to make additional requests for the image types.
      *
      */
-    fun processLinks(links: List<Link>?, mediaType: String?, url: MutableState<String>, item: Item) {
+    fun processLinks(links: List<Link>?, mediaType: String?, item: Item): String? {
         mediaType?.let { type ->
-            val linkFromResponseItem = item.href
             when (type) {
                 "video" -> {
-                    url.value = linkFromResponseItem ?: ""
-                    return
+//                    Log.d("Item Link:", item.href.toString())
+//                    url.value = item.href ?: ""
+                    return item.href
                 }
                 "audio" -> {
-                    url.value = linkFromResponseItem ?: ""
-                    return
+//                    Log.d("Item Link:", item.href.toString())
+//                    url.value =  ?: ""
+                    return item.href
                 }
                 "image" -> {
-                    url.value = getImageLink(links = links)
+                   // Log.d("Item Link:", item.href.toString())
+                    //url.value = getImageLink(links = links)
+                    return getImageLink(links = links)
                 }
+                else -> {}
             }
         }
+        return ""
     }
 
     /**
@@ -93,7 +99,7 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
     private fun findImageLink(links: List<Link>): String {
         links.forEach { url ->
             url.href?.let { nonNullUrl ->
-                if (nonNullUrl.contains(".jpg")) {
+                if (nonNullUrl.contains(".jpg") || nonNullUrl.contains(".png")) {
                     return url.href
                 }
             }
@@ -124,6 +130,12 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
                     array[i].contains(".mp3") -> { file = array[i] }
                 }
             }
+            if (mediaType == "image") {
+                when {
+                    array[i].contains(".jpg") -> { file = array[i] }
+                    array[i].contains(".png") -> { file = array[i] }
+                }
+            }
         }
         file = file.replace("http://", "https://") // --- http:// won't work
 
@@ -137,15 +149,16 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
         Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
     fun getUrlList(state: String): ArrayList<String> {
-        Log.d("STATE for getUrlLIst", state)
-        val jsonArray = JSONArray(state)
-        val urls = ArrayList<String>()
-        for (i in 0 until jsonArray.length()) {
-            val url = jsonArray.getString(i)
-            urls.add(url)
+        Log.d("Can't convert to JSON Array", state.toString())
+        var urls: ArrayList<String> = arrayListOf()
+        try {
+            val jsonArray = JSONArray(state)
+            for (i in 0 until jsonArray.length()) {
+                urls.add(jsonArray.getString(i))
+            }
         }
-        urls.forEach {
-            Log.d("Urls:", it)
+        catch (e: JSONException) {
+            Log.d("Can't convert to JSON Array", e.toString())
         }
         return urls
     }

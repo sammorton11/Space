@@ -6,17 +6,17 @@ import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MyToolbar(filterType: MutableState<String>, drawerState: DrawerState) {
+fun MyToolbar(filterType: MutableState<String>, drawerState: DrawerState, scope: CoroutineScope) {
     var expanded by remember { mutableStateOf(false) }
-
-    val scope = rememberCoroutineScope()
     val title = "NASA Media Library"
-    SmallTopAppBar(
+
+    CenterAlignedTopAppBar(
         title = { Title(title, 15.dp) },
         actions = {
             IconButton(onClick = { expanded = true }) {

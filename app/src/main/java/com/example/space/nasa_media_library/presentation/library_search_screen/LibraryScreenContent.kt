@@ -5,12 +5,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import com.example.space.core.DataStoreManager
 import com.example.space.core.WindowInfo
 import com.example.space.core.rememberWindowInfo
 import com.example.space.nasa_media_library.presentation.components.other.LibraryList
@@ -19,6 +17,7 @@ import com.example.space.nasa_media_library.presentation.view_models.MediaLibrar
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ErrorText
 import com.example.space.presentation.ProgressBar
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -34,14 +33,15 @@ fun LibraryScreenContent(
 
     val lazyGridState = rememberLazyStaggeredGridState()
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex }}
-
     val window = rememberWindowInfo()
 
     Column(Modifier.fillMaxSize()) {
+
         if ( scrollState.value == 0) {
             SearchField(onSearch = { query ->
-                viewModel.getData(query)
-            })
+                viewModel.getData(query)},
+                viewModel.getSavedSearchQuery()
+            )
         }
         when {
             error.isNotBlank() -> {
@@ -51,8 +51,7 @@ fun LibraryScreenContent(
                 ProgressBar()
             }
             list.isNotEmpty() -> {
-                Box(modifier = Modifier
-                    .weight(1f, fill = true)) {
+                Box(modifier = Modifier.weight(1f, fill = true)) {
 
                     when(window.screenWidthInfo) {
                         is WindowInfo.WindowType.Compact -> {

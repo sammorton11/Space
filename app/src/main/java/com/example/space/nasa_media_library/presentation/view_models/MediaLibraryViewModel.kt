@@ -1,10 +1,13 @@
 package com.example.space.nasa_media_library.presentation.view_models
 
+import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCompositionContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.space.core.DataStoreManager
 import com.example.space.core.Resource
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.state.NasaLibraryState
@@ -13,6 +16,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,9 +26,12 @@ class MediaLibraryViewModel
     private val _state = mutableStateOf(NasaLibraryState())
     val state: State<NasaLibraryState> = _state
 
+    val dataStore = DataStoreManager
+
     private fun searchImageVideoLibrary(query: String) = flow {
         emit(Resource.Loading())
         val response = mediaLibraryRepository.getData(query)
+        Log.d("Response:", response.body()?.collection.toString())
         emit(Resource.Success(response))
     }.catch { error ->
         emit(Resource.Error(error.toString()))
@@ -32,6 +39,8 @@ class MediaLibraryViewModel
 
     fun getData(query: String) {
         searchImageVideoLibrary(query).onEach { response ->
+
+            DataStoreManager.saveLastSearchText(query)
             val success = response.data?.body()
             val error = response.data?.errorBody()
             val itemsList = success?.collection?.items
@@ -50,5 +59,13 @@ class MediaLibraryViewModel
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun getSavedSearchQuery(): String? {
+        var result: String? = null
+        viewModelScope.launch {
+            result = dataStore.getLastSearchText()
+        }
+        return result
     }
 }

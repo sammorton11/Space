@@ -67,7 +67,7 @@ class ViewModelTests {
                     ) {
                         val navController = rememberNavController()
                         val filterType = remember { mutableStateOf("") }
-                        AppNavigation(filterType, navController)
+                        AppNavigation(filterType, navController, libraryViewModel)
                     }
                 }
             }

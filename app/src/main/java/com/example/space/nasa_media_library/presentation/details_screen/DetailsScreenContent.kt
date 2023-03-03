@@ -32,9 +32,6 @@ fun DetailsScreenContent(
     Process: com.example.space, PID: 23787
     java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern : %+o
      */
-
-    Log.d("DESCRIPTION", description)
-   // val encodedDescription = URLEncoder.encode(description, StandardCharsets.US_ASCII.toString())
     val decodedDescription = decodeText(description)
     val context = LocalContext.current
 
@@ -44,12 +41,17 @@ fun DetailsScreenContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Log.d("URL passed to details composable", url)
+//        viewModel.getVideoData(url)
+//        viewModel.getVideoData(url)
+//        val mUri = getUri(viewModel, mediaType)
         viewModel.getVideoData(url)
-
         item {
             when (mediaType) {
                 "video" -> {
+
                     val mUri = getUri(viewModel, mediaType)
+                    Log.d("URL into CardVideo details screen", mUri)
                     CardVideo(videoViewModel = viewModel, uri = mUri)
                     CardDescription(decodedDescription)
                     DownloadFile(
@@ -62,6 +64,7 @@ fun DetailsScreenContent(
                     ShareButton(uri = mUri.toUri(), type = "video/mp4")
                 }
                 "audio" -> {
+                    //viewModel.getVideoData(url)
                     val mUri = getUri(viewModel, mediaType)
                     AudioPlayer(viewModel = viewModel, mediaType = mediaType)
                     CardDescription(decodedDescription)
@@ -75,19 +78,18 @@ fun DetailsScreenContent(
                     ShareButton(uri = mUri.toUri(), type = "audio/x-wav")
                 }
                 "image" -> {
-                    //val mUri = getUri(viewModel, mediaType)
-                    if (url.contains(".jpg")) {
-                        CardImage(imageLink = url, 300.dp, 480.dp, ContentScale.Fit)
-                        CardDescription(decodedDescription)
-                        DownloadFile(
-                            url = url,
-                            context = context,
-                            filename = url,
-                            mimeType = "image/jpeg",
-                            subPath = "image.jpeg"
-                        )
-                        ShareButton(uri = url.toUri(), type = "image/jpeg")
-                    }
+                    //viewModel.getVideoData(url)
+                    val mUri = getUri(viewModel, mediaType)
+                    CardImage(imageLink = mUri, 300.dp, 480.dp, ContentScale.Fit)
+                    CardDescription(decodedDescription)
+                    DownloadFile(
+                        url = url,
+                        context = context,
+                        filename = url,
+                        mimeType = "image/jpeg",
+                        subPath = "image.jpeg"
+                    )
+                    ShareButton(uri = url.toUri(), type = "image/jpeg")
                 }
             }
         }

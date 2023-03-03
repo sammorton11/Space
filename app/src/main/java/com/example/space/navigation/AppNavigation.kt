@@ -20,10 +20,9 @@ import com.example.space.picture_of_the_day.presentation.ApodViewModel
 @Composable
 fun AppNavigation(
     filterType: MutableState<String>,
-    navController: NavHostController
+    navController: NavHostController,
+    libraryViewModel: MediaLibraryViewModel
 ) {
-
-    val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
     val videoViewModel: VideoDataViewModel = hiltViewModel()
     val marsWeatherViewModel: MarsWeatherViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
@@ -34,7 +33,7 @@ fun AppNavigation(
                 viewModel = libraryViewModel,
                 videoViewModel = videoViewModel,
                 navController = navController,
-                filterType
+                filterType = filterType
             )
         }
         composable(

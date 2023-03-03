@@ -12,10 +12,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import com.example.space.core.DataStoreManager
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchField(onSearch: (query: String) -> Unit) {
+fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
     var query by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val primaryColor = MaterialTheme.colorScheme.primary
@@ -32,7 +33,12 @@ fun SearchField(onSearch: (query: String) -> Unit) {
             onSearch(query)
             keyboardController?.hide()
         }),
-        colors = myTextFieldColors(primaryColor)
+        colors = myTextFieldColors(primaryColor),
+        placeholder = {
+            savedQuery?.let {
+                Text(text = it)
+            }
+        }
     )
 }
 

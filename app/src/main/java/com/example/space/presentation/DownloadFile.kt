@@ -1,6 +1,7 @@
 package com.example.space.presentation
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -14,6 +15,7 @@ fun DownloadFile(url: String, filename: String, context: Context, mimeType: Stri
     Button(
         onClick = {
             downloadFile(context, url, filename, mimeType, subPath)
+            Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
         },
         modifier = Modifier.padding(15.dp)
     ) {

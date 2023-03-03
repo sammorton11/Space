@@ -14,10 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -32,6 +29,20 @@ import com.example.space.nasa_media_library.presentation.components.cards.CardTi
 import com.example.space.nasa_media_library.presentation.components.cards.MediaTypeLabel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import java.net.URLEncoder
+
+/*
+    Todo:
+        - processLinks is giving the wrong urls
+        - could be something else
+        - list screen is displaying the wrong images for the cards ; some are duplicates
+        - Image details screen is not getting image data
+        - Audio details screen probably isnt either
+        - encoding issue?
+        - How to be sure that i am using the correct data for the correct card
+        - May need to do the same thing for the image "items" that i am doing for the videos;
+            - use the .json to request the image data instead of using the inages from the links
+            - might be cleaner that way
+ */
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
@@ -51,7 +62,7 @@ fun LibraryList(
     val imageCardWidth = 165.dp
     val videoCardHeight= 110.dp
     val videoCardWidth = 150.dp
-
+    var url by remember { mutableStateOf("") }
 
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(gridCells),
@@ -65,14 +76,21 @@ fun LibraryList(
             val title = itemData?.title
             val description = itemData?.description
             val mediaType = itemData?.media_type
-            val url = remember { mutableStateOf("") }
+            val cardImage = links?.first()?.href
+            item?.let {
+                url = viewModel.processLinks(
+                    links = links,
+                    mediaType = mediaType,
+                    item = it
+                ) ?: ""
+            }
 
             Card(
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
                 onClick = {
-                    val encodedUrl = URLEncoder.encode(url.value, utf8Encoding)
+                    val encodedUrl = URLEncoder.encode(url, utf8Encoding)
                     val encodedDescription = URLEncoder.encode(description, utf8Encoding)
                     navController.navigate(
                         "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
@@ -95,18 +113,10 @@ fun LibraryList(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
-                    item?.let {
-                        viewModel.processLinks(
-                            links = links,
-                            mediaType = mediaType,
-                            url = url,
-                            item = item
-                        )
-                    }
                     when (mediaType) {
                         "image" -> {
                             CardImage(
-                                imageLink = url.value,
+                                imageLink = cardImage,
                                 height = imageCardHeight,
                                 width = imageCardWidth,
                                 scale = imageScaleType
@@ -114,7 +124,7 @@ fun LibraryList(
                         }
                         "video" -> {
                             CardImage(
-                                imageLink = viewModel.getImageLink(links),
+                                imageLink = cardImage,
                                 height = videoCardHeight,
                                 width = videoCardWidth,
                                 scale = imageScaleType

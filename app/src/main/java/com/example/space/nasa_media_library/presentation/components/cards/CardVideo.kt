@@ -67,5 +67,6 @@ fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
             uri = videoViewModel.fileTypeCheck(uriList, mediaType)
         }
     }
+    Log.d("URI in getUri:", uri)
     return uri
 }

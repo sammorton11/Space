@@ -47,62 +47,62 @@ fun ListCard(
     videoCardHeight: Dp,
     videoCardWidth: Dp,
 ){
-        Card(
+    Card(
+        modifier = Modifier
+            .padding(8.dp)
+            .animateContentSize(
+                animationSpec = tween(durationMillis = 1000,
+                    easing = LinearOutSlowInEasing))
+            .fillMaxWidth(),
+        onClick = {
+            val encodedUrl = URLEncoder.encode(item?.href ?: "", Constants.utf8Encoding)
+            val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
+            navController.navigate(
+                "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
+            )
+        },
+        border = BorderStroke(
+            width = 1.dp,
+            brush = Brush.sweepGradient(
+                colors = listOf(primaryColor, backgroundColor),
+                center = Offset.Zero
+            )
+        ),
+        shape = AbsoluteRoundedCornerShape(10),
+        elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
+    ) {
+        Column(
             modifier = Modifier
-                .padding(8.dp)
-                .animateContentSize(
-                    animationSpec = tween(durationMillis = 1000,
-                        easing = LinearOutSlowInEasing))
+                .padding(10.dp)
                 .fillMaxWidth(),
-            onClick = {
-                val encodedUrl = URLEncoder.encode(item?.href ?: "", Constants.utf8Encoding)
-                val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
-                navController.navigate(
-                    "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
-                )
-            },
-            border = BorderStroke(
-                width = 1.dp,
-                brush = Brush.sweepGradient(
-                    colors = listOf(primaryColor, backgroundColor),
-                    center = Offset.Zero
-                )
-            ),
-            shape = AbsoluteRoundedCornerShape(10),
-            elevation = CardDefaults.cardElevation(defaultElevation = 15.dp)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (mediaType != null) {
-                    CardImage(
-                        imageLink = links?.first()?.href,
-                        height = videoCardHeight,
-                        width = videoCardWidth,
-                        scale = imageScaleType,
-                        mediaType = mediaType
-                    )
-                }
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                CardTitle(title = title, color = primaryColor)
-
-                item?.data?.first()?.date_created?.let {
-                    Text(
-                        text = DateConverter.formatDisplayDate(it),
-                        fontSize = 11.sp,
-                        maxLines = 1
-                    )
-                }
-                MediaTypeLabel(mediaType = mediaType, color = primaryColor)
+            if (mediaType != null) {
+                CardImage(
+                    imageLink = links?.first()?.href,
+                    height = videoCardHeight,
+                    width = videoCardWidth,
+                    scale = imageScaleType,
+                    mediaType = mediaType
+                )
             }
         }
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CardTitle(title = title, color = primaryColor)
+
+            item?.data?.first()?.date_created?.let {
+                Text(
+                    text = DateConverter.formatDisplayDate(it),
+                    fontSize = 11.sp,
+                    maxLines = 1
+                )
+            }
+            MediaTypeLabel(mediaType = mediaType, color = primaryColor)
+        }
+    }
 }

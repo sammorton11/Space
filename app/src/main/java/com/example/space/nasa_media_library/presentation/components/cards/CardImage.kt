@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.example.space.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,9 +43,9 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, me
             mediaType == "audio" -> {
                 SubcomposeAsyncImage(
                     model = Image(
-                        painter = painterResource(id = com.google.android.exoplayer2.R.drawable.exo_styled_controls_play),
+                        painter = painterResource(id = R.drawable.tipper_space_man),
                         contentDescription = "",
-                        modifier = Modifier.height(80.dp).width(80.dp).padding(top = 10.dp),
+                        modifier = Modifier.height(height).width(width),
                         contentScale = scale,
                     ),
                     contentDescription = "",
@@ -62,6 +63,7 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, me
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )
             }
+
         }
     }
 }

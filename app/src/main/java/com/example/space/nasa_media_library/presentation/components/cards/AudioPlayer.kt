@@ -16,9 +16,8 @@ import com.example.space.nasa_media_library.presentation.view_models.VideoDataVi
 
 @Composable
 fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
-    val jsonArrayAsString = viewModel.state.value.data
 
-    // Fetching the local context
+    val jsonArrayAsString = viewModel.state.value.data
     val mContext = LocalContext.current
     var uri = ""
     val iconSize = 150.dp
@@ -31,23 +30,9 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
     }
     val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
     val paused = remember { mutableStateOf(true) }
-   // var position by remember { mutableStateOf(mMediaPlayer.currentPosition.toFloat()) }
 
-    Row(
-        modifier = Modifier.padding(45.dp)
-    ) {
-
-//        val cPosition = mMediaPlayer.currentPosition
-//        if (cPosition != null) {
-//
-//        }
-//
-
-//        Slider(value = mMediaPlayer.currentPosition.toFloat(), onValueChange = {
-//            position = it
-//        })
-
-        // IconButton for Start Action
+    Row(modifier = Modifier.padding(15.dp)) {
+        // IconButton for Play Action
         IconButton(
             onClick = {
                 paused.value = false
@@ -61,13 +46,8 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
                     Modifier.size(iconSize),
                     tint = MaterialTheme.colorScheme.primary
                 )
-//
-//                if (mMediaPlayer.isPlaying) {
-//                    Text(text = mMediaPlayer)
-//                }
             }
         }
-
         // IconButton for Pause Action
         IconButton(
             onClick = {
@@ -85,7 +65,7 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
             }
         }
 
-        // IconButton for Pause Action
+        // IconButton for Restart Action
         IconButton(
             onClick = {
                 paused.value = true

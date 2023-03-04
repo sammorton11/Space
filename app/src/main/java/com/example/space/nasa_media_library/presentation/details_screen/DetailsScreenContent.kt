@@ -11,10 +11,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.space.nasa_media_library.presentation.components.cards.CardImage
-import com.example.space.nasa_media_library.presentation.components.cards.CardMediaPlayer
-import com.example.space.nasa_media_library.presentation.components.cards.ExpandableDetailsCard
-import com.example.space.nasa_media_library.presentation.components.cards.getUri
+import com.example.space.nasa_media_library.presentation.components.cards.*
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ProgressBar
 import com.example.space.presentation.ShareButton
@@ -60,8 +57,15 @@ fun DetailsScreenContent(
                 }
                 "audio" -> {
                     val mUri = getUri(viewModel, mediaType)
-
-                    CardMediaPlayer(videoViewModel = viewModel, uri = mUri)
+                    val image = "https://images-assets.nasa.gov/image/ARC-2003-AC03-0036-9/ARC-2003-AC03-0036-9~thumb.jpg"
+                    CardImage(
+                        imageLink = image,
+                        height = 220.dp,
+                        width = 400.dp,
+                        scale = ContentScale.FillBounds,
+                        mediaType = mediaType
+                    )
+                    AudioPlayer(viewModel = viewModel, mediaType = mediaType)
                     ExpandableDetailsCard(content = decodedDescription)
                     DownloadFile(
                         url = mUri,

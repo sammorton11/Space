@@ -124,17 +124,18 @@ dependencies {
     implementation("io.coil-kt:coil-video:2.2.2")
 
     // ExoPlayer
-    implementation 'com.google.android.exoplayer:exoplayer:2.18.2'
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.3'
     // for core support in exoplayer.
-    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.3'
     // for adding dash support in our exoplayer.
-    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.3'
     // for adding hls support in exoplayer.
-    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.3'
     // for smooth streaming of video in our exoplayer.
-    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.3'
     // for generating default ui of exoplayer
-    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.2'
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.3'
 
     // Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'

@@ -21,23 +21,20 @@ import com.example.space.picture_of_the_day.presentation.ApodViewModel
 fun AppNavigation(
     filterType: MutableState<String>,
     backgroundType: MutableState<Int>,
-    backgroundList: List<Int>,
-    navController: NavHostController,
-    libraryViewModel: MediaLibraryViewModel
+    navController: NavHostController
 ) {
     val videoViewModel: VideoDataViewModel = hiltViewModel()
     val marsWeatherViewModel: MarsWeatherViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
+    val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = "library_search_screen") {
         composable("library_search_screen") {
             LibrarySearchScreen(
                 viewModel = libraryViewModel,
-                videoViewModel = videoViewModel,
                 navController = navController,
                 filterType = filterType,
-                backgroundType = backgroundType,
-                backgroundList = backgroundList
+                backgroundType = backgroundType
             )
         }
         composable(

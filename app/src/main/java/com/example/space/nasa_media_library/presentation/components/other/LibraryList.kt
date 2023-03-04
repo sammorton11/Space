@@ -5,7 +5,6 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -15,12 +14,7 @@ import androidx.navigation.NavController
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
 import com.example.space.nasa_media_library.presentation.library_search_screen.ListCard
 
-/*
-    Todo:
-        - Animations aren't working with staggered grid
- */
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryList(
     navController: NavController,
@@ -30,12 +24,10 @@ fun LibraryList(
     gridCells: Int,
     imageScaleType: ContentScale
 ) {
-
     val primaryColor = MaterialTheme.colorScheme.primary
     val backgroundColor = MaterialTheme.colorScheme.background
     val videoCardHeight= 110.dp
     val videoCardWidth = 150.dp
-
 
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(gridCells),

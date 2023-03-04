@@ -8,21 +8,24 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.example.space.R
+import com.example.space.core.Constants.NO_BACKGROUND
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyToolbar(
     filterType: MutableState<String>,
     backgroundType: MutableState<Int>,
-    backgroundList: List<Int>,
     drawerState: DrawerState,
     scope: CoroutineScope,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expanded2 by remember { mutableStateOf(false) }
+    var expandedChangeBackground by remember { mutableStateOf(false) }
     val title = "NASA Media Library"
 
     CenterAlignedTopAppBar(
@@ -41,7 +44,8 @@ fun MyToolbar(
                     DropdownMenuItem(
                         text = { Text(text = "Change Background") },
                         onClick = {
-                            backgroundType.value = (backgroundType.value % backgroundList.size) + 1
+                            expandedChangeBackground = true
+                           // backgroundType.value = (backgroundType.value % backgroundList.size) + 1
                         }
                     )
                     DropdownMenuItem(
@@ -72,6 +76,37 @@ fun MyToolbar(
                 DropdownMenuItem(
                     text = { Text(text = "All") },
                     onClick = { filterType.value = "" }
+                )
+            }
+
+            DropdownMenu(
+                expanded = expandedChangeBackground,
+                onDismissRequest = { expandedChangeBackground = false },
+                offset = DpOffset(0.dp, 130.dp)
+            ) {
+                DropdownMenuItem(
+                    text = { Text(text = "Planets Background") },
+                    onClick = {
+                        backgroundType.value = R.drawable.space_background_01
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(text = "Space Man Background") },
+                    onClick = {
+                        backgroundType.value = R.drawable.space_background_02
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(text = "Galaxy Background") },
+                    onClick = {
+                        backgroundType.value = R.drawable.space_background_03
+                    }
+                )
+                DropdownMenuItem(
+                    text = { Text(text = "No Background") },
+                    onClick = {
+                        backgroundType.value = NO_BACKGROUND
+                    }
                 )
             }
         },

@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
+import com.example.space.core.Constants.NO_BACKGROUND
 import com.example.space.core.DataStoreManager
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.navigation.AppNavigation
@@ -41,12 +42,7 @@ class MainActivity : ComponentActivity() {
             val dataStore = DataStoreManager
             dataStore.init(applicationContext)
         }
-        val backgroundList = listOf(
-            R.drawable.space_background_01,
-            R.drawable.space_background_02,
-            R.drawable.space_background_03,
-            4
-        )
+
         setContent {
             SpaceTheme {
                 Surface(
@@ -54,12 +50,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ){
                     val viewModel:  MediaLibraryViewModel = hiltViewModel()
+                    viewModel.getData("Black Holes")
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
-                    val backgroundType = remember { mutableStateOf(1) }
-                    viewModel.getData("Nasa Audio")
+                    val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
 
                     SideNavigationDrawer(navController, drawerState, scope) {
                         Scaffold(
@@ -68,12 +64,10 @@ class MainActivity : ComponentActivity() {
                                     filterType = filterType,
                                     drawerState = drawerState,
                                     scope = scope,
-                                    backgroundType = backgroundType,
-                                    backgroundList = backgroundList
+                                    backgroundType = backgroundType
                                 )
                             }
                         ){ padding ->
-
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -82,9 +76,7 @@ class MainActivity : ComponentActivity() {
                                 AppNavigation(
                                     filterType = filterType,
                                     navController = navController,
-                                    libraryViewModel = viewModel,
-                                    backgroundType = backgroundType,
-                                    backgroundList = backgroundList
+                                    backgroundType = backgroundType
                                 )
                             }
                         }

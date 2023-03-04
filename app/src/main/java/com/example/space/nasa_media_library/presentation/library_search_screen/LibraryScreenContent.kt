@@ -50,9 +50,12 @@ fun LibraryScreenContent(
 
     Column(modifier = mod) {
         if (scrollState.value == 0) {
-            SearchField(onSearch = { query ->
-                viewModel.getData(query)},
-                viewModel.getSavedSearchQuery()
+            SearchField(
+                onSearch = { query ->
+                    viewModel.getData(query)
+                    filterType.value = ""
+                },
+                savedQuery = viewModel.getSavedSearchQuery()
             )
         }
 
@@ -66,7 +69,6 @@ fun LibraryScreenContent(
             list.isNotEmpty() -> {
 
                 Box(modifier = Modifier.fillMaxWidth()){
-
                     when(window.screenWidthInfo) {
                         is WindowInfo.WindowType.Compact -> {
                             LibraryList(

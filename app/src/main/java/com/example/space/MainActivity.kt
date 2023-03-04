@@ -25,9 +25,21 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /*
-    Todo:
+    Todo (Ideas):
         - App icon
-        - Broadcast Receiver
+        - Broadcast Receiver when download is completed
+        - Expandable details card for each type of card
+        - Save background state in Data Store
+        - Settings page?
+        - Favorites page - Media Cards and APOD - separate database or separate table or?
+        - Database Cache
+        - Links to websites for card data
+            - Some cards have links to more information about the media
+        - Custom Audio Player or Exoplayer?
+            - Custom Audio Player icons need to be able to be resized
+            - Image in audio player needs tweaking
+            - Exoplayer placeholder?
+            - Possibly use a different video player?
  */
 
 
@@ -50,7 +62,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ){
                     val viewModel:  MediaLibraryViewModel = hiltViewModel()
-                    viewModel.getData("Black Holes")
+                    viewModel.getData("Audio")
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()

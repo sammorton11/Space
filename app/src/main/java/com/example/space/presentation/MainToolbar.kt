@@ -43,10 +43,7 @@ fun MyToolbar(
                 content = {
                     DropdownMenuItem(
                         text = { Text(text = "Change Background") },
-                        onClick = {
-                            expandedChangeBackground = true
-                           // backgroundType.value = (backgroundType.value % backgroundList.size) + 1
-                        }
+                        onClick = { expandedChangeBackground = true }
                     )
                     DropdownMenuItem(
                         text = { Text(text = "Sort") },

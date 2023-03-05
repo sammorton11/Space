@@ -15,7 +15,6 @@ fun downloadFile(context: Context, url: String, fileName: String, mimeType: Stri
         .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, subPath)
         .setAllowedOverMetered(true)
         .setAllowedOverRoaming(true)
-    //val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
     downloadManager.enqueue(request)
 }
 

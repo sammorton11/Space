@@ -14,7 +14,7 @@ import coil.compose.AsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PictureOfTheDay(imageLink: String?) {
+fun PictureOfTheDay(imageLink: String?, modifier: Modifier) {
     Card(
         modifier = Modifier.padding(10.dp),
         shape = AbsoluteRoundedCornerShape(10)
@@ -22,7 +22,7 @@ fun PictureOfTheDay(imageLink: String?) {
         AsyncImage(
             model = imageLink,
             contentDescription = "",
-            modifier = Modifier,
+            modifier = modifier,
             colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             contentScale = ContentScale.Fit
         )

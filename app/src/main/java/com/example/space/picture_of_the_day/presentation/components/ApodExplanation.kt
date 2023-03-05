@@ -12,7 +12,7 @@ fun ApedExplanation(text: String?) {
         Text(
             text = explanation,
             modifier = Modifier.padding(20.dp),
-            softWrap = true,
+            softWrap = true
         )
     }
 }

@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.rememberNavController
+import com.example.space.core.Constants
 import com.example.space.di.AppModule
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
@@ -67,7 +68,8 @@ class ViewModelTests {
                     ) {
                         val navController = rememberNavController()
                         val filterType = remember { mutableStateOf("") }
-                        AppNavigation(filterType, navController, libraryViewModel)
+                        val backgroundType = remember { mutableStateOf(Constants.NO_BACKGROUND) }
+                        AppNavigation(filterType, backgroundType, navController)
                     }
                 }
             }

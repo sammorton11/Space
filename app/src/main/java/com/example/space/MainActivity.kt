@@ -49,7 +49,6 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         lifecycleScope.launch {
             val dataStore = DataStoreManager
             dataStore.init(applicationContext)
@@ -62,12 +61,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ){
                     val viewModel:  MediaLibraryViewModel = hiltViewModel()
-                    viewModel.getData("Audio")
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
+
+                    viewModel.getData("Audio")
 
                     SideNavigationDrawer(navController, drawerState, scope) {
                         Scaffold(

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun DetailsScreenContent(
 ) {
     val decodedDescription = viewModel.decodeText(description)
     val context = LocalContext.current
+    val backgroundColor = MaterialTheme.colorScheme.background
 
     LazyColumn (
         modifier = Modifier
@@ -44,8 +46,7 @@ fun DetailsScreenContent(
                     val mUri = getUri(viewModel, mediaType)
                     Log.d("URL into CardMediaPlayer details screen", mUri)
                     CardMediaPlayer(videoViewModel = viewModel, uri = mUri)
-                    //CardDescription(decodedDescription)
-                    ExpandableDetailsCard(content = decodedDescription)
+                    ExpandableDetailsCard(content = decodedDescription, color = backgroundColor)
                     DownloadFile(
                         url = mUri,
                         context = context,
@@ -66,7 +67,7 @@ fun DetailsScreenContent(
                         mediaType = mediaType
                     )
                     AudioPlayer(viewModel = viewModel, mediaType = mediaType)
-                    ExpandableDetailsCard(content = decodedDescription)
+                    ExpandableDetailsCard(content = decodedDescription, color = backgroundColor)
                     DownloadFile(
                         url = mUri,
                         context = context,
@@ -86,7 +87,7 @@ fun DetailsScreenContent(
                         scale = ContentScale.FillBounds,
                         mediaType = mediaType
                     )
-                    ExpandableDetailsCard(content = decodedDescription)
+                    ExpandableDetailsCard(content = decodedDescription, color = backgroundColor)
                     DownloadFile(
                         url = url,
                         context = context,

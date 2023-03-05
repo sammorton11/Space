@@ -25,7 +25,6 @@ import com.example.space.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, mediaType: String) {
-
     imageLink?.let { Log.d("Image Link", it) }
 
     Card(

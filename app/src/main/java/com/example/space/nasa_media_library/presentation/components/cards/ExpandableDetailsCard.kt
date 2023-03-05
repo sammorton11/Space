@@ -7,35 +7,47 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ExpandableDetailsCard(
-    content: String,
-    modifier: Modifier = Modifier
-) {
+fun ExpandableDetailsCard(content: String, color: Color) {
     var isExpanded by remember { mutableStateOf(false) }
+    val lines = content.lines()
+    val lineLimit = 5
+    val overLineLimit = lines.size > lineLimit
 
     Card(
-        modifier = modifier,
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+        colors = CardDefaults.cardColors(
+            containerColor = color
+        )
     ) {
-        Column(
-            modifier = Modifier
-                .clickable { isExpanded = !isExpanded }
+
+        val modifier = if (overLineLimit) {
+            Modifier
                 .padding(16.dp)
+        } else {
+            Modifier
+                .clickable { isExpanded = !isExpanded }
+                .padding(16.dp) }
+
+        Column(
+            modifier = modifier
         ) {
 
-            CompositionLocalProvider() {
+            CompositionLocalProvider {
                 Text(
                     text = content,
-                    maxLines = if (isExpanded) Int.MAX_VALUE else 25,
-                    modifier = Modifier.padding(top = 8.dp)
+                    maxLines = if (isExpanded) Int.MAX_VALUE else lineLimit,
+                    softWrap = true,
+                    modifier = Modifier.padding(top = 8.dp),
+                    overflow = TextOverflow.Ellipsis
                 )
             }
-            if (!isExpanded) {
+            if (!overLineLimit && !isExpanded) {
                 Text(
                     text = "Read more...",
                     modifier = Modifier.padding(top = 8.dp)

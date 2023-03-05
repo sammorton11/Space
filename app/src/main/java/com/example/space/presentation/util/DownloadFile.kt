@@ -11,7 +11,13 @@ import androidx.compose.ui.unit.dp
 import com.example.space.nasa_media_library.util.downloadFile
 
 @Composable
-fun DownloadFile(url: String, filename: String, context: Context, mimeType: String, subPath: String) {
+fun DownloadFile(
+    url: String,
+    filename: String,
+    context: Context,
+    mimeType: String,
+    subPath: String
+) {
     Button(
         onClick = {
             downloadFile(context, url, filename, mimeType, subPath)

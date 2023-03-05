@@ -66,17 +66,18 @@ class MainActivity : ComponentActivity() {
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
-
+                    val title = remember { mutableStateOf("NASA Media Library") }
                     viewModel.getData("Audio")
 
-                    SideNavigationDrawer(navController, drawerState, scope) {
+                    SideNavigationDrawer(navController, drawerState, scope, title) {
                         Scaffold(
                             topBar = {
                                 MyToolbar(
                                     filterType = filterType,
                                     drawerState = drawerState,
                                     scope = scope,
-                                    backgroundType = backgroundType
+                                    backgroundType = backgroundType,
+                                    title = title
                                 )
                             }
                         ){ padding ->

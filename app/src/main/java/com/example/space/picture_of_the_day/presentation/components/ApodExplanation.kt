@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun ApedExplanation(text: String?) {
+fun ApodExplanation(text: String?) {
     text?.let { explanation ->
         Text(
             text = explanation,

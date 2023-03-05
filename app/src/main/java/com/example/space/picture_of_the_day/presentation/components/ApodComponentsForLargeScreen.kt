@@ -24,7 +24,7 @@ fun ApodComponentsForLargeScreen(
     LazyColumn(modifier = Modifier.padding(25.dp).fillMaxSize()) {
         item {
             title?.let { Title(text = it, paddingValue = 15.dp) }
-            ApedExplanation(explanation)
+            ApodExplanation(explanation)
             hdImage?.let { image ->
                 DownloadFile(
                     url = image,

@@ -20,7 +20,7 @@ fun ApodComponents(
 ) {
     title?.let { Title(text = it, paddingValue = 15.dp) }
     PictureOfTheDay(imageLink = hdImage, modifier = modifier)
-    ApedExplanation(explanation)
+    ApodExplanation(explanation)
     hdImage?.let { image ->
         DownloadFile(
             url = image,

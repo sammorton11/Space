@@ -22,15 +22,15 @@ fun MyToolbar(
     backgroundType: MutableState<Int>,
     drawerState: DrawerState,
     scope: CoroutineScope,
+    title: MutableState<String>
 ) {
     var expanded by remember { mutableStateOf(false) }
     var expanded2 by remember { mutableStateOf(false) }
     var expandedChangeBackground by remember { mutableStateOf(false) }
-    val title = "NASA Media Library"
 
     CenterAlignedTopAppBar(
         title = {
-            Title(title, 15.dp)
+            Title(title.value, 15.dp)
         },
         actions = {
             IconButton(onClick = { expanded = true }) {

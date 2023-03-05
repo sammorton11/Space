@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
         navController: NavController,
         drawerState: DrawerState,
         scope: CoroutineScope,
+        title: MutableState<String>,
         content: @Composable () -> Unit
     ){
         ModalNavigationDrawer(
@@ -38,6 +40,7 @@ import kotlinx.coroutines.launch
                                 .padding(paddingValue),
                             onClick = {
                                 navController.navigate("library_search_screen")
+                                title.value = "Nasa Media Library"
                                 scope.launch(Dispatchers.Main) { drawerState.close() }
                             }
                         ) {
@@ -55,6 +58,7 @@ import kotlinx.coroutines.launch
                                 .padding(paddingValue),
                             onClick = {
                                 navController.navigate("mars_weather_screen")
+                                title.value = "Mars Weather"
                                 scope.launch(Dispatchers.Main) {
                                     drawerState.close()
                                 }
@@ -74,6 +78,7 @@ import kotlinx.coroutines.launch
                                 .padding(paddingValue),
                             onClick = {
                                 navController.navigate("apod_screen")
+                                title.value = "Picture of the Day"
                                 scope.launch(Dispatchers.Main) {
                                     drawerState.close()
                                 }

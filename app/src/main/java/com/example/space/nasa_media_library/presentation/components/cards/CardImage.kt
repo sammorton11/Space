@@ -38,8 +38,8 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, me
         shape = AbsoluteRoundedCornerShape(10),
     ) {
 
-        when {
-            mediaType == "audio" -> {
+        when (mediaType) {
+            "audio" -> {
                 SubcomposeAsyncImage(
                     model = Image(
                         painter = painterResource(id = R.drawable.tipper_space_man),
@@ -62,7 +62,6 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, me
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )
             }
-
         }
     }
 }

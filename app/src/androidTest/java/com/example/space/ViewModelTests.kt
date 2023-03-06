@@ -10,9 +10,9 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants
 import com.example.space.di.AppModule
+import com.example.space.nasa_media_library.presentation.library_search_screen.LibrarySearchScreen
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.navigation.AppNavigation
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -40,6 +40,7 @@ class ViewModelTests {
     private val testMP4 = "http://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~orig.mp4"
     private val testMP4After = "https://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~orig.mp4"
     private val testJPEG = "http://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~small_5.jpg"
+    private val testJPEGAfter = "https://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~small_5.jpg"
     private val testWAVBefore = "http://images-assets.nasa.gov/audio/367-AAA/367-AAA~orig.wav"
     private val testWAVAfter = "https://images-assets.nasa.gov/audio/367-AAA/367-AAA~orig.wav"
     private val fileTestList = arrayListOf(testMP3, testMP4, testJPEG, testWAVBefore)
@@ -58,7 +59,7 @@ class ViewModelTests {
         hiltRule.inject()
         libraryViewModel = MediaLibraryViewModel(repository)
         videoDataViewModel = VideoDataViewModel(repository)
-        libraryViewModel.getData(anyString())
+
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
@@ -69,7 +70,13 @@ class ViewModelTests {
                         val navController = rememberNavController()
                         val filterType = remember { mutableStateOf("") }
                         val backgroundType = remember { mutableStateOf(Constants.NO_BACKGROUND) }
-                        AppNavigation(filterType, backgroundType, navController)
+                        //AppNavigation(filterType, backgroundType, navController)
+                        LibrarySearchScreen(
+                            viewModel = libraryViewModel,
+                            navController = navController,
+                            filterType = filterType,
+                            backgroundType = backgroundType
+                        )
                     }
                 }
             }
@@ -78,37 +85,48 @@ class ViewModelTests {
 
     @Test
     fun test_getData_success() {
-        val list = libraryViewModel.state.value.data
-        assert(list.isNotEmpty())
+        libraryViewModel.getData(anyString())
+        composeTestRule.waitForIdle()
+        val itemsList = libraryViewModel.state.value.data
+        val dataList = itemsList.first()?.data
+        val fakeDataModel = FakeMediaLibraryRepository.fakeDataObject
+        dataList?.first()?.equals(fakeDataModel)?.let { assert(it) }
     }
+
+    /**
+     *  The json response from the media request returns a json list in a string format.
+     *  This tests that the return value is an array list.
+     */
     @Test
-    fun test_getData_error() {
-        val list = libraryViewModel.state.value.data
-        assert(list.isNotEmpty())
+    fun test_JsonArrayToArrayList() {
+        val result = videoDataViewModel.extractUrlsFromJsonArray(itemJsonLinkForVideo)
+        assert(result == expectedJsonArrayConversion)
     }
 
     @Test
     fun test_items_are_not_null() {
         libraryViewModel.getData(anyString())
+        composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
         list.forEach { item -> assert(item != null) }
     }
 
     @Test
-    fun fileTypeCheckTestAudio() {
+    fun test_fileTypeCheckTestImage() {
+        val result = videoDataViewModel.fileTypeCheck(fileTestList, "image")
+        assert(result == testJPEGAfter)
+    }
+
+    @Test
+    fun test_fileTypeCheckTestAudio() {
         val result = videoDataViewModel.fileTypeCheck(fileTestList, "audio")
         assert(result == testWAVAfter)
     }
 
     @Test
-    fun fileTypeCheckTestVideo() {
+    fun test_fileTypeCheckTestVideo() {
         val result = videoDataViewModel.fileTypeCheck(fileTestList, "video")
         assert(result == testMP4After)
     }
 
-    @Test
-    fun testJsonArrayToArrayList() {
-        val result = videoDataViewModel.getUrlList(itemJsonLinkForVideo)
-        assert(result == expectedJsonArrayConversion)
-    }
 }

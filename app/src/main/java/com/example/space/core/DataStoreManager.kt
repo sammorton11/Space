@@ -1,19 +1,18 @@
 package com.example.space.core
 
 import android.content.Context
-import androidx.compose.ui.platform.LocalContext
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.*
-import androidx.datastore.preferences.core.*
-import com.example.space.core.DataStoreManager.dataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import java.io.IOException
 
 object DataStoreManager {
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     private val LAST_SEARCH_TEXT_KEY =  stringPreferencesKey("last_search_text")
     private lateinit var dataStore: DataStore<Preferences>
     private lateinit var preferenceFlow: Flow<String>
@@ -25,6 +24,7 @@ object DataStoreManager {
         }
     }
 
+    // Save and Get search text within the search field on the library screen
     suspend fun saveLastSearchText(lastSearchText: String) {
         dataStore.edit { preferences ->
             preferences[LAST_SEARCH_TEXT_KEY] = lastSearchText

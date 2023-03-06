@@ -69,7 +69,12 @@ class MainActivity : ComponentActivity() {
                     val title = remember { mutableStateOf("NASA Media Library") }
                     viewModel.getData("Audio")
 
-                    SideNavigationDrawer(navController, drawerState, scope, title) {
+                    SideNavigationDrawer(
+                        navController = navController,
+                        drawerState = drawerState,
+                        scope = scope,
+                        title = title
+                    ) {
                         Scaffold(
                             topBar = {
                                 MyToolbar(

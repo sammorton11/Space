@@ -63,7 +63,7 @@ fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
     var uri = ""
     if (state != null) {
         if (state.isNotEmpty()) {
-            val uriList = videoViewModel.getUrlList(state.toString())
+            val uriList = videoViewModel.extractUrlsFromJsonArray(state.toString())
             uri = videoViewModel.fileTypeCheck(uriList, mediaType)
         }
     }

@@ -44,7 +44,6 @@ fun LibraryScreenContent(
                 painter = painterResource(id = backgroundType.value),
                 contentScale = imageScaleType
             )
-
     }
 
     Column(modifier = mod) {
@@ -67,7 +66,8 @@ fun LibraryScreenContent(
             }
             list.isNotEmpty() -> {
 
-                Box(modifier = Modifier.fillMaxWidth()){
+                Box {
+
                     when(window.screenWidthInfo) {
                         is WindowInfo.WindowType.Compact -> {
                             LibraryList(

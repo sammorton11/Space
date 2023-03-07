@@ -33,7 +33,9 @@ fun MyToolbar(
             Title(title.value, 15.dp)
         },
         actions = {
-            IconButton(onClick = { expandedOptionsMenu = true }) {
+            IconButton(
+                onClick = { expandedOptionsMenu = true }
+            ){
                 Icon(Icons.Filled.MoreVert, contentDescription = "More")
             }
             DropdownMenu(

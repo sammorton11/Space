@@ -21,7 +21,7 @@ import com.example.space.core.Constants.stockImage
 import com.example.space.nasa_media_library.presentation.components.cards.*
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ProgressBar
-import com.example.space.presentation.ShareButton
+import com.example.space.presentation.buttons.ShareButton
 import com.example.space.presentation.util.DownloadFile
 
 

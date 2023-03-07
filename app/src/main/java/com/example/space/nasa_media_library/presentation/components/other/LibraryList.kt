@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
 import com.example.space.nasa_media_library.presentation.library_search_screen.ListCard
@@ -24,17 +23,16 @@ fun LibraryList(
     gridCells: Int,
     imageScaleType: ContentScale
 ) {
-    val primaryColor = MaterialTheme.colorScheme.primary
-    val backgroundColor = MaterialTheme.colorScheme.background
-    val videoCardHeight= 110.dp
-    val videoCardWidth = 150.dp
+    val secondaryColor = MaterialTheme.colorScheme.secondary
 
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Fixed(gridCells),
         state = scrollState
     ) {
         items(
-            data.filter { it!!.data.first().media_type?.contains(filterType.value) ?: true }
+            data.filter { item ->
+                item!!.data.first().media_type?.contains(filterType.value) ?: false
+            }
         ) { item ->
 
             val links = item?.links
@@ -46,15 +44,12 @@ fun LibraryList(
             ListCard (
                 navController = navController,
                 item = item,
-                primaryColor = primaryColor,
-                backgroundColor = backgroundColor,
+                color = secondaryColor,
                 links = links,
                 title = title,
                 description = description,
                 mediaType = mediaType,
-                imageScaleType = imageScaleType,
-                videoCardHeight = videoCardHeight,
-                videoCardWidth = videoCardWidth
+                imageScaleType = imageScaleType
             )
         }
     }

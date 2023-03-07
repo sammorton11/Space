@@ -38,6 +38,8 @@ MVVM Architecture
 
 The application uses the MVVM architecture pattern, separating the user interface logic (View) from the business logic (ViewModel) and the data layer (Model). The ViewModel retrieves data from the repository and provides it to the View in a format that the View can use. The View updates itself based on changes to the ViewModel.
 
+![Media-Library-Screen](https://user-images.githubusercontent.com/86651172/223316271-71c5e290-c934-4f1c-84bc-ebe851215759.png)
+
 
 https://user-images.githubusercontent.com/86651172/223312339-bbf526dd-532e-475d-936b-c5f30add5e89.mp4
 

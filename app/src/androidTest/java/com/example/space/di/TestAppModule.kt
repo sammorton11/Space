@@ -1,7 +1,7 @@
 package com.example.space.di
 
-import com.example.space.FakeApodRepository
-import com.example.space.FakeMediaLibraryRepository
+import com.example.space.fakes.FakeApodRepository
+import com.example.space.fakes.FakeMediaLibraryRepository
 import com.example.space.core.Constants
 import com.example.space.mars_weather.data.MarsWeatherApi
 import com.example.space.nasa_media_library.data.network.MetadataApi
@@ -35,7 +35,7 @@ object TestAppModule {
 
     @Provides
     @Singleton
-    fun provideApodRepository(): ApodRepository {
+    fun provideApodRepositorySuccess(): ApodRepository {
         return FakeApodRepository()
     }
 

@@ -2,12 +2,14 @@ package com.example.space.nasa_media_library.presentation.details_screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ProgressBar
 
@@ -23,7 +25,9 @@ fun DetailsScreenContent(
     val backgroundColor = MaterialTheme.colorScheme.background
 
     LazyColumn (
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

@@ -10,6 +10,7 @@ import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants
 import com.example.space.di.AppModule
+import com.example.space.fakes.FakeMediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.library_search_screen.LibrarySearchScreen
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
@@ -24,7 +25,7 @@ import org.mockito.ArgumentMatchers.anyString
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
-class ViewModelTests {
+class MediaLibraryViewModelTests {
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)

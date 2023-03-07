@@ -13,7 +13,13 @@ import com.example.space.presentation.buttons.ShareButton
 import com.example.space.presentation.util.DownloadFile
 
 @Composable
-fun VideoDetails(context: Context, viewModel: VideoDataViewModel, mediaType: String, description: String, backgroundColor: Color) {
+fun VideoDetails(
+    context: Context,
+    viewModel: VideoDataViewModel,
+    mediaType: String,
+    description: String,
+    backgroundColor: Color,
+) {
     val mUri = getUri(viewModel, mediaType)
     CardMediaPlayer(videoViewModel = viewModel, uri = mUri)
     ExpandableDetailsCard(content = description, color = backgroundColor)

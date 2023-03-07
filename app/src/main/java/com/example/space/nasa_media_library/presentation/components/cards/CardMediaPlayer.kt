@@ -32,6 +32,7 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.playWhenReady = true
                 exoPlayer.prepare()
+
             } catch (e: UnexpectedDiscontinuityException) {
                 Log.d("ExoPlayer Error", exoPlayer.playerError.toString())
                 Log.d("AudioSink Error", e.toString())

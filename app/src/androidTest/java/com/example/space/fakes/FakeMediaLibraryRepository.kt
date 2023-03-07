@@ -1,4 +1,4 @@
-package com.example.space
+package com.example.space.fakes
 
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Collection
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Data

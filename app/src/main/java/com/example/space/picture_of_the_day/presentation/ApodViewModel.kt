@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.space.core.Resource
 import com.example.space.picture_of_the_day.domain.repository.ApodRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -26,11 +25,11 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
     private fun getApodData() = flow {
         emit(Resource.Loading())
         val response = repository.getData()
-        Log.d("response", response.toString())
-        errorMessage = response.errorBody().toString()
-        emit(Resource.Success(response))
-    }.catch {
-        emit(Resource.Error(errorMessage))
+        if (response.errorBody()?.string()?.isNotEmpty() == true) {
+            emit(Resource.Error(response.errorBody()?.string()))
+        } else {
+            emit(Resource.Success(response))
+        }
     }
 
     fun getApodState() {
@@ -43,6 +42,7 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
                     _state.value = ApodState(data = response.data?.body())
                 }
                 is Resource.Error -> {
+                    Log.d("Error Body in getApodState", response.data?.errorBody().toString())
                     _state.value = ApodState(error = response.data?.errorBody().toString())
                 }
             }

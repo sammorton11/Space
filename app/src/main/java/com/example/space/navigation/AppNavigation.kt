@@ -28,7 +28,11 @@ fun AppNavigation(
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
 
-    NavHost(navController = navController, startDestination = "library_search_screen") {
+    NavHost(
+        navController = navController,
+        startDestination = "library_search_screen"
+    ) {
+
         composable("library_search_screen") {
             LibrarySearchScreen(
                 viewModel = libraryViewModel,
@@ -37,12 +41,15 @@ fun AppNavigation(
                 backgroundType = backgroundType
             )
         }
+
+        // Todo: Pass in the title and date
         composable(
             "cardDetails/{url}/{description}/{mediaType}",
             arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
-        ) { backStackEntry ->
+        ){ backStackEntry ->
+
             val descriptionId = backStackEntry.arguments?.getString("description")
             val urlId = backStackEntry.arguments?.getString("url")
             val mediaType = backStackEntry.arguments?.getString("mediaType")
@@ -61,6 +68,7 @@ fun AppNavigation(
             marsWeatherViewModel.getData()
             MarsWeatherScreen(marsWeatherViewModel)
         }
+
         composable("apod_screen"){
             apodViewModel.getApodState()
             ApodScreen(viewModel = apodViewModel)

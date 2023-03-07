@@ -45,8 +45,11 @@ The application uses the MVVM architecture pattern, separating the user interfac
 
 
 https://user-images.githubusercontent.com/86651172/223312339-bbf526dd-532e-475d-936b-c5f30add5e89.mp4
+
 https://user-images.githubusercontent.com/86651172/223315666-492d4d8f-a72b-419d-972f-91ff8802513b.mp4
+
 https://user-images.githubusercontent.com/86651172/223315690-68852316-9c01-4b33-a550-b2fde484e0df.mp4
+
 https://user-images.githubusercontent.com/86651172/223315706-7de00195-84c6-4ede-b2fd-6a078990dd85.mp4
 
 

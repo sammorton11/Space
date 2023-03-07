@@ -5,9 +5,7 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,28 +22,27 @@ import com.example.space.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, mediaType: String) {
+fun CardImage(imageLink: String?, height: Dp? = null, width: Dp? = null, scale: ContentScale, mediaType: String) {
     imageLink?.let { Log.d("Image Link", it) }
 
     Card(
         modifier = Modifier
             .animateContentSize(
-                animationSpec = tween(durationMillis = 2500,
+                animationSpec = tween(durationMillis = 1500,
                     easing = LinearOutSlowInEasing
                 )
-            )
-            .padding(10.dp),
+            ),
         shape = AbsoluteRoundedCornerShape(10),
     ) {
 
-        when {
-            mediaType == "audio" -> {
+        when (mediaType) {
+            "audio" -> {
                 SubcomposeAsyncImage(
                     model = Image(
                         painter = painterResource(id = R.drawable.tipper_space_man),
                         contentDescription = "",
-                        modifier = Modifier.height(height).width(width),
-                        contentScale = scale,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Inside,
                     ),
                     contentDescription = "",
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix())
@@ -56,13 +53,12 @@ fun CardImage(imageLink: String?, height: Dp, width: Dp, scale: ContentScale, me
                     model = imageLink,
                     contentDescription = "",
                     modifier = Modifier
-                        .height(height)
-                        .width(width),
+                        .fillMaxSize()
+                        .sizeIn(minHeight = 125.dp),
                     contentScale = scale,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )
             }
-
         }
     }
 }

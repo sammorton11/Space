@@ -38,14 +38,12 @@ fun LibraryScreenContent(
     val mod = if (backgroundType.value == NO_BACKGROUND) {
         Modifier.fillMaxSize()
     } else {
-        backgroundType.let { painterResource(id = it.value) }.let {
-            Modifier
-                .fillMaxSize()
-                .paint(
-                    painter = it,
-                    contentScale = imageScaleType
-                )
-        }
+        Modifier
+            .fillMaxSize()
+            .paint(
+                painter = painterResource(id = backgroundType.value),
+                contentScale = imageScaleType
+            )
     }
 
     Column(modifier = mod) {
@@ -68,7 +66,8 @@ fun LibraryScreenContent(
             }
             list.isNotEmpty() -> {
 
-                Box(modifier = Modifier.fillMaxWidth()){
+                Box {
+
                     when(window.screenWidthInfo) {
                         is WindowInfo.WindowType.Compact -> {
                             LibraryList(

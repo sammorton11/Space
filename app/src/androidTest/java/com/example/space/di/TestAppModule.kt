@@ -1,11 +1,13 @@
 package com.example.space.di
 
+import com.example.space.FakeApodRepository
 import com.example.space.FakeMediaLibraryRepository
 import com.example.space.core.Constants
 import com.example.space.mars_weather.data.MarsWeatherApi
 import com.example.space.nasa_media_library.data.network.MetadataApi
 import com.example.space.nasa_media_library.data.network.NasaApi
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
+import com.example.space.picture_of_the_day.domain.repository.ApodRepository
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -23,10 +25,18 @@ import javax.inject.Singleton
 @Module
 object TestAppModule {
 
+    // Api providers are not actually called -- Hilt throws errors without them
+
     @Provides
     @Singleton
     fun provideRepository(): MediaLibraryRepository {
         return FakeMediaLibraryRepository()
+    }
+
+    @Provides
+    @Singleton
+    fun provideApodRepository(): ApodRepository {
+        return FakeApodRepository()
     }
 
     @Provides

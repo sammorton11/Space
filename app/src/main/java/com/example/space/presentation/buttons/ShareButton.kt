@@ -1,4 +1,4 @@
-package com.example.space.presentation
+package com.example.space.presentation.buttons
 
 import android.content.Intent
 import android.net.Uri

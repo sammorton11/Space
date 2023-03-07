@@ -24,8 +24,8 @@ fun MyToolbar(
     scope: CoroutineScope,
     title: MutableState<String>
 ) {
-    var expanded by remember { mutableStateOf(false) }
-    var expanded2 by remember { mutableStateOf(false) }
+    var expandedOptionsMenu by remember { mutableStateOf(false) }
+    var expandedSortingMenu by remember { mutableStateOf(false) }
     var expandedChangeBackground by remember { mutableStateOf(false) }
 
     CenterAlignedTopAppBar(
@@ -33,12 +33,14 @@ fun MyToolbar(
             Title(title.value, 15.dp)
         },
         actions = {
-            IconButton(onClick = { expanded = true }) {
+            IconButton(
+                onClick = { expandedOptionsMenu = true }
+            ){
                 Icon(Icons.Filled.MoreVert, contentDescription = "More")
             }
             DropdownMenu(
-                expanded = expanded,
-                onDismissRequest = { expanded = false },
+                expanded = expandedOptionsMenu,
+                onDismissRequest = { expandedOptionsMenu = false },
                 offset = DpOffset(0.dp, 12.dp),
                 content = {
                     DropdownMenuItem(
@@ -48,14 +50,14 @@ fun MyToolbar(
                     DropdownMenuItem(
                         text = { Text(text = "Sort") },
                         onClick = {
-                            expanded2 = true
+                            expandedSortingMenu = true
                         }
                     )
                 }
             )
             DropdownMenu(
-                expanded = expanded2,
-                onDismissRequest = { expanded2 = false },
+                expanded = expandedSortingMenu,
+                onDismissRequest = { expandedSortingMenu = false },
                 offset = DpOffset(0.dp, 130.dp)
             ) {
                 DropdownMenuItem(

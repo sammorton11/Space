@@ -6,7 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import com.example.space.core.Constants
 import com.example.space.presentation.Title
+import com.example.space.presentation.buttons.ShareButton
 import com.example.space.presentation.util.DownloadFile
 
 @Composable
@@ -29,6 +32,7 @@ fun ApodComponents(
             mimeType = "image/jpeg",
             subPath = "image.jpeg"
         )
+        ShareButton(uri = image.toUri(), type = Constants.IMAGE_JPEG_MIME_TYPE)
     }
     date?.let { Text(text = date, modifier = Modifier.padding(5.dp)) }
     copyright?.let { Text(text = it, modifier = Modifier.padding(5.dp)) }

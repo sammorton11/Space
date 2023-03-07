@@ -24,7 +24,7 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
 
     jsonArrayAsString?.let {
         if (it.isNotEmpty()) {
-            val uriList = viewModel.getUrlList(jsonArrayAsString)
+            val uriList = viewModel.extractUrlsFromJsonArray(jsonArrayAsString)
             uri = viewModel.fileTypeCheck(uriList, mediaType)
         }
     }

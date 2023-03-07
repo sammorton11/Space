@@ -24,7 +24,7 @@ class MediaLibraryViewModel
     private val _state = mutableStateOf(NasaLibraryState())
     val state: State<NasaLibraryState> = _state
 
-    val dataStore = DataStoreManager
+    private val dataStore = DataStoreManager
 
     private fun searchImageVideoLibrary(query: String) = flow {
         emit(Resource.Loading())

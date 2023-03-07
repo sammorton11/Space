@@ -85,24 +85,25 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
     }
 
     /**
-        The response from the video data api call is in the form of a json string
-        so we must convert the json string to a JSON Array.
+        The response from the video data api call is in string format
+        so we must convert the string to a JSON Array.
 
         Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
-    fun getUrlList(state: String): ArrayList<String> {
-        Log.d("State to JSON Array", state.toString())
-        val urls: ArrayList<String> = arrayListOf()
+    fun extractUrlsFromJsonArray(stringResponse: String): ArrayList<String> {
+        val arrayList: ArrayList<String> = arrayListOf()
+
         try {
-            val jsonArray = JSONArray(state)
-            for (i in 0 until jsonArray.length()) {
-                urls.add(jsonArray.getString(i))
+            val jsonArray = JSONArray(stringResponse)
+            for (url in 0 until jsonArray.length()) {
+                arrayList.add(jsonArray.getString(url))
             }
         }
         catch (e: JSONException) {
             Log.d("Can't convert to JSON Array", e.toString())
         }
-        return urls
+
+        return arrayList
     }
 
     fun decodeText(text: String): String {
@@ -110,7 +111,6 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
         try {
             decodedText = URLDecoder.decode(text, StandardCharsets.UTF_8.toString())
         } catch (e: Exception) {
-            //decodedText = text
             e.printStackTrace()
         }
 

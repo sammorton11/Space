@@ -26,20 +26,12 @@ import kotlinx.coroutines.launch
 
 /*
     Todo (Ideas):
+        - Pass Date, Title, and Media Type to the Details Screen
         - App icon
-        - Broadcast Receiver when download is completed
-        - Expandable details card for each type of card
-        - Save background state in Data Store
-        - Settings page?
         - Favorites page - Media Cards and APOD - separate database or separate table or?
         - Database Cache
         - Links to websites for card data
             - Some cards have links to more information about the media
-        - Custom Audio Player or Exoplayer?
-            - Custom Audio Player icons need to be able to be resized
-            - Image in audio player needs tweaking
-            - Exoplayer placeholder?
-            - Possibly use a different video player?
  */
 
 
@@ -67,9 +59,14 @@ class MainActivity : ComponentActivity() {
                     val filterType = remember { mutableStateOf("") }
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
                     val title = remember { mutableStateOf("NASA Media Library") }
-                    viewModel.getData("Audio")
+                    viewModel.getData("Solar System")
 
-                    SideNavigationDrawer(navController, drawerState, scope, title) {
+                    SideNavigationDrawer(
+                        navController = navController,
+                        drawerState = drawerState,
+                        scope = scope,
+                        title = title
+                    ) {
                         Scaffold(
                             topBar = {
                                 MyToolbar(

@@ -11,12 +11,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants.NO_BACKGROUND
 import com.example.space.core.DataStoreManager
-import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.navigation.AppNavigation
 import com.example.space.presentation.MyToolbar
 import com.example.space.presentation.SideNavigationDrawer
@@ -52,14 +50,13 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ){
-                    val viewModel:  MediaLibraryViewModel = hiltViewModel()
+
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
                     val filterType = remember { mutableStateOf("") }
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
                     val title = remember { mutableStateOf("NASA Media Library") }
-                    viewModel.getData("Solar System")
 
                     SideNavigationDrawer(
                         navController = navController,
@@ -78,6 +75,7 @@ class MainActivity : ComponentActivity() {
                                 )
                             }
                         ){ padding ->
+
                             Box(
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -96,6 +94,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {

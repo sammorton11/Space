@@ -21,7 +21,6 @@ import dagger.hilt.android.testing.UninstallModules
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.anyString
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
@@ -86,12 +85,28 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_getData_success() {
-        libraryViewModel.getData(anyString())
+        libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val itemsList = libraryViewModel.state.value.data
         val dataList = itemsList.first()?.data
         val fakeDataModel = FakeMediaLibraryRepository.fakeDataObject
         dataList?.first()?.equals(fakeDataModel)?.let { assert(it) }
+    }
+
+    @Test
+    fun test_getData_error() {
+        libraryViewModel.getData("error")
+        composeTestRule.waitForIdle()
+        val error = libraryViewModel.state.value.error
+        assert(error.isNotEmpty())
+    }
+
+    @Test
+    fun test_getData_empty() {
+        libraryViewModel.getData("empty")
+        composeTestRule.waitForIdle()
+        val itemsList = libraryViewModel.state.value.data
+        assert(itemsList.isEmpty())
     }
 
     /**
@@ -106,7 +121,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_items_are_not_null() {
-        libraryViewModel.getData(anyString())
+        libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
         list.forEach { item -> assert(item != null) }
@@ -129,5 +144,4 @@ class MediaLibraryViewModelTests {
         val result = videoDataViewModel.fileTypeCheck(fileTestList, "video")
         assert(result == testMP4After)
     }
-
 }

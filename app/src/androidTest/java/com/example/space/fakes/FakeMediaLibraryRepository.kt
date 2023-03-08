@@ -6,6 +6,8 @@ import com.example.space.nasa_media_library.domain.models.nasa_media_library_mod
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Link
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.NasaLibraryResponse
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
 
 class FakeMediaLibraryRepository: MediaLibraryRepository {
@@ -36,18 +38,53 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
     }
 
     override suspend fun getData(query: String): Response<NasaLibraryResponse> {
-        return Response.success(
-            NasaLibraryResponse(
-                collection = Collection(
-                    version = "1.0",
-                    href = "/Users/sammorton/StudioProjects/Space/app/src/androidTest/java/com/example/space/fake1.json",
-                    items = listOf(fakeItemObject)
+        return when (query) {
+            "success" -> {
+                Response.success(
+                    NasaLibraryResponse(
+                        collection = Collection(
+                            version = "1.0",
+                            href = "/Users/sammorton/StudioProjects/Space/app/src/androidTest/java/com/example/space/fake1.json",
+                            items = listOf(fakeItemObject)
+                        )
+                    )
                 )
-            )
-        )
+            }
+            "error" -> {
+                Response.error(
+                    500,
+                    "{\"message\": \"Error fetching data\"}"
+                        .toResponseBody("application/json".toMediaTypeOrNull())
+                )
+            }
+            "empty" -> {
+                Response.success(null)
+            }
+            else -> {
+                Response.success(null)
+            }
+        }
+
     }
 
     override suspend fun getVideoData(url: String): Response<String> {
-        return Response.success(itemJsonLinkForVideo)
+        return when (url) {
+            "success" -> {
+                Response.success(itemJsonLinkForVideo)
+            }
+            "error" -> {
+                Response.error(
+                    500,
+                    "{\"message\": \"Error fetching data\"}"
+                        .toResponseBody("application/json".toMediaTypeOrNull())
+                )
+            }
+            "empty" -> {
+                Response.success(null)
+            }
+            else -> {
+                Response.success(null)
+            }
+        }
     }
 }

@@ -16,20 +16,19 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ApodViewModel @Inject constructor(private val repository: ApodRepository): ViewModel() {
-
-    private lateinit var errorMessage: String
     val _state: MutableState<ApodState> = mutableStateOf(ApodState())
     val state: State<ApodState> = _state
-
 
     private fun getApodData() = flow {
         emit(Resource.Loading())
         val response = repository.getData()
+
         if (response.errorBody()?.string()?.isNotEmpty() == true) {
             emit(Resource.Error(response.errorBody()?.string()))
         } else {
             emit(Resource.Success(response))
         }
+
     }
 
     fun getApodState() {

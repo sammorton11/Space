@@ -15,7 +15,11 @@ import coil.compose.SubcomposeAsyncImage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailsImage(imageLink: String? = null, id: Int? = null, scale: ContentScale) {
+fun DetailsImage(
+    imageLink: String? = null,
+    id: Int? = null,
+    scale: ContentScale,
+) {
     Card(
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -41,6 +45,5 @@ fun DetailsImage(imageLink: String? = null, id: Int? = null, scale: ContentScale
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             )
         }
-
     }
 }

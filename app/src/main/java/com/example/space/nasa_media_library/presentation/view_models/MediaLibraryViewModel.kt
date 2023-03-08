@@ -29,8 +29,11 @@ class MediaLibraryViewModel
     private fun searchImageVideoLibrary(query: String) = flow {
         emit(Resource.Loading())
         val response = mediaLibraryRepository.getData(query)
-        Log.d("Response:", response.body()?.collection.toString())
-        emit(Resource.Success(response))
+        if (response.errorBody()?.string()?.isNotEmpty() == true) {
+            emit(Resource.Error(response.errorBody()?.string()))
+        } else {
+            emit(Resource.Success(response))
+        }
     }.catch { error ->
         emit(Resource.Error(error.toString()))
     }

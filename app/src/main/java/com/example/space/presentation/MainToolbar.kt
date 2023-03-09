@@ -6,6 +6,10 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.*
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.example.space.R
@@ -29,6 +33,10 @@ fun MyToolbar(
     var expandedChangeBackground by remember { mutableStateOf(false) }
 
     CenterAlignedTopAppBar(
+        modifier = Modifier
+            .semantics {
+                testTag = "Toolbar"
+            },
         title = {
             Title(title.value, 15.dp)
         },

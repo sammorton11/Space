@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 
@@ -21,6 +23,7 @@ fun DetailsImage(
     scale: ContentScale,
 ) {
     Card(
+        modifier = Modifier.semantics { testTag = "Details Image Card" },
         shape = RoundedCornerShape(10.dp)
     ) {
         imageLink?.let {
@@ -29,7 +32,8 @@ fun DetailsImage(
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
-                    .height(250.dp),
+                    .height(250.dp)
+                    .semantics { testTag = "Details Image - Image Url" },
                 contentScale = scale,
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             )
@@ -40,7 +44,8 @@ fun DetailsImage(
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
-                    .height(250.dp),
+                    .height(250.dp)
+                    .semantics { testTag = "Details Image - ID" },
                 contentScale = scale,
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             )

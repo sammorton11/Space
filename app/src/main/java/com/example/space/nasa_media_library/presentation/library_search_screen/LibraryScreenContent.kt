@@ -35,6 +35,7 @@ fun LibraryScreenContent(
     val window = rememberWindowInfo()
     val imageScaleType = ContentScale.FillBounds
 
+
     val mod = if (backgroundType.value == NO_BACKGROUND) {
         Modifier.fillMaxSize()
     } else {
@@ -53,7 +54,7 @@ fun LibraryScreenContent(
                     viewModel.getData(query)
                     filterType.value = ""
                 },
-                savedQuery = viewModel.getSavedSearchQuery()
+                savedQuery = viewModel.getSavedSearchText()
             )
         }
 
@@ -67,7 +68,6 @@ fun LibraryScreenContent(
             list.isNotEmpty() -> {
 
                 Box {
-
                     when(window.screenWidthInfo) {
                         is WindowInfo.WindowType.Compact -> {
                             LibraryList(

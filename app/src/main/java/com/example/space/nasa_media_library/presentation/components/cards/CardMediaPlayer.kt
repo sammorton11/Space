@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.google.android.exoplayer2.ExoPlayer
@@ -45,7 +47,9 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
                     player = exoPlayer
                 }
             },
-            modifier = Modifier.aspectRatio(1f)
+            modifier = Modifier
+                .aspectRatio(1f)
+                .semantics { testTag = "Card Media Player" }
         )
 
         DisposableEffect(exoPlayer) {

@@ -91,12 +91,6 @@ import kotlinx.coroutines.launch
                         }
                     }
                 }
-//                Row(
-//                    modifier = Modifier.fillMaxWidth()
-//                ){
-//
-//                }
-
             },
             gesturesEnabled = true
         ) { content() }

@@ -26,7 +26,6 @@ import javax.inject.Singleton
 object TestAppModule {
 
     // Api providers are not actually called -- Hilt throws errors without them
-
     @Provides
     @Singleton
     fun provideRepository(): MediaLibraryRepository {

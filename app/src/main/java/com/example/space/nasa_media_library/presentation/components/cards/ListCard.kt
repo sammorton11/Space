@@ -13,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.core.Constants
@@ -40,7 +42,8 @@ fun ListCard(
             .padding(8.dp)
             .animateContentSize(
                 animationSpec = tween(durationMillis = 1000, easing = LinearOutSlowInEasing)
-            ),
+            )
+            .semantics { testTag = "List Card" },
         onClick = {
             val encodedUrl = URLEncoder.encode(item?.href ?: "", Constants.utf8Encoding)
             val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
@@ -59,8 +62,6 @@ fun ListCard(
             mediaType?.let { type ->
                 CardImage(
                     imageLink = links?.first()?.href,
-                    height = 200.dp,
-                    width = 200.dp,
                     scale = imageScaleType,
                     mediaType = type
                 )

@@ -10,11 +10,7 @@ import com.example.space.core.Resource
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.state.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,11 +25,14 @@ class MediaLibraryViewModel
     private fun searchImageVideoLibrary(query: String) = flow {
         emit(Resource.Loading())
         val response = mediaLibraryRepository.getData(query)
-        if (response.errorBody()?.string()?.isNotEmpty() == true) {
-            emit(Resource.Error(response.errorBody()?.string()))
+        val errorString = response.errorBody()?.string()
+        Log.d("response", response.body().toString())
+        if (errorString?.isNotEmpty() == true) {
+            emit(Resource.Error(errorString))
         } else {
             emit(Resource.Success(response))
         }
+
     }.catch { error ->
         emit(Resource.Error(error.toString()))
     }
@@ -62,11 +61,22 @@ class MediaLibraryViewModel
         }.launchIn(viewModelScope)
     }
 
-    fun getSavedSearchQuery(): String? {
-        var result: String? = null
-        viewModelScope.launch {
-            result = dataStore.getLastSearchText()
-        }
+    private fun savedQueryFlow() = flow {
+        emit(dataStore.getLastSearchText())
+    }.catch { error -> Log.d("Error getting Saved Query", error.toString()) }
+
+    fun getSavedSearchText(): String {
+        var result = ""
+        savedQueryFlow().onEach { query ->
+            query?.let { savedQuery ->
+                result = savedQuery
+            }
+        }.onCompletion {
+            if (result.isEmpty()) {
+                result = "Search..."
+            }
+        }.launchIn(viewModelScope)
+
         return result
     }
 }

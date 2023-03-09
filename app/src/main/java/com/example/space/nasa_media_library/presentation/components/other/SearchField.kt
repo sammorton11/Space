@@ -10,9 +10,10 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import com.example.space.core.DataStoreManager
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -21,12 +22,16 @@ fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
     val keyboardController = LocalSoftwareKeyboardController.current
     val primaryColor = MaterialTheme.colorScheme.primary
 
+
     OutlinedTextField(
         value = query,
         onValueChange = { query = it },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 10.dp),
+            .padding(horizontal = 15.dp, vertical = 10.dp)
+            .semantics {
+               testTag = "Search"
+            },
         label = { Text("Search") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {

@@ -15,14 +15,19 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.example.space.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CardImage(imageLink: String?, height: Dp? = null, width: Dp? = null, scale: ContentScale, mediaType: String) {
+fun CardImage(
+    imageLink: String?,
+    scale: ContentScale,
+    mediaType: String,
+) {
     imageLink?.let { Log.d("Image Link", it) }
 
     Card(
@@ -31,7 +36,8 @@ fun CardImage(imageLink: String?, height: Dp? = null, width: Dp? = null, scale: 
                 animationSpec = tween(durationMillis = 1500,
                     easing = LinearOutSlowInEasing
                 )
-            ),
+            )
+            .semantics { testTag = "Card Image" },
         shape = AbsoluteRoundedCornerShape(10),
     ) {
 

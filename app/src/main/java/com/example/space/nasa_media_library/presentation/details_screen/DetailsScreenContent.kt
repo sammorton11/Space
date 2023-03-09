@@ -9,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.presentation.ProgressBar
@@ -27,7 +29,8 @@ fun DetailsScreenContent(
     LazyColumn (
         modifier = Modifier
             .padding(10.dp)
-            .fillMaxSize(),
+            .fillMaxSize()
+            .semantics { testTag = "Details Screen" },
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

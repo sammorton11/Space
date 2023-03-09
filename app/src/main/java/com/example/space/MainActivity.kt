@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -15,8 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants.NO_BACKGROUND
 import com.example.space.core.DataStoreManager
-import com.example.space.navigation.AppNavigation
-import com.example.space.presentation.MyToolbar
+import com.example.space.presentation.MainScaffold
 import com.example.space.presentation.SideNavigationDrawer
 import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,30 +61,14 @@ class MainActivity : ComponentActivity() {
                         scope = scope,
                         title = title
                     ) {
-                        Scaffold(
-                            topBar = {
-                                MyToolbar(
-                                    filterType = filterType,
-                                    drawerState = drawerState,
-                                    scope = scope,
-                                    backgroundType = backgroundType,
-                                    title = title
-                                )
-                            }
-                        ){ padding ->
-
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(padding)
-                            ){
-                                AppNavigation(
-                                    filterType = filterType,
-                                    navController = navController,
-                                    backgroundType = backgroundType
-                                )
-                            }
-                        }
+                        MainScaffold(
+                            filterType = filterType,
+                            drawerState = drawerState,
+                            scope = scope,
+                            backgroundType = backgroundType,
+                            title = title,
+                            navController = navController
+                        )
                     }
                 }
             }

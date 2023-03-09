@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,9 +30,11 @@ fun ExpandableDetailsCard(content: String, color: Color) {
 
         val modifier = if (overLineLimit) {
             Modifier
+                .semantics { testTag = "Expandable Details Card" }
                 .padding(16.dp)
         } else {
             Modifier
+                .semantics { testTag = "Expandable Details Card - Clickable" }
                 .clickable { isExpanded = !isExpanded }
                 .padding(16.dp) }
 
@@ -43,7 +47,9 @@ fun ExpandableDetailsCard(content: String, color: Color) {
                     text = content,
                     maxLines = if (isExpanded) Int.MAX_VALUE else lineLimit,
                     softWrap = true,
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier
+                        .semantics { testTag = "Details Text" }
+                        .padding(top = 8.dp),
                     overflow = TextOverflow.Ellipsis
                 )
             }

@@ -28,7 +28,6 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
         } else {
             emit(Resource.Success(response))
         }
-
     }
 
     fun getApodState() {

@@ -1,20 +1,11 @@
 package com.example.space
 
-import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
-import androidx.navigation.compose.rememberNavController
-import com.example.space.core.Constants
 import com.example.space.di.AppModule
 import com.example.space.fakes.FakeMediaLibraryRepository
-import com.example.space.nasa_media_library.presentation.library_search_screen.LibrarySearchScreen
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.ui.theme.SpaceTheme
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -59,28 +50,6 @@ class MediaLibraryViewModelTests {
         hiltRule.inject()
         libraryViewModel = MediaLibraryViewModel(repository)
         videoDataViewModel = VideoDataViewModel(repository)
-
-        composeTestRule.activity.apply {
-            setContent {
-                SpaceTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        val navController = rememberNavController()
-                        val filterType = remember { mutableStateOf("") }
-                        val backgroundType = remember { mutableStateOf(Constants.NO_BACKGROUND) }
-                        //AppNavigation(filterType, backgroundType, navController)
-                        LibrarySearchScreen(
-                            viewModel = libraryViewModel,
-                            navController = navController,
-                            filterType = filterType,
-                            backgroundType = backgroundType
-                        )
-                    }
-                }
-            }
-        }
     }
 
     @Test
@@ -89,7 +58,7 @@ class MediaLibraryViewModelTests {
         composeTestRule.waitForIdle()
         val itemsList = libraryViewModel.state.value.data
         val dataList = itemsList.first()?.data
-        val fakeDataModel = FakeMediaLibraryRepository.fakeDataObject
+        val fakeDataModel = FakeMediaLibraryRepository.fakeDataObject01
         dataList?.first()?.equals(fakeDataModel)?.let { assert(it) }
     }
 
@@ -124,7 +93,9 @@ class MediaLibraryViewModelTests {
         libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
-        list.forEach { item -> assert(item != null) }
+        list.forEach { item ->
+            assert(item != null)
+        }
     }
 
     @Test

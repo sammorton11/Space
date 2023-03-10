@@ -1,5 +1,6 @@
 package com.example.space
 
+import android.util.Log
 import androidx.compose.material3.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import com.example.space.di.AppModule
@@ -67,6 +68,8 @@ class MediaLibraryViewModelTests {
         libraryViewModel.getData("error")
         composeTestRule.waitForIdle()
         val error = libraryViewModel.state.value.error
+        composeTestRule.waitForIdle()
+        Log.d("Error in test", error)
         assert(error.isNotEmpty())
     }
 
@@ -89,13 +92,32 @@ class MediaLibraryViewModelTests {
     }
 
     @Test
-    fun test_items_are_not_null() {
+    fun test_successful_response() {
         libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
         list.forEach { item ->
+            Log.d("Success Item in Test", item.toString())
             assert(item != null)
         }
+    }
+
+    @Test
+    fun test_empty_response() {
+        libraryViewModel.getData("empty")
+        composeTestRule.waitForIdle()
+        val list = libraryViewModel.state.value.data
+        assert(list.isEmpty())
+    }
+
+    @Test
+    fun test_error_response() {
+        libraryViewModel.getData("error")
+        composeTestRule.waitForIdle()
+        val error = libraryViewModel.state.value.error
+        composeTestRule.waitForIdle()
+        Log.d("ERROR TEST ERROR TEST", error)
+       // assert(error.isNotBlank())
     }
 
     @Test

@@ -36,7 +36,7 @@ fun ListCard(
     mediaType: String?,
     imageScaleType: ContentScale
 ){
-    Card (
+    Card(
         modifier = Modifier
             .wrapContentWidth()
             .padding(8.dp)
@@ -55,7 +55,7 @@ fun ListCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 55.dp)
     ) {
 
-        Box (
+        Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         ) {
@@ -66,8 +66,7 @@ fun ListCard(
                     mediaType = type
                 )
             }
-
-            Box (
+            Box(
                 modifier = Modifier
                     .background(
                         Brush.verticalGradient(

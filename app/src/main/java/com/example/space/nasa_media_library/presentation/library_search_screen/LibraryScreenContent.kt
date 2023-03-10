@@ -35,7 +35,13 @@ fun LibraryScreenContent(
     val window = rememberWindowInfo()
     val imageScaleType = ContentScale.FillBounds
 
+    val gridCells = when (window.screenWidthInfo) {
+        is WindowInfo.WindowType.Compact -> 2
+        is WindowInfo.WindowType.Medium -> 3
+        is WindowInfo.WindowType.Expanded -> 4
+    }
 
+    // Two modifiers for if the user does not select a background
     val mod = if (backgroundType.value == NO_BACKGROUND) {
         Modifier.fillMaxSize()
     } else {
@@ -48,7 +54,11 @@ fun LibraryScreenContent(
     }
 
     Column(modifier = mod) {
-        if (scrollState.value == 0) {
+        /*
+             Show the search field if the user scrolls passed the first row or the list size only
+             has two items
+         */
+        if (scrollState.value == 0 || list.size <= 2) {
             SearchField(
                 onSearch = { query ->
                     viewModel.getData(query)
@@ -66,42 +76,14 @@ fun LibraryScreenContent(
                 ProgressBar()
             }
             list.isNotEmpty() -> {
-
-                Box {
-                    when(window.screenWidthInfo) {
-                        is WindowInfo.WindowType.Compact -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                filterType = filterType,
-                                gridCells = 2,
-                                imageScaleType = imageScaleType
-
-                            )
-                        }
-                        is WindowInfo.WindowType.Medium -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                filterType = filterType,
-                                gridCells = 3,
-                                imageScaleType = imageScaleType
-                            )
-                        }
-                        is WindowInfo.WindowType.Expanded -> {
-                            LibraryList(
-                                navController = navController,
-                                data = list,
-                                scrollState = lazyGridState,
-                                filterType = filterType,
-                                gridCells = 4,
-                                imageScaleType = imageScaleType
-                            )
-                        }
-                    }
-                }
+                LibraryList(
+                    navController = navController,
+                    data = list,
+                    scrollState = lazyGridState,
+                    filterType = filterType,
+                    gridCells = gridCells,
+                    imageScaleType = imageScaleType
+                )
             }
         }
     }

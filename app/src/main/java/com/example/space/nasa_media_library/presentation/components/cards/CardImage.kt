@@ -36,8 +36,7 @@ fun CardImage(
                 animationSpec = tween(durationMillis = 1500,
                     easing = LinearOutSlowInEasing
                 )
-            )
-            .semantics { testTag = "Card Image" },
+            ),
         shape = AbsoluteRoundedCornerShape(10),
     ) {
 
@@ -47,7 +46,9 @@ fun CardImage(
                     model = Image(
                         painter = painterResource(id = R.drawable.tipper_space_man),
                         contentDescription = "",
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .semantics { testTag = "Card Image" },
                         contentScale = ContentScale.Inside,
                     ),
                     contentDescription = "",
@@ -60,7 +61,8 @@ fun CardImage(
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxSize()
-                        .sizeIn(minHeight = 125.dp),
+                        .sizeIn(minHeight = 125.dp)
+                        .semantics { testTag = "Card Image" },
                     contentScale = scale,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )

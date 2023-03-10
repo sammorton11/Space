@@ -20,13 +20,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /*
-    Todo (Ideas):
-        - Pass Date, Title, and Media Type to the Details Screen
-        - App icon
-        - Favorites page - Media Cards and APOD - separate database or separate table or?
-        - Database Cache
-        - Links to websites for card data
-            - Some cards have links to more information about the media
+    Todo (Fix):
+        - Error response test is failing for some reason
+        - Clicking cards to navigate to Details screen crashes with null pointer exception
+        -
+        -
+        - App navigation composable and List Card composable do not show up when
+          using SideNavigationDrawer and MainScaffold as the setup composable.
+          These call AppNavigation - Cannot click ListCards to navigate to Details screen in test
+          without this.
  */
 
 

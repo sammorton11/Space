@@ -5,6 +5,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.space.core.Constants.utf8Encoding
 import com.example.space.core.Resource
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.state.VideoDataState
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.onEach
 import org.json.JSONArray
 import org.json.JSONException
 import java.net.URLDecoder
-import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
 @HiltViewModel
@@ -109,11 +109,10 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
     fun decodeText(text: String): String {
         var decodedText = "Decoding Failed"
         try {
-            decodedText = URLDecoder.decode(text, StandardCharsets.UTF_8.toString())
+            decodedText = URLDecoder.decode(text, utf8Encoding)
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
         return decodedText
     }
 }

@@ -39,13 +39,13 @@ fun LibraryList(
             }
         ) { item ->
 
-            val links = item?.links
-            val itemData = item?.data?.first()
+            val links = item?.links // meta data urls
+            val itemData = item?.data?.first() // json url to request meta data
             val title = itemData?.title
             val description = itemData?.description
             val mediaType = itemData?.media_type
 
-            ListCard (
+            ListCard(
                 navController = navController,
                 item = item,
                 color = secondaryColor,

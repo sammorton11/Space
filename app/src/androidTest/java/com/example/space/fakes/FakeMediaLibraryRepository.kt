@@ -1,11 +1,11 @@
 package com.example.space.fakes
 
+import com.example.space.core.Resource
+import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.*
 import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Collection
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Data
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Link
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.NasaLibraryResponse
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import retrofit2.Response
@@ -53,12 +53,31 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
             }
         }
     }
+
+    // todo: errors not going through - this is an experiment IP
+    override fun searchImageVideoLibrary(query: String) = flow {
+        emit(Resource.Loading())
+        val response = getData(query)
+//        if (query == "error"){
+//            Log.d("Unsuccessful Response - body", response.body().toString())
+//            response.errorBody()?.string()?.let { Log.d("Unsuccessful Response - error body", it) }
+//            Log.d("Unsuccessful Response - message", response.message())
+//            Log.d("Unsuccessful Response - code", response.code().toString())
+//        }
+        emit(Resource.Error(response.errorBody()?.string()))
+        emit(Resource.Success(response))
+    }
+
+    override fun savedQueryFlow(): Flow<String?> = flow {
+        emit("Fake saved query")
+    }
+
     companion object {
 
         val fakeDataObject01 = Data(
             center = "JSC",
             date_created = "1969-07-21T00:00:00Z",
-            description = "Test Description",
+            description = "Test Description1",
             keywords = listOf("APOLLO 11 FLIGHT", "MOON", "LUNAR SURFACE"),
             media_type = "image",
             title = "Test Title",
@@ -70,7 +89,7 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
         val fakeDataObject02 = Data(
             center = "JSC",
             date_created = "1969-07-21T00:00:00Z",
-            description = "Test Description",
+            description = "Test Description2",
             keywords = listOf("APOLLO 11 FLIGHT", "MOON", "LUNAR SURFACE"),
             media_type = "video",
             title = "Test Title",
@@ -82,7 +101,7 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
         val fakeDataObject03 = Data(
             center = "JSC",
             date_created = "1969-07-21T00:00:00Z",
-            description = "Test Description",
+            description = "Test Description3",
             keywords = listOf("APOLLO 11 FLIGHT", "MOON", "LUNAR SURFACE"),
             media_type = "audio",
             title = "Test Title",
@@ -98,13 +117,13 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
         )
         // todo: needs an mp4 file
         private val fakeLinkObject02 = Link(
-            href = "https://images-assets.nasa.gov/image/as11-40-5874/as11-40-5874~thumb.jpg",
+            href = "http://images-assets.nasa.gov/video/Space-Exploration-Video-1/Space-Exploration-Video-1~orig.mp4",
             rel = "preview",
             render = "video"
         )
         // todo: needs an wav or mp3 file
         private val fakeLinkObject03 = Link(
-            href = "https://images-assets.nasa.gov/image/as11-40-5874/as11-40-5874~thumb.jpg",
+            href = "http://images-assets.nasa.gov/audio/367-AAA/367-AAA~orig.wav",
             rel = "preview",
             render = "audio"
         )

@@ -14,35 +14,18 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaLibraryViewModel
-@Inject constructor (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
+class MediaLibraryViewModel @Inject constructor
+    (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
 
     private val _state = mutableStateOf(NasaLibraryState())
     val state: State<NasaLibraryState> = _state
 
-    private val dataStore = DataStoreManager
-
-    private fun searchImageVideoLibrary(query: String) = flow {
-        emit(Resource.Loading())
-        val response = mediaLibraryRepository.getData(query)
-        val errorString = response.errorBody()?.string()
-        Log.d("response", response.body().toString())
-        if (errorString?.isNotEmpty() == true) {
-            emit(Resource.Error(errorString))
-        } else {
-            emit(Resource.Success(response))
-        }
-
-    }.catch { error ->
-        emit(Resource.Error(error.toString()))
-    }
-
     fun getData(query: String) {
-        searchImageVideoLibrary(query).onEach { response ->
+        mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
 
             DataStoreManager.saveLastSearchText(query)
             val success = response.data?.body()
-            val error = response.data?.errorBody()
+            val error = response.message
             val itemsList = success?.collection?.items
 
             when(response) {
@@ -50,24 +33,21 @@ class MediaLibraryViewModel
                     _state.value = NasaLibraryState(data = itemsList ?: emptyList())
                 }
                 is Resource.Error -> {
-                    _state.value = NasaLibraryState(error = error.toString())
-                    Log.d("ITEM ERROR", "${response.message}")
+                    error?.let {
+                        Log.d("Error message - ViewModel", it)
+                        _state.value = NasaLibraryState(error = "Error! $it")
+                    }
                 }
                 is Resource.Loading -> {
                     _state.value = NasaLibraryState(isLoading = true)
-                    Log.d("ITEM LOADING", "true")
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun savedQueryFlow() = flow {
-        emit(dataStore.getLastSearchText())
-    }.catch { error -> Log.d("Error getting Saved Query", error.toString()) }
-
     fun getSavedSearchText(): String {
         var result = ""
-        savedQueryFlow().onEach { query ->
+        mediaLibraryRepository.savedQueryFlow().onEach { query ->
             query?.let { savedQuery ->
                 result = savedQuery
             }

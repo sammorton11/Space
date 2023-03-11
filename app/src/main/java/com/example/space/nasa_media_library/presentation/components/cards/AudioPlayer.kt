@@ -14,11 +14,12 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.R
+import com.example.space.core.MediaType
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.example.space.nasa_media_library.util.ViewModelUtils
 
 @Composable
-fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
+fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: MediaType) {
 
     val jsonArrayAsString = viewModel.state.value.data
     val mContext = LocalContext.current

@@ -3,6 +3,7 @@ package com.example.space
 import android.util.Log
 import androidx.compose.material3.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.example.space.core.MediaType
 import com.example.space.di.AppModule
 import com.example.space.fakes.FakeMediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
@@ -126,19 +127,19 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_fileTypeCheckTestImage() {
-        val result = utils.fileTypeCheck(fileTestList, "image")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.IMAGE)
         assert(result == testJPEGAfter)
     }
 
     @Test
     fun test_fileTypeCheckTestAudio() {
-        val result = utils.fileTypeCheck(fileTestList, "audio")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.AUDIO)
         assert(result == testWAVAfter)
     }
 
     @Test
     fun test_fileTypeCheckTestVideo() {
-        val result = utils.fileTypeCheck(fileTestList, "video")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.VIDEO)
         assert(result == testMP4After)
     }
 }

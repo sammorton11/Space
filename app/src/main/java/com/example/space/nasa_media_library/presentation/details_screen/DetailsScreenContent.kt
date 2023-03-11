@@ -48,7 +48,7 @@ fun DetailsScreenContent(
                     VideoDetails(
                         context = context,
                         viewModel = viewModel,
-                        mediaType = mediaType,
+                        mediaType = mediaType_,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
                     )
@@ -56,7 +56,7 @@ fun DetailsScreenContent(
                 MediaType.AUDIO -> {
                     AudioDetails(
                         viewModel = viewModel,
-                        mediaType = mediaType,
+                        mediaType = mediaType_,
                         context = context,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
@@ -65,7 +65,7 @@ fun DetailsScreenContent(
                 MediaType.IMAGE -> {
                     ImageDetails(
                         viewModel = viewModel,
-                        mediaType = mediaType,
+                        mediaType = mediaType_,
                         context = context,
                         description = decodedDescription,
                         backgroundColor = backgroundColor,

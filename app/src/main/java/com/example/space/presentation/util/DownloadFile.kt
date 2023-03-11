@@ -23,7 +23,13 @@ fun DownloadFile(
     val utils = ViewModelUtils()
     Button(
         onClick = {
-            utils.downloadFile(context, url, filename, mimeType, subPath)
+            utils.downloadFile(
+                context = context,
+                url = url,
+                fileName = filename,
+                mimeType = mimeType,
+                subPath = subPath
+            )
             Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
         },
         modifier = Modifier

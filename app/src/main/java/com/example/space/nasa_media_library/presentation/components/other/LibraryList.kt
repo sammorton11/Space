@@ -31,7 +31,9 @@ fun LibraryList(
     val secondaryColor = MaterialTheme.colorScheme.secondary
 
     LazyVerticalStaggeredGrid(
-        modifier = Modifier.semantics { testTag = "Library List" },
+        modifier = Modifier.semantics {
+            testTag = "Library List"
+        },
         columns = StaggeredGridCells.Fixed(gridCells),
         state = scrollState
     ) {

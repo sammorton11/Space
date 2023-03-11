@@ -6,6 +6,7 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import com.example.space.core.Constants
+import com.example.space.core.MediaType
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import org.json.JSONArray
 import org.json.JSONException
@@ -13,7 +14,13 @@ import java.net.URLDecoder
 
 class ViewModelUtils {
 
-    fun downloadFile(context: Context, url: String, fileName: String, mimeType: String, subPath: String) {
+    fun downloadFile(
+        context: Context,
+        url: String,
+        fileName: String,
+        mimeType: String,
+        subPath: String,
+    ) {
         val downloadManager = context.getSystemService(DownloadManager::class.java)
         val request = DownloadManager.Request(url.toUri())
             .setTitle(fileName)
@@ -30,26 +37,29 @@ class ViewModelUtils {
      *      This will grab any video or audio file that is available from the casted JSON Array
      *      The media type is already checked whether it is video or audio before this is called
      */
-    fun fileTypeCheck(array: ArrayList<String>, mediaType: String): String {
+    fun fileTypeCheck(array: ArrayList<String>, mediaType: MediaType): String {
         var file = ""
         for (i in 0 until array.size) {
-            if (mediaType == "video") {
-                when {
-                    array[i].contains("mobile.mp4") -> { file = array[i] }
-                    array[i].contains(".mp4") -> { file = array[i] }
+
+            when (mediaType) {
+                MediaType.VIDEO -> {
+                    when {
+                        array[i].contains("mobile.mp4") -> { file = array[i] }
+                        array[i].contains(".mp4") -> { file = array[i] }
+                    }
                 }
-            }
-            if (mediaType == "audio") {
-                when {
-                    array[i].contains(".wav") -> { file = array[i] }
-                    array[i].contains(".m4a") -> { file = array[i] }
-                    array[i].contains(".mp3") -> { file = array[i] }
+                MediaType.AUDIO -> {
+                    when {
+                        array[i].contains(".wav") -> { file = array[i] }
+                        array[i].contains(".m4a") -> { file = array[i] }
+                        array[i].contains(".mp3") -> { file = array[i] }
+                    }
                 }
-            }
-            if (mediaType == "image") {
-                when {
-                    array[i].contains(".jpg") -> { file = array[i] }
-                    array[i].contains(".png") -> { file = array[i] }
+                MediaType.IMAGE -> {
+                    when {
+                        array[i].contains(".jpg") -> { file = array[i] }
+                        array[i].contains(".png") -> { file = array[i] }
+                    }
                 }
             }
         }
@@ -59,10 +69,10 @@ class ViewModelUtils {
     }
 
     /**
-    The response from the video data api call is in string format
-    so we must convert the string to a JSON Array.
+        The response from the video data api call is in string format
+        so we must convert the string to a JSON Array.
 
-    Then add all of the items from that JSON Array to a new ArrayList and return it.
+        Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
     fun extractUrlsFromJsonArray(stringResponse: String): ArrayList<String> {
         val arrayList: ArrayList<String> = arrayListOf()
@@ -90,7 +100,7 @@ class ViewModelUtils {
         return decodedText
     }
 
-    fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
+    fun getUri(videoViewModel: VideoDataViewModel, mediaType: MediaType): String {
         val state = videoViewModel.state.value.data
         var uri = ""
 
@@ -100,7 +110,6 @@ class ViewModelUtils {
                 uri = this.fileTypeCheck(uriList, mediaType)
             }
         }
-
         return uri
     }
 }

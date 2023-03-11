@@ -1,6 +1,5 @@
 package com.example.space.nasa_media_library.presentation.view_models
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -26,7 +25,6 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
 
             when (response) {
                 is Resource.Success -> {
-                    videoData?.let { Log.d("Video Data Url I need for testing", it) }
                     _state.value = VideoDataState(data = videoData)
                 }
                 is Resource.Error -> {

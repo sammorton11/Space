@@ -15,17 +15,20 @@ import androidx.compose.ui.unit.dp
 import com.example.space.core.MediaType
 import com.example.space.core.MediaType.Companion.toMediaType
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.nasa_media_library.util.ViewModelUtils
+import com.example.space.nasa_media_library.util.ViewUtils
 import com.example.space.presentation.ProgressBar
+
+// Todo: Add title to the rest of the details screens
 
 @Composable
 fun DetailsScreenContent(
     url: String, 
     description: String, 
     mediaType: String,
+    title: String?,
     viewModel: VideoDataViewModel
 ) {
-    val utils = ViewModelUtils()
+    val utils = ViewUtils()
     val decodedDescription = utils.decodeText(description)
     val context = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.background
@@ -49,6 +52,7 @@ fun DetailsScreenContent(
                         context = context,
                         viewModel = viewModel,
                         mediaType = mediaType_,
+                        title = title,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
                     )
@@ -58,6 +62,7 @@ fun DetailsScreenContent(
                         viewModel = viewModel,
                         mediaType = mediaType_,
                         context = context,
+                        title = title,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
                     )
@@ -67,9 +72,10 @@ fun DetailsScreenContent(
                         viewModel = viewModel,
                         mediaType = mediaType_,
                         context = context,
+                        url = url,
+                        title = title,
                         description = decodedDescription,
                         backgroundColor = backgroundColor,
-                        url = url
                     )
                 }
             }

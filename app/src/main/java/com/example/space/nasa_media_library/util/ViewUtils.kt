@@ -1,7 +1,10 @@
 package com.example.space.nasa_media_library.util
 
 import android.app.DownloadManager
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
@@ -12,7 +15,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import java.net.URLDecoder
 
-class ViewModelUtils {
+class ViewUtils {
 
     fun downloadFile(
         context: Context,
@@ -111,5 +114,18 @@ class ViewModelUtils {
             }
         }
         return uri
+    }
+
+    fun openWithChrome(url: String, context: Context) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.setPackage("com.android.chrome")
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            // Chrome is not installed, open the default browser
+            intent.setPackage(null)
+            context.startActivity(intent)
+        }
     }
 }

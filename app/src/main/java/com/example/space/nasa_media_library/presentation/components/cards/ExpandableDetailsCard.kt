@@ -7,19 +7,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpandableDetailsCard(content: String, color: Color) {
+
     var isExpanded by remember { mutableStateOf(false) }
     val lines = content.lines()
     val lineLimit = 5
-    val overLineLimit = lines.size > lineLimit
+    val overLineLimit = lines.size >= lineLimit
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -36,7 +37,8 @@ fun ExpandableDetailsCard(content: String, color: Color) {
             Modifier
                 .semantics { testTag = "Expandable Details Card - Clickable" }
                 .clickable { isExpanded = !isExpanded }
-                .padding(16.dp) }
+                .padding(16.dp)
+        }
 
         Column(
             modifier = modifier
@@ -53,12 +55,7 @@ fun ExpandableDetailsCard(content: String, color: Color) {
                     overflow = TextOverflow.Ellipsis
                 )
             }
-            if (!overLineLimit && !isExpanded) {
-                Text(
-                    text = "Read more...",
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
         }
+
     }
 }

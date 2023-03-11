@@ -16,7 +16,7 @@ import androidx.core.net.toUri
 import com.example.space.R
 import com.example.space.core.MediaType
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.nasa_media_library.util.ViewModelUtils
+import com.example.space.nasa_media_library.util.ViewUtils
 
 @Composable
 fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: MediaType) {
@@ -25,7 +25,7 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: MediaType) {
     val mContext = LocalContext.current
     var uri = ""
     val iconSize = 150.dp
-    val utils = ViewModelUtils()
+    val utils = ViewUtils()
 
     jsonArrayAsString?.let {
         if (it.isNotEmpty()) {

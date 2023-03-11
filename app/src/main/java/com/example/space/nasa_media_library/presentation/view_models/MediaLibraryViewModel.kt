@@ -10,7 +10,9 @@ import com.example.space.core.Resource
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.state.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,7 +27,7 @@ class MediaLibraryViewModel @Inject constructor
 
             DataStoreManager.saveLastSearchText(query)
             val success = response.data?.body()
-            val error = response.message
+            val error = response.data?.errorBody()?.string()
             val itemsList = success?.collection?.items
 
             when(response) {
@@ -33,9 +35,9 @@ class MediaLibraryViewModel @Inject constructor
                     _state.value = NasaLibraryState(data = itemsList ?: emptyList())
                 }
                 is Resource.Error -> {
-                    error?.let {
-                        Log.d("Error message - ViewModel", it)
-                        _state.value = NasaLibraryState(error = "Error! $it")
+                    error.let {
+                        Log.d("Error message - ViewModel", it?: "")
+                        _state.value = NasaLibraryState(error = "Error! ${it}")
                     }
                 }
                 is Resource.Loading -> {

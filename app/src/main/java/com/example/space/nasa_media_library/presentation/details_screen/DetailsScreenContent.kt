@@ -12,7 +12,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
+import com.example.space.core.MediaType
+import com.example.space.core.MediaType.Companion.toMediaType
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.example.space.nasa_media_library.util.ViewModelUtils
 import com.example.space.presentation.ProgressBar
 
 @Composable
@@ -22,9 +25,11 @@ fun DetailsScreenContent(
     mediaType: String,
     viewModel: VideoDataViewModel
 ) {
-    val decodedDescription = viewModel.decodeText(description)
+    val utils = ViewModelUtils()
+    val decodedDescription = utils.decodeText(description)
     val context = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.background
+    val mediaType_ = mediaType.toMediaType()
 
     LazyColumn (
         modifier = Modifier
@@ -38,8 +43,8 @@ fun DetailsScreenContent(
 
         item {
             if (viewModel.state.value.isLoading) { ProgressBar() }
-            when (mediaType) {
-                "video" -> {
+            when (mediaType_) {
+                MediaType.VIDEO -> {
                     VideoDetails(
                         context = context,
                         viewModel = viewModel,
@@ -48,7 +53,7 @@ fun DetailsScreenContent(
                         backgroundColor = backgroundColor
                     )
                 }
-                "audio" -> {
+                MediaType.AUDIO -> {
                     AudioDetails(
                         viewModel = viewModel,
                         mediaType = mediaType,
@@ -57,7 +62,7 @@ fun DetailsScreenContent(
                         backgroundColor = backgroundColor
                     )
                 }
-                "image" -> {
+                MediaType.IMAGE -> {
                     ImageDetails(
                         viewModel = viewModel,
                         mediaType = mediaType,

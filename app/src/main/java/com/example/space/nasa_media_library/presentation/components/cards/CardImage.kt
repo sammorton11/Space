@@ -20,13 +20,14 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.example.space.R
+import com.example.space.core.MediaType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CardImage(
     imageLink: String?,
     scale: ContentScale,
-    mediaType: String,
+    mediaType: MediaType,
 ) {
     imageLink?.let { Log.d("Image Link", it) }
 
@@ -41,7 +42,7 @@ fun CardImage(
     ) {
 
         when (mediaType) {
-            "audio" -> {
+            MediaType.AUDIO -> {
                 SubcomposeAsyncImage(
                     model = Image(
                         painter = painterResource(id = R.drawable.tipper_space_man),
@@ -55,7 +56,19 @@ fun CardImage(
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix())
                 )
             }
-            else -> {
+            MediaType.IMAGE -> {
+                SubcomposeAsyncImage(
+                    model = imageLink,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .sizeIn(minHeight = 125.dp)
+                        .semantics { testTag = "Card Image" },
+                    contentScale = scale,
+                    colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                )
+            }
+            MediaType.VIDEO -> {
                 SubcomposeAsyncImage(
                     model = imageLink,
                     contentDescription = "",

@@ -19,7 +19,6 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 @Composable
 fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
     val context = LocalContext.current
-
     val state = videoViewModel.state.value.data
 
     if (state?.isNotBlank() == true) {
@@ -30,7 +29,6 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
                 val mediaItem = MediaItem.Builder()
                     .setUri(uri)
                     .build()
-
                 exoPlayer.setMediaItem(mediaItem)
                 exoPlayer.playWhenReady = true
                 exoPlayer.prepare()
@@ -60,18 +58,4 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
             }
         }
     }
-}
-
-fun getUri(videoViewModel: VideoDataViewModel, mediaType: String): String {
-    val state = videoViewModel.state.value.data
-    state?.let { Log.d("State in getUri", it) }
-    var uri = ""
-    if (state != null) {
-        if (state.isNotEmpty()) {
-            val uriList = videoViewModel.extractUrlsFromJsonArray(state.toString())
-            uri = videoViewModel.fileTypeCheck(uriList, mediaType)
-        }
-    }
-    Log.d("URI in getUri:", uri)
-    return uri
 }

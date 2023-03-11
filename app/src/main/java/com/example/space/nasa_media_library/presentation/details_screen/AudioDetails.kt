@@ -9,6 +9,7 @@ import com.example.space.R
 import com.example.space.core.Constants
 import com.example.space.nasa_media_library.presentation.components.cards.*
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.example.space.nasa_media_library.util.ViewModelUtils
 import com.example.space.presentation.buttons.ShareButton
 import com.example.space.presentation.util.DownloadFile
 
@@ -20,7 +21,8 @@ fun AudioDetails(
     description: String,
     backgroundColor: Color
 ) {
-    val mUri = getUri(viewModel, mediaType)
+    val utils = ViewModelUtils()
+    val mUri = utils.getUri(viewModel, mediaType)
 
     DetailsImage(
         id = R.drawable.earth_from_moon,

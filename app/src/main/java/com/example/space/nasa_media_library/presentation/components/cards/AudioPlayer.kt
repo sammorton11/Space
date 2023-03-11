@@ -9,10 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.R
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.example.space.nasa_media_library.util.ViewModelUtils
 
 @Composable
 fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
@@ -21,11 +24,12 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
     val mContext = LocalContext.current
     var uri = ""
     val iconSize = 150.dp
+    val utils = ViewModelUtils()
 
     jsonArrayAsString?.let {
         if (it.isNotEmpty()) {
-            val uriList = viewModel.extractUrlsFromJsonArray(jsonArrayAsString)
-            uri = viewModel.fileTypeCheck(uriList, mediaType)
+            val uriList = utils.extractUrlsFromJsonArray(jsonArrayAsString)
+            uri = utils.fileTypeCheck(uriList, mediaType)
         }
     }
     val mMediaPlayer = MediaPlayer.create(mContext, uri.toUri())
@@ -38,12 +42,19 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
                 paused.value = false
                 mMediaPlayer?.start()
             },
+            modifier = Modifier.semantics {
+                testTag = "Play Button"
+            }
         ) {
             if (paused.value) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_play_circle_24),
                     contentDescription = "",
-                    Modifier.size(iconSize),
+                    modifier = Modifier
+                        .size(iconSize)
+                        .semantics {
+                            testTag = "Play Button Icon"
+                        },
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -53,13 +64,20 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
             onClick = {
                 paused.value = true
                 mMediaPlayer?.pause()
+            },
+            modifier = Modifier.semantics {
+                testTag = "Pause Button"
             }
         ) {
             if (!paused.value) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_pause_circle_outline_24),
                     contentDescription = "",
-                    modifier = Modifier.size(iconSize),
+                    modifier = Modifier
+                        .size(iconSize)
+                        .semantics {
+                            testTag = "Pause Button Icon"
+                        },
                     tint = MaterialTheme.colorScheme.primary
                 )
             }
@@ -73,12 +91,19 @@ fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: String) {
                     it.seekTo(0)
                     it.pause()
                 }
+            },
+            modifier = Modifier.semantics {
+                testTag = "Restart Button"
             }
         ) {
             Icon(
                 painter = painterResource(id = R.drawable.baseline_restore_25),
                 contentDescription = "",
-                modifier = Modifier.size(iconSize),
+                modifier = Modifier
+                    .size(iconSize)
+                    .semantics {
+                        testTag = "Restart Button Icon"
+                    },
                 tint = MaterialTheme.colorScheme.primary
             )
 

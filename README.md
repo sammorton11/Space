@@ -26,7 +26,7 @@ APIs Used
 Libraries Used
 
 - Retrofit - HTTP client for API calls
-- Coin - Image loading library
+- Coil - Image loading library
 - Flow - Asynchronous data stream library
 - ExoPlayer - Video player
 - Room - Database library for caching data

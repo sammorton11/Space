@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.example.space.core.Constants.IMAGE_JPEG_MIME_TYPE
+import com.example.space.core.MediaDownloadType
 import com.example.space.presentation.buttons.ShareButton
 import com.example.space.presentation.Title
 import com.example.space.presentation.util.DownloadFile
@@ -35,10 +36,10 @@ fun ApodComponentsForLargeScreen(
                     url = image,
                     context = context,
                     filename = hdImage,
-                    mimeType = "image/jpeg",
-                    subPath = "image.jpeg"
+                    mimeType = MediaDownloadType.IMAGE_JPEG.mimeType,
+                    subPath = MediaDownloadType.IMAGE_JPEG.subPath
                 )
-                ShareButton(uri = image.toUri(), type = IMAGE_JPEG_MIME_TYPE)
+                ShareButton(uri = image.toUri(), type = MediaDownloadType.IMAGE_JPEG.mimeType)
             }
             date?.let { Text(text = date, modifier = Modifier.padding(5.dp)) }
             copyright?.let { Text(text = it, modifier = Modifier.padding(5.dp)) }

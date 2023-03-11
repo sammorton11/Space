@@ -12,11 +12,4 @@ object Constants {
 
     // Todo: These could be moved to an enum
     const val IMAGE_JPEG_MIME_TYPE = "image/jpeg"
-    const val IMAGE_JPEG_SUB_PATH = "image.jpeg"
-
-    const val AUDIO_WAV_MIME_TYPE = "audio/x-wav"
-    const val AUDIO_WAV_SUB_PATH = "audio.wav"
-
-    const val VIDEO_MIME_TYPE = "audio/x-wav"
-    const val VIDEO_SUB_PATH = "audio.wav"
 }

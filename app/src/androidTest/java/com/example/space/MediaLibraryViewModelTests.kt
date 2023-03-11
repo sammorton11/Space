@@ -3,10 +3,12 @@ package com.example.space
 import android.util.Log
 import androidx.compose.material3.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.example.space.core.MediaType
 import com.example.space.di.AppModule
 import com.example.space.fakes.FakeMediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.example.space.nasa_media_library.util.ViewModelUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -14,6 +16,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+
+// Todo: Error response is failing
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
 class MediaLibraryViewModelTests {
@@ -27,6 +31,7 @@ class MediaLibraryViewModelTests {
     private lateinit var libraryViewModel: MediaLibraryViewModel
     private lateinit var videoDataViewModel: VideoDataViewModel
     private val repository = FakeMediaLibraryRepository()
+    private val utils = ViewModelUtils()
 
     private val testMP3 = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
     private val testMP4 = "http://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~orig.mp4"
@@ -87,7 +92,7 @@ class MediaLibraryViewModelTests {
      */
     @Test
     fun test_JsonArrayToArrayList() {
-        val result = videoDataViewModel.extractUrlsFromJsonArray(itemJsonLinkForVideo)
+        val result = utils.extractUrlsFromJsonArray(itemJsonLinkForVideo)
         assert(result == expectedJsonArrayConversion)
     }
 
@@ -117,24 +122,24 @@ class MediaLibraryViewModelTests {
         val error = libraryViewModel.state.value.error
         composeTestRule.waitForIdle()
         Log.d("ERROR TEST ERROR TEST", error)
-       // assert(error.isNotBlank())
+        assert(error.isNotBlank())
     }
 
     @Test
     fun test_fileTypeCheckTestImage() {
-        val result = videoDataViewModel.fileTypeCheck(fileTestList, "image")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.IMAGE)
         assert(result == testJPEGAfter)
     }
 
     @Test
     fun test_fileTypeCheckTestAudio() {
-        val result = videoDataViewModel.fileTypeCheck(fileTestList, "audio")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.AUDIO)
         assert(result == testWAVAfter)
     }
 
     @Test
     fun test_fileTypeCheckTestVideo() {
-        val result = videoDataViewModel.fileTypeCheck(fileTestList, "video")
+        val result = utils.fileTypeCheck(fileTestList, MediaType.VIDEO)
         assert(result == testMP4After)
     }
 }

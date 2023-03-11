@@ -7,8 +7,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import com.example.space.nasa_media_library.util.downloadFile
+import com.example.space.nasa_media_library.util.ViewModelUtils
 
 @Composable
 fun DownloadFile(
@@ -18,12 +20,23 @@ fun DownloadFile(
     mimeType: String,
     subPath: String
 ) {
+    val utils = ViewModelUtils()
     Button(
         onClick = {
-            downloadFile(context, url, filename, mimeType, subPath)
+            utils.downloadFile(
+                context = context,
+                url = url,
+                fileName = filename,
+                mimeType = mimeType,
+                subPath = subPath
+            )
             Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
         },
-        modifier = Modifier.padding(15.dp)
+        modifier = Modifier
+            .padding(15.dp)
+            .semantics {
+                testTag = "Download Button"
+            }
     ) {
         Text("Download")
     }

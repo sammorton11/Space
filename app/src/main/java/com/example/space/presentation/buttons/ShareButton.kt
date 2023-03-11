@@ -10,6 +10,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -19,7 +21,11 @@ fun ShareButton(uri: Uri, type: String) {
 
     Button(
         onClick = { shareFile(uri, shareLauncher, type) },
-        modifier = Modifier.padding(bottom = 25.dp)
+        modifier = Modifier
+            .padding(bottom = 25.dp)
+            .semantics {
+                testTag = "Share Button"
+            }
     ) {
         Text(text = "Share")
     }

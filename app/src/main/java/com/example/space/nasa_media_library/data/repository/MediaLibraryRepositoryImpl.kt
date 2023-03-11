@@ -5,7 +5,7 @@ import com.example.space.core.DataStoreManager
 import com.example.space.core.Resource
 import com.example.space.nasa_media_library.data.network.MetadataApi
 import com.example.space.nasa_media_library.data.network.NasaApi
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.NasaLibraryResponse
+import com.example.space.nasa_media_library.domain.models.NasaLibraryResponse
 import com.example.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -29,14 +29,26 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val response = getData(query)
         val errorString = response.errorBody()?.string()
+
         if (errorString?.isNotEmpty() == true) {
             emit(Resource.Error(errorString))
         } else {
             emit(Resource.Success(response))
         }
+
     }.catch { error ->
         emit(Resource.Error(error.toString()))
     }
+
+
+    override fun videoDataFlow(url: String) = flow {
+        emit(Resource.Loading())
+        val response = getVideoData(url)
+        emit(Resource.Success(response))
+    }.catch { throwable ->
+        emit(Resource.Error(throwable.toString()))
+    }
+
 
     override fun savedQueryFlow() = flow {
         emit(dataStore.getLastSearchText())

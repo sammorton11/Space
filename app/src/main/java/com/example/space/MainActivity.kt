@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants.NO_BACKGROUND
@@ -22,13 +21,8 @@ import kotlinx.coroutines.launch
 /*
     Todo (Fix):
         - Error response test is failing for some reason
-        - Clicking cards to navigate to Details screen crashes with null pointer exception
-        -
-        -
-        - App navigation composable and List Card composable do not show up when
-          using SideNavigationDrawer and MainScaffold as the setup composable.
-          These call AppNavigation - Cannot click ListCards to navigate to Details screen in test
-          without this.
+        - ExoPlayer not showing up in tests
+        - Image not showing up in details screen for image cards in tests
  */
 
 
@@ -38,6 +32,7 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         lifecycleScope.launch {
             val dataStore = DataStoreManager
             dataStore.init(applicationContext)
@@ -75,13 +70,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    SpaceTheme {
-
     }
 }

@@ -18,8 +18,10 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.space.core.Constants
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Item
-import com.example.space.nasa_media_library.domain.models.nasa_media_library_models.Link
+import com.example.space.core.MediaType
+import com.example.space.core.MediaType.Companion.toBundle
+import com.example.space.nasa_media_library.domain.models.Item
+import com.example.space.nasa_media_library.domain.models.Link
 import com.example.space.nasa_media_library.presentation.components.cards.CardImage
 import com.example.space.nasa_media_library.presentation.components.cards.CardTitle
 import java.net.URLEncoder
@@ -33,9 +35,15 @@ fun ListCard(
     links: List<Link>?,
     title: String?,
     description: String?,
-    mediaType: String?,
+    mediaType: MediaType,
     imageScaleType: ContentScale
 ){
+
+    val detailsDataUrl = item?.href
+    val roundedCornerAmount = 10
+    val cardElevationAmount = 55.dp
+    val cardImageLink = links?.first()?.href
+
     Card(
         modifier = Modifier
             .wrapContentWidth()
@@ -45,23 +53,28 @@ fun ListCard(
             )
             .semantics { testTag = "List Card" },
         onClick = {
-            val encodedUrl = URLEncoder.encode(item?.href ?: "", Constants.utf8Encoding)
+            val encodedUrl = URLEncoder.encode(detailsDataUrl ?: "", Constants.utf8Encoding)
             val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
+
+            /*
+                Todo:
+                    - Video cards need that video type conditional in the ListCard
+             */
             navController.navigate(
-                "cardDetails/$encodedUrl/$encodedDescription/$mediaType"
+                "cardDetails/$encodedUrl/$encodedDescription/${mediaType.toBundle()}"
             )
         },
-        shape = AbsoluteRoundedCornerShape(10),
-        elevation = CardDefaults.cardElevation(defaultElevation = 55.dp)
+        shape = AbsoluteRoundedCornerShape(roundedCornerAmount),
+        elevation = CardDefaults.cardElevation(defaultElevation = cardElevationAmount)
     ) {
 
         Box(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         ) {
-            mediaType?.let { type ->
+            mediaType.let { type ->
                 CardImage(
-                    imageLink = links?.first()?.href,
+                    imageLink = cardImageLink,
                     scale = imageScaleType,
                     mediaType = type
                 )

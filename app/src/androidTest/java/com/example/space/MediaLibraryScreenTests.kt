@@ -28,6 +28,12 @@ import org.junit.Rule
 import org.junit.Test
 
 
+/**
+ *  Todo:
+ *      - Exoplayer is not loading in tests
+ *      - Images in image card details screen not loading
+ */
+
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
 class MediaLibraryScreenTests {
@@ -111,18 +117,22 @@ class MediaLibraryScreenTests {
     }
 
     @Test
-    fun test_list_card() {
+    fun test_list_card_image() {
         composeTestRule
             .onNodeWithTag("Search", false)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()
             .performTextInput("success")
-        composeTestRule.waitForIdle()
+
         composeTestRule.onNodeWithTag("Search", false)
             .performImeAction()
-        composeTestRule.waitForIdle()
-        Thread.sleep(2000)
+
+        composeTestRule.waitUntil {
+            composeTestRule
+                .onAllNodes(hasTestTag("List Card"), false)
+                .fetchSemanticsNodes().size > 0
+        }
 
         val cards = composeTestRule
             .onAllNodes(hasTestTag("List Card"), false)
@@ -130,11 +140,120 @@ class MediaLibraryScreenTests {
             cards[i].assertIsDisplayed()
                 .assertHasClickAction()
         }
-        cards.onFirst()
-            .performClick()
+        val cardImage = cards.onFirst()
+        cardImage.performClick()
 
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("Details Screen", false)
+            .assertIsDisplayed()
+        composeTestRule.waitUntil {
+            composeTestRule.onAllNodes(hasTestTag("Expandable Details Card - Clickable"))
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule.onNodeWithTag("Expandable Details Card - Clickable",false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        composeTestRule.onNodeWithTag("Download Button",false)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Share Button",false)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun test_list_card_video() {
+        composeTestRule
+            .onNodeWithTag("Search", false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .performClick()
+            .performTextInput("success")
+
+        composeTestRule.onNodeWithTag("Search", false)
+            .performImeAction()
+
+        composeTestRule.waitUntil {
+            composeTestRule
+                .onAllNodes(hasTestTag("List Card"), false)
+                .fetchSemanticsNodes().size > 0
+        }
+
+        val cards = composeTestRule
+            .onAllNodes(hasTestTag("List Card"), false)
+        for (i in cards.fetchSemanticsNodes().indices) {
+            cards[i].assertIsDisplayed()
+                .assertHasClickAction()
+        }
+        val cardVideo = cards[1]
+        cardVideo.performClick()
+
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("Details Screen", false)
+            .assertIsDisplayed()
+
+        composeTestRule.waitUntil {
+            composeTestRule.onAllNodes(hasTestTag("Expandable Details Card - Clickable"))
+                .fetchSemanticsNodes().size == 1
+        }
+
+        composeTestRule.onNodeWithTag("Expandable Details Card - Clickable",false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        composeTestRule.onNodeWithTag("Download Button",false)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Share Button",false)
+            .assertIsDisplayed()
+        composeTestRule.waitForIdle()
+    }
+
+    @Test
+    fun test_list_card_audio() {
+        composeTestRule
+            .onNodeWithTag("Search", false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .performClick()
+            .performTextInput("success")
+
+        composeTestRule.onNodeWithTag("Search", false)
+            .performImeAction()
+
+        composeTestRule.waitUntil {
+            composeTestRule
+                .onAllNodes(hasTestTag("List Card"), false)
+                .fetchSemanticsNodes().size > 0
+        }
+
+        val cards = composeTestRule
+            .onAllNodes(hasTestTag("List Card"), false)
+        for (i in cards.fetchSemanticsNodes().indices) {
+            cards[i].assertIsDisplayed()
+                .assertHasClickAction()
+        }
+        val cardAudio = cards.onLast()
+        cardAudio.performClick()
+
+        composeTestRule.waitForIdle()
+        composeTestRule.onNodeWithTag("Details Screen", false)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Play Button", false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        composeTestRule.onNodeWithTag("Restart Button",false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        composeTestRule.onNodeWithTag("Details Image Card",false)
+            .assertIsDisplayed()
+        composeTestRule.waitUntil {
+            composeTestRule.onAllNodes(hasTestTag("Expandable Details Card - Clickable"))
+                .fetchSemanticsNodes().size == 1
+        }
+        composeTestRule.onNodeWithTag("Expandable Details Card - Clickable",false)
+            .assertIsDisplayed()
+            .assertHasClickAction()
+        composeTestRule.onNodeWithTag("Download Button",false)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithTag("Share Button",false)
             .assertIsDisplayed()
     }
 }

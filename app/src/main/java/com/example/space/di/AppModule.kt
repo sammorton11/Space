@@ -2,7 +2,6 @@ package com.example.space.di
 
 import com.example.space.core.Constants.BASE_URL
 import com.example.space.core.Constants.BASE_URL_MARS_DATA
-import com.example.space.mars_weather.data.MarsWeatherApi
 import com.example.space.nasa_media_library.data.network.MetadataApi
 import com.example.space.nasa_media_library.data.network.NasaApi
 import com.example.space.nasa_media_library.data.repository.MediaLibraryRepositoryImpl
@@ -32,16 +31,6 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(NasaApi::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMarsWeatherApi(): MarsWeatherApi {
-        return Retrofit.Builder()
-            .baseUrl(BASE_URL_MARS_DATA)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(MarsWeatherApi::class.java)
     }
 
     @Provides

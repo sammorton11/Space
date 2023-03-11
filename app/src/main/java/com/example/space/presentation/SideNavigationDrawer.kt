@@ -57,26 +57,6 @@ import kotlinx.coroutines.launch
                                 .fillMaxWidth()
                                 .padding(paddingValue),
                             onClick = {
-                                navController.navigate("mars_weather_screen")
-                                title.value = "Mars Weather"
-                                scope.launch(Dispatchers.Main) {
-                                    drawerState.close()
-                                }
-                            }
-                        ) {
-                            Text(
-                                text = "Mars Weather",
-                                modifier = Modifier.padding(20.dp)
-                            )
-                        }
-                    }
-
-                    item {
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(paddingValue),
-                            onClick = {
                                 navController.navigate("apod_screen")
                                 title.value = "Picture of the Day"
                                 scope.launch(Dispatchers.Main) {

@@ -23,6 +23,12 @@ import kotlinx.coroutines.launch
         - Error response test is failing for some reason
         - ExoPlayer not showing up in tests
         - Image not showing up in details screen for image cards in tests
+
+
+        Todo:
+            - Add a 'Title' key to the app nav route in app navigation
+            - Details Screen needs to take a title string as an argument
+            - Use the Title composable within the Details Screen composable
  */
 
 

@@ -9,12 +9,14 @@ fun DetailsScreen(
     url: String,
     description: String,
     mediaType: String,
+    title: String?,
     viewModel: VideoDataViewModel = hiltViewModel()
 ) {
     DetailsScreenContent(
         url = url,
         description = description,
         mediaType = mediaType,
+        title = title,
         viewModel = viewModel
     )
 }

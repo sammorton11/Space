@@ -41,7 +41,7 @@ fun AppNavigation(
 
         // Todo: Pass in the title and date
         composable(
-            "cardDetails/{url}/{description}/{mediaType}",
+            "cardDetails/{url}/{description}/{mediaType}/{title}",
             arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
@@ -50,13 +50,15 @@ fun AppNavigation(
             val descriptionId = backStackEntry.arguments?.getString("description")
             val urlId = backStackEntry.arguments?.getString("url")
             val mediaType = backStackEntry.arguments?.getString("mediaType")
+            val title = backStackEntry.arguments?.getString("title")
 
             if (urlId != null && descriptionId != null && mediaType != null) {
                 DetailsScreen(
                     url = urlId,
                     description = descriptionId,
                     mediaType = mediaType,
-                    viewModel = videoViewModel
+                    viewModel = videoViewModel,
+                    title = title
                 )
             }
         }

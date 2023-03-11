@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import com.example.space.nasa_media_library.util.ViewModelUtils
+import com.example.space.nasa_media_library.util.ViewUtils
 
 @Composable
 fun DownloadFile(
@@ -20,7 +20,7 @@ fun DownloadFile(
     mimeType: String,
     subPath: String
 ) {
-    val utils = ViewModelUtils()
+    val utils = ViewUtils()
     Button(
         onClick = {
             utils.downloadFile(

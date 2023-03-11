@@ -56,12 +56,8 @@ fun ListCard(
             val encodedUrl = URLEncoder.encode(detailsDataUrl ?: "", Constants.utf8Encoding)
             val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
 
-            /*
-                Todo:
-                    - Video cards need that video type conditional in the ListCard
-             */
             navController.navigate(
-                "cardDetails/$encodedUrl/$encodedDescription/${mediaType.toBundle()}"
+                "cardDetails/$encodedUrl/$encodedDescription/${mediaType.toBundle()}/$title"
             )
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount),

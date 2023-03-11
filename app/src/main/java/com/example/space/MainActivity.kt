@@ -8,10 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.example.space.core.Constants.NO_BACKGROUND
 import com.example.space.core.DataStoreManager
+import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.presentation.MainScaffold
 import com.example.space.presentation.SideNavigationDrawer
 import com.example.space.ui.theme.SpaceTheme
@@ -20,15 +22,8 @@ import kotlinx.coroutines.launch
 
 /*
     Todo (Fix):
-        - Error response test is failing for some reason
         - ExoPlayer not showing up in tests
         - Image not showing up in details screen for image cards in tests
-
-
-        Todo:
-            - Add a 'Title' key to the app nav route in app navigation
-            - Details Screen needs to take a title string as an argument
-            - Use the Title composable within the Details Screen composable
  */
 
 
@@ -58,6 +53,9 @@ class MainActivity : ComponentActivity() {
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
                     val title = remember { mutableStateOf("NASA Media Library") }
 
+                    // just for testing
+                    val vm: MediaLibraryViewModel = hiltViewModel()
+                    vm.getData("surface of venus")
                     SideNavigationDrawer(
                         navController = navController,
                         drawerState = drawerState,

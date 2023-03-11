@@ -8,7 +8,7 @@ import com.example.space.di.AppModule
 import com.example.space.fakes.FakeMediaLibraryRepository
 import com.example.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.example.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.example.space.nasa_media_library.util.ViewModelUtils
+import com.example.space.nasa_media_library.util.ViewUtils
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -31,7 +31,7 @@ class MediaLibraryViewModelTests {
     private lateinit var libraryViewModel: MediaLibraryViewModel
     private lateinit var videoDataViewModel: VideoDataViewModel
     private val repository = FakeMediaLibraryRepository()
-    private val utils = ViewModelUtils()
+    private val utils = ViewUtils()
 
     private val testMP3 = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
     private val testMP4 = "http://images-assets.nasa.gov/video/NHQ_2019_0508_We Are NASA/NHQ_2019_0508_We Are NASA~orig.mp4"

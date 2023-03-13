@@ -1,5 +1,8 @@
 package com.samm.space.di
 
+import com.google.gson.GsonBuilder
+import com.samm.space.core.Constants.BASE_URL
+import com.samm.space.core.Constants.BASE_URL_MARS_DATA
 import com.samm.space.nasa_media_library.data.network.MetadataApi
 import com.samm.space.nasa_media_library.data.network.NasaApi
 import com.samm.space.nasa_media_library.data.repository.MediaLibraryRepositoryImpl
@@ -7,9 +10,6 @@ import com.samm.space.nasa_media_library.domain.repository.MediaLibraryRepositor
 import com.samm.space.picture_of_the_day.data.ApodApi
 import com.samm.space.picture_of_the_day.data.repository.ApodRepositoryImpl
 import com.samm.space.picture_of_the_day.domain.repository.ApodRepository
-import com.google.gson.GsonBuilder
-import com.samm.space.core.Constants.BASE_URL
-import com.samm.space.core.Constants.BASE_URL_MARS_DATA
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

@@ -42,7 +42,10 @@ fun DetailsScreenContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        viewModel.getVideoData(url)
+        viewModel.getVideoData(
+            url = url,
+            context = context
+        )
 
         item {
             if (viewModel.state.value.isLoading) { ProgressBar() }

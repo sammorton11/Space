@@ -19,7 +19,7 @@ NASA API
 Libraries Used
 
 - Retrofit - HTTP client for API calls
-- Coil - Image loading library
+- Coin - Image loading library
 - Flow - Asynchronous data stream library
 - ExoPlayer - Video player
 - Room - Database library for caching data

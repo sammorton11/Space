@@ -18,10 +18,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
-import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.R
 import com.samm.space.core.MediaType
+import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
+import com.samm.space.nasa_media_library.util.ViewUtils
 
 @Composable
 fun AudioPlayer(viewModel: VideoDataViewModel, mediaType: MediaType) {

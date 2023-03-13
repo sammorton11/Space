@@ -1,5 +1,6 @@
 package com.samm.space.di
 
+import com.google.gson.GsonBuilder
 import com.samm.space.core.Constants
 import com.samm.space.fakes.FakeApodRepository
 import com.samm.space.fakes.FakeMediaLibraryRepository
@@ -7,7 +8,6 @@ import com.samm.space.nasa_media_library.data.network.MetadataApi
 import com.samm.space.nasa_media_library.data.network.NasaApi
 import com.samm.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import com.samm.space.picture_of_the_day.domain.repository.ApodRepository
-import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

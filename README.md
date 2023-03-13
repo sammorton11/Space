@@ -7,19 +7,12 @@ The NASA Space App is an Android application built using Kotlin and Jetpack Comp
 Features
 
 - Browse and search images and videos from NASA
-- View the latest Mars weather information
 - View the Astronomy Picture of the Day (APOD)
-- Download and share space related files
-- Utilize a staggered adaptive grid layout to view content
-- Access a side navigation bar and action menu
-- Implement the Model-View-ViewModel (MVVM) architecture
-- Use Material Design guidelines for a polished user interface
+- Download and share files
 
 
-APIs Used
-
-- Mars Rover Photos API
-- Mars Weather Service API
+NASA API
+- Image Video Library API
 - Astronomy Picture of the Day API
 
 

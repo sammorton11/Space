@@ -1,4 +1,4 @@
-package com.example.space.presentation.util
+package com.samm.space.presentation.util
 
 import android.app.DownloadManager
 import android.content.BroadcastReceiver

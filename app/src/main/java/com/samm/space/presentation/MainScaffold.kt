@@ -23,6 +23,7 @@ fun MainScaffold(
     title: MutableState<String>,
     navController: NavHostController
 ) {
+
     Scaffold(
         topBar = {
             MyToolbar(

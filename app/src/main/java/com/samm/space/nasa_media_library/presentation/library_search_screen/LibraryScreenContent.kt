@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.samm.space.core.Constants.NO_BACKGROUND
@@ -34,6 +35,7 @@ fun LibraryScreenContent(
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex }}
     val window = rememberWindowInfo()
     val imageScaleType = ContentScale.FillBounds
+    val context = LocalContext.current
 
     val gridCells = when (window.screenWidthInfo) {
         is WindowInfo.WindowType.Compact -> 2
@@ -61,7 +63,10 @@ fun LibraryScreenContent(
         if (scrollState.value == 0 || list.size <= 2) {
             SearchField(
                 onSearch = { query ->
-                    viewModel.getData(query)
+                    viewModel.getData(
+                        query = query,
+                        context = context
+                    )
                     filterType.value = ""
                 },
                 savedQuery = viewModel.getSavedSearchText()

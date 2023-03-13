@@ -1,6 +1,8 @@
 package com.samm.space.nasa_media_library.presentation.view_models
 
-import android.util.Log
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -22,29 +24,35 @@ class MediaLibraryViewModel @Inject constructor
     private val _state = mutableStateOf(NasaLibraryState())
     val state: State<NasaLibraryState> = _state
 
-    fun getData(query: String) {
-        mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
+    fun getData(query: String, context: Context) {
 
-            DataStoreManager.saveLastSearchText(query)
-            val success = response.data?.body()
-            val error = response.data?.errorBody()?.string()
-            val itemsList = success?.collection?.items
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
+            mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
 
-            when(response) {
-                is Resource.Success -> {
-                    _state.value = NasaLibraryState(data = itemsList ?: emptyList())
-                }
-                is Resource.Error -> {
-                    error.let {
-                        Log.d("Error message - ViewModel", it?: "")
-                        _state.value = NasaLibraryState(error = "Error! ${it}")
+                DataStoreManager.saveLastSearchText(query)
+                val success = response.data?.body()
+                val error = response.data?.errorBody()?.string()
+                val itemsList = success?.collection?.items
+
+                when(response) {
+                    is Resource.Success -> {
+                        _state.value = NasaLibraryState(data = itemsList ?: emptyList())
+                    }
+                    is Resource.Error -> {
+                        error.let {
+                            _state.value = NasaLibraryState(error = "Error! ${it}")
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _state.value = NasaLibraryState(isLoading = true)
                     }
                 }
-                is Resource.Loading -> {
-                    _state.value = NasaLibraryState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
+        } else {
+            _state.value = NasaLibraryState(error = "Internet Connection Failure")
+        }
     }
 
     fun getSavedSearchText(): String {

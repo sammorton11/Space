@@ -1,9 +1,12 @@
 package com.samm.space.nasa_media_library.presentation.components.other
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -11,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.samm.space.nasa_media_library.util.myTextFieldColors
@@ -25,9 +29,20 @@ fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
     OutlinedTextField(
         value = query,
         onValueChange = { query = it },
+        trailingIcon = {
+            Icon(
+                Icons.Default.Clear,
+                contentDescription = "clear text",
+                modifier = Modifier
+                    .clickable {
+                        query = ""
+                    }
+            )
+        },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 15.dp, vertical = 10.dp)
+            .padding(horizontal = 20.dp)
+            .padding(bottom = 15.dp)
             .semantics {
                testTag = "Search"
             },
@@ -40,7 +55,10 @@ fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
         colors = myTextFieldColors(primaryColor),
         placeholder = {
             savedQuery?.let {
-                Text(text = it)
+                Text(
+                    text = it,
+                    fontStyle = FontStyle.Italic
+                )
             }
         }
     )

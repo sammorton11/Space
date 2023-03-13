@@ -29,17 +29,9 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
         val response = getData(query)
         val errorString = response.errorBody()?.string()
-
-        if (errorString?.isNotEmpty() == true) {
-            emit(Resource.Error(errorString))
-        } else {
-            emit(Resource.Success(response))
-        }
-
-    }.catch { error ->
-        emit(Resource.Error(error.toString()))
+        emit(Resource.Error(errorString))
+        emit(Resource.Success(response))
     }
-
 
     override fun videoDataFlow(url: String) = flow {
         emit(Resource.Loading())

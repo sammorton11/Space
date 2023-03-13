@@ -21,6 +21,7 @@ fun AppNavigation(
     backgroundType: MutableState<Int>,
     navController: NavHostController
 ) {
+
     val videoViewModel: VideoDataViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
@@ -63,7 +64,6 @@ fun AppNavigation(
         }
 
         composable("apod_screen"){
-            apodViewModel.getApodState()
             ApodScreen(viewModel = apodViewModel)
         }
     }

@@ -34,6 +34,7 @@ class ApodViewModelTests {
         }
     }
 
+
     @Test
     fun test_response_is_error(){
         fakeRepository = FakeApodRepository("error")

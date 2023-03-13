@@ -28,11 +28,12 @@ import kotlinx.coroutines.launch
         - ExoPlayer not showing up in tests
         - Image not showing up in details screen for image cards in tests
         - Replace hardcoded strings
+        - All error tests are failing - I must be handling errors incorrectly
 
         Todo:
-            - Network logic shouldnt be in the main activity but im not sure how to handle missing network errors
+            - Network logic shouldn't be in the main activity but im not sure how to handle missing network errors
             - Try StateFlow
-            - Use an init block for the getData methods - maybe just for the apod screen
+
  */
 
 

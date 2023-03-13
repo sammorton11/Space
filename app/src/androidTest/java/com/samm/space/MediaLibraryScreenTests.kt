@@ -226,24 +226,31 @@ class MediaLibraryScreenTests {
 
         val cards = composeTestRule
             .onAllNodes(hasTestTag("List Card"), false)
+
         for (i in cards.fetchSemanticsNodes().indices) {
             cards[i].assertIsDisplayed()
                 .assertHasClickAction()
         }
-        val cardAudio = cards.onLast()
+
+        val cardAudio = cards.onLast() // fake audio card is the last in the list of fake cards
+
         cardAudio.performClick()
 
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag("Details Screen", false)
             .assertIsDisplayed()
+
         composeTestRule.onNodeWithTag("Play Button", false)
             .assertIsDisplayed()
             .assertHasClickAction()
+
         composeTestRule.onNodeWithTag("Restart Button",false)
             .assertIsDisplayed()
             .assertHasClickAction()
+
         composeTestRule.onNodeWithTag("Details Image Card",false)
             .assertIsDisplayed()
+
         composeTestRule.waitUntil {
             composeTestRule.onAllNodes(hasTestTag("Expandable Details Card - Clickable"))
                 .fetchSemanticsNodes().size == 1
@@ -251,8 +258,10 @@ class MediaLibraryScreenTests {
         composeTestRule.onNodeWithTag("Expandable Details Card - Clickable",false)
             .assertIsDisplayed()
             .assertHasClickAction()
+
         composeTestRule.onNodeWithTag("Download Button",false)
             .assertIsDisplayed()
+
         composeTestRule.onNodeWithTag("Share Button",false)
             .assertIsDisplayed()
     }

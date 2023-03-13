@@ -18,12 +18,11 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
     val _state: MutableState<ApodState> = mutableStateOf(ApodState())
     val state: State<ApodState> = _state
     init {
-
-            getApodState()
-
+        getApodState()
     }
 
     fun getApodState() {
+
             repository.getApodData().onEach { response ->
                 when(response) {
                     is Resource.Loading -> {
@@ -37,6 +36,5 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
                     }
                 }
             }.launchIn(viewModelScope)
-
     }
 }

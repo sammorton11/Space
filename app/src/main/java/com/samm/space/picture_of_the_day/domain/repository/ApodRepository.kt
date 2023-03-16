@@ -5,6 +5,6 @@ import com.samm.space.picture_of_the_day.domain.models.Apod
 import kotlinx.coroutines.flow.Flow
 
 interface ApodRepository {
-    suspend fun getData(): Apod
-    fun getApodData(): Flow<Resource<Apod>>
+    suspend fun getData(): Apod?
+    fun getApodData(): Flow<Resource<Apod?>>
 }

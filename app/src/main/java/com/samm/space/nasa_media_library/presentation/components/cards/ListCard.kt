@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.library_search_screen
+package com.samm.space.nasa_media_library.presentation.components.cards
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -22,8 +22,6 @@ import com.samm.space.core.MediaType
 import com.samm.space.core.MediaType.Companion.toBundle
 import com.samm.space.nasa_media_library.domain.models.Item
 import com.samm.space.nasa_media_library.domain.models.Link
-import com.samm.space.nasa_media_library.presentation.components.cards.CardImage
-import com.samm.space.nasa_media_library.presentation.components.cards.CardTitle
 import java.net.URLEncoder
 
 @OptIn(ExperimentalMaterial3Api::class)

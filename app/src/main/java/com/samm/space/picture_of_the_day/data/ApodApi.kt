@@ -11,5 +11,5 @@ interface ApodApi {
     suspend fun getApod(
         @Query("api_key")
         apiKey: String = API_KEY
-    ): Apod
+    ): Apod?
 }

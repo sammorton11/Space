@@ -10,7 +10,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class ApodRepositoryImpl @Inject constructor(private val api: ApodApi): ApodRepository {
-    override suspend fun getData(): Apod {
+    override suspend fun getData(): Apod? {
         return api.getApod()
     }
     override fun getApodData() = flow {

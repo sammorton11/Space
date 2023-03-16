@@ -43,8 +43,7 @@ fun DetailsScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         viewModel.getVideoData(
-            url = url,
-            context = context
+            url = url
         )
 
         item {

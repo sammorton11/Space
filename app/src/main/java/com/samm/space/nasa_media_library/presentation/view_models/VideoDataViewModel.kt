@@ -1,8 +1,5 @@
 package com.samm.space.nasa_media_library.presentation.view_models
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -21,30 +18,22 @@ class VideoDataViewModel @Inject constructor (private val mediaLibraryRepository
     private val _state = mutableStateOf(VideoDataState())
     val state: State<VideoDataState> = _state
 
-    fun getVideoData(url: String, context: Context) {
+    fun getVideoData(url: String) {
+        mediaLibraryRepository.videoDataFlow(url).onEach { response ->
+            val videoData = response.data
 
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkCapabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
-        if (networkCapabilities != null && networkCapabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)) {
-            mediaLibraryRepository.videoDataFlow(url).onEach { response ->
-                val videoData = response.data?.body()
-                val error = response.data?.errorBody()
-
-                when (response) {
-                    is Resource.Success -> {
-                        _state.value = VideoDataState(data = videoData)
-                    }
-                    is Resource.Error -> {
-                        _state.value = VideoDataState(error = error.toString())
-                    }
-                    is Resource.Loading -> {
-                        _state.value = VideoDataState(isLoading = true)
-                    }
+            when (response) {
+                is Resource.Success -> {
+                    _state.value = VideoDataState(data = videoData)
                 }
-            }.launchIn(viewModelScope)
-        } else {
-            _state.value = VideoDataState(error = "Internet Connection Failure")
-        }
+                is Resource.Error -> {
+                    _state.value = response.message?.let { VideoDataState(error = it) }!!
+                }
+                is Resource.Loading -> {
+                    _state.value = VideoDataState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 }
 

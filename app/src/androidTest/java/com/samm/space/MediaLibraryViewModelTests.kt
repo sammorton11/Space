@@ -9,7 +9,6 @@ import com.samm.space.fakes.FakeMediaLibraryRepository
 import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
-import com.samm.space.util.TestContext.appContext
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
@@ -61,7 +60,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_getData_success() {
-        libraryViewModel.getData("success", appContext)
+        libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val itemsList = libraryViewModel.state.value.data
         val dataList = itemsList.first()?.data
@@ -71,7 +70,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_getData_error() {
-        libraryViewModel.getData("error", appContext)
+        libraryViewModel.getData("error")
         composeTestRule.waitForIdle()
         val error = libraryViewModel.state.value.error
         composeTestRule.waitForIdle()
@@ -81,7 +80,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_getData_empty() {
-        libraryViewModel.getData("empty", appContext)
+        libraryViewModel.getData("empty")
         composeTestRule.waitForIdle()
         val itemsList = libraryViewModel.state.value.data
         assert(itemsList.isEmpty())
@@ -99,7 +98,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_successful_response() {
-        libraryViewModel.getData("success", appContext)
+        libraryViewModel.getData("success")
         composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
         list.forEach { item ->
@@ -110,7 +109,7 @@ class MediaLibraryViewModelTests {
 
     @Test
     fun test_empty_response() {
-        libraryViewModel.getData("empty", appContext)
+        libraryViewModel.getData("empty")
         composeTestRule.waitForIdle()
         val list = libraryViewModel.state.value.data
         assert(list.isEmpty())
@@ -119,7 +118,7 @@ class MediaLibraryViewModelTests {
     // Error test fails for some reason
     @Test
     fun test_error_response() {
-        libraryViewModel.getData("error", appContext)
+        libraryViewModel.getData("error")
         composeTestRule.waitForIdle()
         val error = libraryViewModel.state.value.error
         composeTestRule.waitForIdle()

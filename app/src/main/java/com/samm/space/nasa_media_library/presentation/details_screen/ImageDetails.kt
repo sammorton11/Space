@@ -12,8 +12,8 @@ import com.samm.space.nasa_media_library.presentation.components.cards.DetailsIm
 import com.samm.space.nasa_media_library.presentation.components.cards.ExpandableDetailsCard
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
-import com.samm.space.presentation.Title
 import com.samm.space.presentation.buttons.ShareButton
+import com.samm.space.presentation.labels.Title
 import com.samm.space.presentation.util.DownloadFile
 
 @Composable

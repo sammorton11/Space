@@ -9,7 +9,8 @@ import com.samm.space.nasa_media_library.domain.models.NasaLibraryResponse
 import com.samm.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import retrofit2.Response
+import retrofit2.HttpException
+import java.io.IOException
 import javax.inject.Inject
 
 class MediaLibraryRepositoryImpl @Inject constructor(
@@ -17,30 +18,40 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         private val apiMetaData: MetadataApi
     ): MediaLibraryRepository {
 
-    private val dataStore = DataStoreManager
-    override suspend fun getData(query: String): Response<NasaLibraryResponse> {
-        Log.d("Repo response:", "${api.fetchData(query)}")
+    private val dataStore = DataStoreManager // should I inject this?
+    override suspend fun getData(query: String): NasaLibraryResponse {
         return api.fetchData(query)
     }
-    override suspend fun getVideoData(url: String): Response<String> {
+    override suspend fun getVideoData(url: String): String? {
         return apiMetaData.fetchData(url)
     }
     override fun searchImageVideoLibrary(query: String) = flow {
-        emit(Resource.Loading())
-        val response = getData(query)
-        val errorString = response.errorBody()?.string()
-        emit(Resource.Error(errorString))
-        emit(Resource.Success(response))
+        try {
+            emit(Resource.Loading())
+            val response = getData(query)
+            emit(Resource.Success(response))
+        }
+        catch (e: HttpException){
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+        }
+        catch (e: IOException){
+            emit(Resource.Error("Check Internet Connection"))
+        }
     }
 
     override fun videoDataFlow(url: String) = flow {
-        emit(Resource.Loading())
-        val response = getVideoData(url)
-        emit(Resource.Success(response))
-    }.catch { throwable ->
-        emit(Resource.Error(throwable.toString()))
+        try {
+            emit(Resource.Loading())
+            val response = getVideoData(url)
+            emit(Resource.Success(response))
+        }
+        catch (e: HttpException){
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+        }
+        catch (e: IOException){
+            emit(Resource.Error("Check Internet Connection"))
+        }
     }
-
 
     override fun savedQueryFlow() = flow {
         emit(dataStore.getLastSearchText())

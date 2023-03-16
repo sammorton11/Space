@@ -1,9 +1,6 @@
 package com.samm.space
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -32,7 +29,10 @@ import kotlinx.coroutines.launch
 
         Todo:
             - Network logic shouldn't be in the main activity but im not sure how to handle missing network errors
-            - Try StateFlow
+            - Try StateFlow instead of State/MutableState
+            - Alright.. didn't need to use Response<T> for the get request response - can remove that from the rest of the code
+            - Progress bar or placeholder image for apod screen when image is loading
+            - Options menu should change when on details or apod screens
 
  */
 
@@ -49,11 +49,6 @@ class MainActivity : ComponentActivity() {
             dataStore.init(applicationContext)
         }
 
-        // Using this to handle missing network crashes - this is a temp fix until I find a better one
-        val cm = applicationContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetwork: NetworkInfo? = cm.activeNetworkInfo
-        val isConnected: Boolean = activeNetwork?.isConnected == true
-
         setContent {
             SpaceTheme {
                 Surface(
@@ -68,25 +63,19 @@ class MainActivity : ComponentActivity() {
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
                     val title = remember { mutableStateOf("NASA Media Library") }
 
-                    if (isConnected) {
-                        SideNavigationDrawer(
-                            navController = navController,
+                    SideNavigationDrawer(
+                        navController = navController,
+                        drawerState = drawerState,
+                        scope = scope,
+                        title = title
+                    ) {
+                        MainScaffold(
+                            filterType = filterType,
                             drawerState = drawerState,
                             scope = scope,
-                            title = title
-                        ) {
-                            MainScaffold(
-                                filterType = filterType,
-                                drawerState = drawerState,
-                                scope = scope,
-                                backgroundType = backgroundType,
-                                title = title,
-                                navController = navController
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = "Connection Failed - Please connect to a Service Provider or Wifi and restart the application"
+                            backgroundType = backgroundType,
+                            title = title,
+                            navController = navController
                         )
                     }
                 }

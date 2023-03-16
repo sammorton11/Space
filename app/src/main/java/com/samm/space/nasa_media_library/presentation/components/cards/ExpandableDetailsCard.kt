@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -45,17 +46,18 @@ fun ExpandableDetailsCard(content: String, color: Color) {
         ) {
 
             CompositionLocalProvider {
-                Text(
-                    text = content,
-                    maxLines = if (isExpanded) Int.MAX_VALUE else lineLimit,
-                    softWrap = true,
-                    modifier = Modifier
-                        .semantics { testTag = "Details Text" }
-                        .padding(top = 8.dp),
-                    overflow = TextOverflow.Ellipsis
-                )
+                SelectionContainer {
+                    Text(
+                        text = content,
+                        maxLines = if (isExpanded) Int.MAX_VALUE else lineLimit,
+                        softWrap = true,
+                        modifier = Modifier
+                            .semantics { testTag = "Details Text" }
+                            .padding(top = 8.dp),
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
             }
         }
-
     }
 }

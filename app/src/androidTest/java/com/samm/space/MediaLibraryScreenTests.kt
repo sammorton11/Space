@@ -131,7 +131,7 @@ class MediaLibraryScreenTests {
         composeTestRule.waitUntil {
             composeTestRule
                 .onAllNodes(hasTestTag("List Card"), false)
-                .fetchSemanticsNodes().size > 0
+                .fetchSemanticsNodes().isNotEmpty()
         }
 
         val cards = composeTestRule
@@ -221,7 +221,7 @@ class MediaLibraryScreenTests {
         composeTestRule.waitUntil {
             composeTestRule
                 .onAllNodes(hasTestTag("List Card"), false)
-                .fetchSemanticsNodes().size > 0
+                .fetchSemanticsNodes().isNotEmpty()
         }
 
         val cards = composeTestRule

@@ -19,7 +19,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     ): MediaLibraryRepository {
 
     private val dataStore = DataStoreManager // should I inject this?
-    override suspend fun getData(query: String): NasaLibraryResponse {
+    override suspend fun getData(query: String): NasaLibraryResponse? {
         return api.fetchData(query)
     }
     override suspend fun getVideoData(url: String): String? {

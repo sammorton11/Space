@@ -9,5 +9,5 @@ interface NasaApi {
     suspend fun fetchData(
         @Query("q")
         query: String
-    ): NasaLibraryResponse
+    ): NasaLibraryResponse?
 }

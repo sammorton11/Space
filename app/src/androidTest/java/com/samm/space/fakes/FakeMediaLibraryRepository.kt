@@ -5,64 +5,63 @@ import com.samm.space.nasa_media_library.domain.models.*
 import com.samm.space.nasa_media_library.domain.models.Collection
 import com.samm.space.nasa_media_library.domain.repository.MediaLibraryRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.ResponseBody.Companion.toResponseBody
-import retrofit2.Response
+import retrofit2.HttpException
+import java.io.IOException
 
 class FakeMediaLibraryRepository: MediaLibraryRepository {
 
-    override suspend fun getData(query: String): Response<NasaLibraryResponse> {
+    override suspend fun getData(query: String): NasaLibraryResponse? {
         return when (query) {
             "success" -> {
-                Response.success(fakeLibraryResponse)
+                fakeLibraryResponse
             }
             "error" -> {
-                Response.error(
-                    500,
-                    "{\"message\": \"Error fetching data\"}"
-                        .toResponseBody("application/json".toMediaTypeOrNull())
-                )
+                null
             }
             "empty" -> {
-                Response.success(null)
+                NasaLibraryResponse(
+                    collection = Collection(
+                        version = "1.0",
+                        href = "https://images-assets.nasa.gov/image/NHQ201906010004/collection.json",
+                        items = emptyList()
+                    )
+                )
             }
             else -> {
-                Response.success(null)
+                null
             }
         }
     }
 
-    override suspend fun getVideoData(url: String): Response<String> {
+    override suspend fun getVideoData(url: String): String? {
         return when (url) {
             "success" -> {
-                Response.success(itemJsonLinkForVideo)
+                itemJsonLinkForVideo
             }
             "error" -> {
-                Response.error(
-                    500,
-                    "{\"message\": \"Error fetching data\"}"
-                        .toResponseBody("application/json".toMediaTypeOrNull())
-                )
+                null
             }
             "empty" -> {
-                Response.success(null)
+                ""
             }
             else -> {
-                Response.success(null)
+                null
             }
         }
     }
 
-    // todo: errors not going through - this is an experiment IP
     override fun searchImageVideoLibrary(query: String) = flow {
-        emit(Resource.Loading())
-        val response = getData(query)
-        if (!response.errorBody()?.string().isNullOrEmpty()) {
-            emit(Resource.Error(response.errorBody()?.string()))
-        } else {
+        try {
+            emit(Resource.Loading())
+            val response = getData(query)
             emit(Resource.Success(response))
+        }
+        catch (e: HttpException){
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+        }
+        catch (e: IOException){
+            emit(Resource.Error("Check Internet Connection"))
         }
     }
 
@@ -71,11 +70,17 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
     }
 
     override fun videoDataFlow(url: String) = flow {
-        emit(Resource.Loading())
-        val response = getVideoData(url)
-        emit(Resource.Success(response))
-    }.catch { throwable ->
-        emit(Resource.Error(throwable.toString()))
+        try {
+            emit(Resource.Loading())
+            val response = getVideoData(url)
+            emit(Resource.Success(response))
+        }
+        catch (e: HttpException){
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+        }
+        catch (e: IOException){
+            emit(Resource.Error("Check Internet Connection"))
+        }
     }
 
     companion object {
@@ -94,7 +99,7 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
                 description_508 = "Test Description508"
 
             )
-        val fakeDataObject02 =
+        private val fakeDataObject02 =
             Data(
                 center = "JSC",
                 date_created = "1969-07-21T00:00:00Z",
@@ -107,7 +112,7 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
                 description_508 = "Test Description508"
 
             )
-        val fakeDataObject03 =
+        private val fakeDataObject03 =
             Data(
                 center = "JSC",
                 date_created = "1969-07-21T00:00:00Z",
@@ -142,17 +147,17 @@ class FakeMediaLibraryRepository: MediaLibraryRepository {
                 render = "audio"
             )
 
-        val fakeItemObject01 = Item(
+        private val fakeItemObject01 = Item(
             href = "https://images-assets.nasa.gov/image/NHQ201906010004/collection.json",
             data = listOf(fakeDataObject01),
             links = listOf(fakeLinkObject01)
         )
-        val fakeItemObject02 = Item(
+        private val fakeItemObject02 = Item(
             href = "https://images-assets.nasa.gov/video/Space-Exploration-Video-1/collection.json",
             data = listOf(fakeDataObject02),
             links = listOf(fakeLinkObject02)
         )
-        val fakeItemObject03 = Item(
+        private val fakeItemObject03 = Item(
             href = "https://images-assets.nasa.gov/audio/367-AAA/collection.json",
             data = listOf(fakeDataObject03),
             links = listOf(fakeLinkObject03)

@@ -57,8 +57,8 @@ fun ApodContent(viewModel: ApodViewModel) {
                                 modifier = modifier
                             )
                         }
-                        state.value.error.isNotBlank() -> {
-                            ErrorText(error = state.value.error)
+                        state.value.error?.isNotBlank() == true -> {
+                            state.value.error?.let { ErrorText(error = it) }
                         }
                     }
                 }
@@ -87,8 +87,8 @@ fun ApodContent(viewModel: ApodViewModel) {
                                 modifier = modifier
                             )
                         }
-                        state.value.error.isNotBlank() -> {
-                            ErrorText(error = state.value.error)
+                        state.value.error?.isNotBlank() == true -> {
+                            state.value.error?.let { ErrorText(error = it) }
                         }
                     }
                 }
@@ -118,8 +118,8 @@ fun ApodContent(viewModel: ApodViewModel) {
                             modifier = modifier
                         )
                     }
-                    state.value.error.isNotBlank() -> {
-                        ErrorText(error = state.value.error)
+                    state.value.error?.isNotBlank() == true -> {
+                        state.value.error?.let { ErrorText(error = it) }
                     }
                 }
             }

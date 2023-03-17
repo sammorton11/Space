@@ -22,7 +22,6 @@ Libraries Used
 - Coin - Image loading library
 - Flow - Asynchronous data stream library
 - ExoPlayer - Video player
-- Room - Database library for caching data
 - Material Design Components - UI components following Material Design guidelines
 - Download Manager - System service for downloading files
 

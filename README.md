@@ -1,3 +1,4 @@
+theme: minima
 # Space
 Nasa Open API Mobile Application 
 

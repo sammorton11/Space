@@ -16,14 +16,16 @@ NASA API
 - Astronomy Picture of the Day API
 
 
-Libraries Used
-
-- Retrofit - HTTP client for API calls
-- Coin - Image loading library
-- Flow - Asynchronous data stream library
-- ExoPlayer - Video player
-- Material Design Components - UI components following Material Design guidelines
-- Download Manager - System service for downloading files
+Technologies:
+- Jetpack Compose
+- Retrofit
+- Hilt
+- Coil
+- Flow
+- ExoPlayer
+- Material Design Components
+- Download Manager
+- MockWebServer
 
 
 MVVM Architecture

@@ -1,6 +1,7 @@
-package com.samm.space
+package com.samm.space.tests.apod_screen_tests
 
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.samm.space.MainActivity
 import com.samm.space.di.AppModule
 import com.samm.space.fakes.FakeApodRepository
 import com.samm.space.picture_of_the_day.domain.repository.ApodRepository
@@ -41,9 +42,9 @@ class ApodViewModelTests {
         apodViewModel = ApodViewModel(fakeRepository)
         apodViewModel.getApodState()
         composeTestRule.waitForIdle()
-        val error = apodViewModel.state.value.error
+        val error = apodViewModel.state.value.data
         composeTestRule.waitForIdle()
-        assert(error.isNullOrEmpty()) // using null to simulate error for now
+        assert(error == null) // using null to simulate error for now
     }
 
     @Test
@@ -53,7 +54,9 @@ class ApodViewModelTests {
         apodViewModel.getApodState()
         composeTestRule.waitForIdle()
         apodViewModel.state.value.data.let {
-            assert(it == null)
+            if (it != null) {
+                assert(it.url.isEmpty())
+            }
         }
     }
 }

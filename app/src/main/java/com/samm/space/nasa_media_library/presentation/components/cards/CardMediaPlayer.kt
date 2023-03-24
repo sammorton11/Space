@@ -23,7 +23,7 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
     val state = videoViewModel.state.value.data
 
     if (state?.isNotBlank() == true) {
-        val exoPlayer = ExoPlayer.Builder(LocalContext.current).build()
+        val exoPlayer = ExoPlayer.Builder(context).build()
 
         if (URLUtil.isValidUrl(uri)) {
             try {

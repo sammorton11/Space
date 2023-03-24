@@ -1,8 +1,9 @@
-package com.samm.space
+package com.samm.space.tests.media_library_screen_tests
 
 import android.util.Log
 import androidx.compose.material3.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import com.samm.space.MainActivity
 import com.samm.space.core.MediaType
 import com.samm.space.di.AppModule
 import com.samm.space.fakes.FakeMediaLibraryRepository

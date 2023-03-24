@@ -1,5 +1,6 @@
 package com.samm.space.picture_of_the_day.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.Card
@@ -9,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 
@@ -19,10 +22,11 @@ fun PictureOfTheDay(imageLink: String?, modifier: Modifier) {
         modifier = Modifier.padding(10.dp),
         shape = AbsoluteRoundedCornerShape(10)
     ) {
+        Log.d("Image for Apod - composable", imageLink.toString())
         AsyncImage(
             model = imageLink,
             contentDescription = "",
-            modifier = modifier,
+            modifier = modifier.semantics { testTag = "Apod Picture" },
             colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             contentScale = ContentScale.Fit
         )

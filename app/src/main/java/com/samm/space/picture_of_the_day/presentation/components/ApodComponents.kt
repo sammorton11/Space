@@ -1,6 +1,7 @@
 package com.samm.space.picture_of_the_day.presentation.components
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,9 @@ fun ApodComponents(
     PictureOfTheDay(imageLink = hdImage, modifier = modifier)
     ApodExplanation(explanation)
     hdImage?.let { image ->
+
+        Log.d("Image for Apod", hdImage)
+
         DownloadFile(
             url = image,
             context = context,

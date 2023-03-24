@@ -6,6 +6,8 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +26,7 @@ import kotlinx.coroutines.launch
     ){
         ModalNavigationDrawer(
             drawerState = drawerState,
+            modifier = Modifier.semantics { testTag = "Navigation Drawer" },
             drawerContent = {
 
                 val paddingValue = 10.dp
@@ -55,7 +58,8 @@ import kotlinx.coroutines.launch
                         Card(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(paddingValue),
+                                .padding(paddingValue)
+                                .semantics { testTag = "Apod Screen Button" },
                             onClick = {
                                 navController.navigate("apod_screen")
                                 title.value = "Picture of the Day"

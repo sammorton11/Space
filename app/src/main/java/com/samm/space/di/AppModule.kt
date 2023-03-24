@@ -14,6 +14,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.HttpUrl.Companion.toHttpUrl
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
@@ -22,12 +23,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+open class AppModule {
+
+    open fun baseUrl() = BASE_URL.toHttpUrl()
+
     @Provides
     @Singleton
-    fun provideNasaApi(): NasaApi {
+    open fun provideNasaApi(): NasaApi {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(NasaApi::class.java)
@@ -35,10 +39,10 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideMetaApi(): MetadataApi {
+    open fun provideMetaApi(): MetadataApi {
         val gson = GsonBuilder().setLenient().create()
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()

@@ -1,4 +1,4 @@
-package com.samm.space
+package com.samm.space.tests.media_library_screen_tests
 
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +12,7 @@ import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
+import com.samm.space.MainActivity
 import com.samm.space.core.Constants
 import com.samm.space.di.AppModule
 import com.samm.space.fakes.FakeMediaLibraryRepository
@@ -175,7 +176,7 @@ class MediaLibraryScreenTests {
         composeTestRule.waitUntil {
             composeTestRule
                 .onAllNodes(hasTestTag("List Card"), false)
-                .fetchSemanticsNodes().size > 0
+                .fetchSemanticsNodes().isNotEmpty()
         }
 
         val cards = composeTestRule

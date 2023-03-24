@@ -15,6 +15,7 @@ import org.json.JSONArray
 import org.json.JSONException
 import java.net.URLDecoder
 
+// I made this to prevent overcrowded view models - if there is a better way to handle this let me know
 class ViewUtils {
 
     fun downloadFile(
@@ -42,8 +43,8 @@ class ViewUtils {
      */
     fun fileTypeCheck(array: ArrayList<String>, mediaType: MediaType): String {
         var file = ""
-        for (i in 0 until array.size) {
 
+        for (i in 0 until array.size) {
             when (mediaType) {
                 MediaType.VIDEO -> {
                     when {
@@ -122,7 +123,8 @@ class ViewUtils {
         intent.setPackage("com.android.chrome")
         try {
             context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
+        }
+        catch (e: ActivityNotFoundException) {
             // Chrome is not installed, open the default browser
             intent.setPackage(null)
             context.startActivity(intent)

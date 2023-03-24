@@ -8,13 +8,15 @@ import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
 import java.io.IOException
 
+// Todo: This doesn't really work. Passing different strings in tests doesn't change results
 class FakeApodRepository(private val type: String? = null) : ApodRepository {
+
     override suspend fun getData(): Apod? {
         return when (type) {
             "success" -> {
                 Apod(
                     copyright = "Test",
-                    date = "Test",
+                    date = "2022-11-2023",
                     explanation = "Test",
                     hdurl = "https://images-assets.nasa.gov/image/as11-40-5874/as11-40-5874~thumb.jpg",
                     media_type = "image",
@@ -29,7 +31,7 @@ class FakeApodRepository(private val type: String? = null) : ApodRepository {
             "empty" -> {
                 Apod(
                     copyright = "",
-                    date = "",
+                    date = "2022-11-2023",
                     explanation = "",
                     hdurl = "",
                     media_type = "",
@@ -40,14 +42,14 @@ class FakeApodRepository(private val type: String? = null) : ApodRepository {
             }
             else -> {
                 Apod(
-                    copyright = "",
-                    date = "",
-                    explanation = "",
-                    hdurl = "",
-                    media_type = "",
-                    service_version = "",
-                    title = "",
-                    url = ""
+                    copyright = "Test",
+                    date = "2022-11-2023",
+                    explanation = "Test",
+                    hdurl = "https://images-assets.nasa.gov/image/as11-40-5874/as11-40-5874~thumb.jpg",
+                    media_type = "image",
+                    service_version = "Test",
+                    title = "Test",
+                    url = "https://images-assets.nasa.gov/image/as11-40-5874/as11-40-5874~thumb.jpg"
                 )
             }
         }

@@ -4,14 +4,13 @@ Nasa Open API Mobile Application
 
 The NASA Space App is an Android application built using Kotlin and Jetpack Compose. It allows users to explore space related resources and information provided by NASA through various APIs.
 
-Features
-
+Features:
 - Browse and search images and videos from NASA
 - View the Astronomy Picture of the Day (APOD)
 - Download and share files
 
 
-NASA API
+NASA API:
 - Image Video Library API
 - Astronomy Picture of the Day API
 

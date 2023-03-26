@@ -13,7 +13,7 @@ import com.samm.space.core.Constants.NO_BACKGROUND
 import com.samm.space.nasa_media_library.presentation.components.other.LibraryList
 import com.samm.space.nasa_media_library.presentation.components.other.SearchField
 import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation.ErrorText
+import com.samm.space.presentation.labels.ErrorText
 import com.samm.space.presentation.ProgressBar
 import com.samm.space.presentation.util.WindowInfo
 import com.samm.space.presentation.util.rememberWindowInfo

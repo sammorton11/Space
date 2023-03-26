@@ -66,13 +66,11 @@ fun ListCard(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
         ) {
-            mediaType.let { type ->
-                CardImage(
-                    imageLink = cardImageLink,
-                    scale = imageScaleType,
-                    mediaType = type
-                )
-            }
+            CardImage(
+                imageLink = cardImageLink,
+                scale = imageScaleType,
+                mediaType = mediaType
+            )
             Box(
                 modifier = Modifier
                     .background(

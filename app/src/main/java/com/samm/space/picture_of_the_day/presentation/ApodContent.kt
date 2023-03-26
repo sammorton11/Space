@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.samm.space.picture_of_the_day.presentation.components.ApodComponents
 import com.samm.space.picture_of_the_day.presentation.components.ApodComponentsForLargeScreen
-import com.samm.space.presentation.ErrorText
+import com.samm.space.presentation.labels.ErrorText
 import com.samm.space.presentation.ProgressBar
 import com.samm.space.presentation.util.DateConverter
 import com.samm.space.presentation.util.WindowInfo

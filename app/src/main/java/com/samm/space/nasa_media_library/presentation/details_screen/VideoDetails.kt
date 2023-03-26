@@ -14,7 +14,7 @@ import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.presentation.buttons.OpenChromeButton
 import com.samm.space.presentation.buttons.ShareButton
 import com.samm.space.presentation.labels.Title
-import com.samm.space.presentation.util.DownloadFile
+import com.samm.space.presentation.buttons.DownloadFile
 
 @Composable
 fun VideoDetails(

@@ -1,6 +1,6 @@
 {
   "collection": {
-    "href": "https://images-api.nasa.gov/search?q=apollo%2011...",
+    "href": "https://images-assets.nasa.gov/image/as11-40-5874/collection.json",
     "items": [
       {
         "data": [
@@ -15,7 +15,7 @@
               "LUNAR BASES",
               "LUNAR MODULE",
               "ASTRONAUTS",
-              "EXTRAVEHICULAR ACIVITY"
+              "EXTRAVEHICULAR ACTIVITY"
             ],
             "media_type": "image",
             "nasa_id": "as11-40-5874",

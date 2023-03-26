@@ -1,5 +1,6 @@
 package com.samm.space.nasa_media_library.presentation.view_models
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -32,14 +33,17 @@ class MediaLibraryViewModel @Inject constructor
             when(response) {
                 is Resource.Success -> {
                     _state.value = NasaLibraryState(data = itemsList ?: emptyList())
+                    Log.d("Resource.Success:", itemsList.toString())
                 }
                 is Resource.Error -> {
                     error.let {
                         _state.value = NasaLibraryState(error = "Error! $it")
                     }
+                    Log.d("Resource.Error:", error.toString())
                 }
                 is Resource.Loading -> {
                     _state.value = NasaLibraryState(isLoading = true)
+                    Log.d("Resource.Loading:", _state.value.toString())
                 }
             }
         }.launchIn(viewModelScope)

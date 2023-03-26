@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.semantics.imeAction
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.font.FontStyle
@@ -21,7 +22,11 @@ import com.samm.space.nasa_media_library.util.myTextFieldColors
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
+fun SearchField(
+    onSearch: (query: String) -> Unit,
+    savedQuery: String?
+){
+
     var query by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
     val primaryColor = MaterialTheme.colorScheme.primary
@@ -44,7 +49,8 @@ fun SearchField(onSearch: (query: String) -> Unit, savedQuery: String?) {
             .padding(horizontal = 20.dp)
             .padding(bottom = 15.dp)
             .semantics {
-               testTag = "Search"
+                testTag = "Search"
+                imeAction = ImeAction.Search
             },
         label = { Text("Search") },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

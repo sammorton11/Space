@@ -19,7 +19,9 @@ import coil.compose.AsyncImage
 @Composable
 fun PictureOfTheDay(imageLink: String?, modifier: Modifier) {
     Card(
-        modifier = Modifier.padding(10.dp),
+        modifier = Modifier
+            .padding(10.dp)
+            .semantics { testTag = "Apod Image Card" },
         shape = AbsoluteRoundedCornerShape(10)
     ) {
         Log.d("Image for Apod - composable", imageLink.toString())

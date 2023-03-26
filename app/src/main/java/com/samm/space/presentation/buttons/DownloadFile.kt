@@ -1,4 +1,4 @@
-package com.samm.space.presentation.util
+package com.samm.space.presentation.buttons
 
 import android.content.Context
 import android.widget.Toast

@@ -45,7 +45,13 @@ android {
         kotlinCompilerExtensionVersion '1.2.0'
     }
     packagingOptions {
-
+        exclude 'META-INF/ASL-2.0.txt'
+        exclude 'draftv4/schema'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/io.netty.versions.properties'
+        exclude 'META-INF/LGPL-3.0.txt'
+        exclude 'draftv3/schema'
+        exclude 'META-INF/INDEX.LIST'
     }
 }
 
@@ -65,6 +71,13 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    // HTTP
+    implementation "com.squareup.okhttp3:okhttp:4.9.2"
+    androidTestImplementation "com.squareup.okhttp3:okhttp:4.9.2"
+
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
+    androidTestImplementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
 
     // Mock Server
     androidTestImplementation 'org.mock-server:mockserver-netty:5.3.0'

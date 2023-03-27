@@ -1,6 +1,5 @@
 package com.samm.space.tests.mock_web_server_tests
 
-import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -12,26 +11,20 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.samm.space.MainActivity
 import com.samm.space.picture_of_the_day.presentation.ApodContent
 import com.samm.space.picture_of_the_day.presentation.ApodViewModel
-import com.samm.space.tests.mock_web_server_tests.util.ApodTestTags.apodCopyrightText
-import com.samm.space.tests.mock_web_server_tests.util.ApodTestTags.apodDateText
-import com.samm.space.tests.mock_web_server_tests.util.ApodTestTags.apodDescriptionTag
-import com.samm.space.tests.mock_web_server_tests.util.ApodTestTags.apodImageTag
-import com.samm.space.tests.mock_web_server_tests.util.GlobalTestTags.downloadButtonTag
-import com.samm.space.tests.mock_web_server_tests.util.GlobalTestTags.errorTag
-import com.samm.space.tests.mock_web_server_tests.util.GlobalTestTags.shareButtonTag
+import com.samm.space.util.ApodTestTags.apodCopyrightText
+import com.samm.space.util.ApodTestTags.apodDateText
+import com.samm.space.util.ApodTestTags.apodDescriptionTag
+import com.samm.space.util.ApodTestTags.apodImageTag
+import com.samm.space.util.GlobalTestTags.downloadButtonTag
+import com.samm.space.util.GlobalTestTags.errorTag
+import com.samm.space.util.GlobalTestTags.shareButtonTag
 import com.samm.space.ui.theme.SpaceTheme
+import com.samm.space.util.ApodTestTags.apodTitleTag
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.runBlocking
-import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.RecordedRequest
-import org.junit.After
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 
 @HiltAndroidTest
 class ApodUITest {
@@ -42,40 +35,38 @@ class ApodUITest {
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<MainActivity>()
 
-    companion object {
-        val server = MockWebServer()
-    }
-
-    private val jsonString = this.javaClass.classLoader?.getResource("res/raw/apod_response.json")?.readText()
-
-    private fun successfulDispatcher() {
+    private fun successfulResponse() {
         server.enqueue(MockResponse()
             .setResponseCode(200)
             .setBody(jsonString!!)
         )
     }
-
-    private fun successDispatcher(): Dispatcher {
-        return object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return when(request.path) {
-                    else -> MockResponse().setResponseCode(200).setBody(jsonString!!)
-                }
-            }
-        }
-    }
-
-    private fun failedDispatcher() {
+    private fun failedResponse() {
         server.enqueue(MockResponse()
             .setResponseCode(404)
             .setBody("Error")
         )
     }
 
+    companion object {
+        val server = MockWebServer()
+        val jsonString = this.javaClass.classLoader?.getResource("res/raw/apod_response.json")?.readText()
+        @BeforeClass
+        @JvmStatic
+        fun serverSetup() {
+            if (server.requestCount == 0) {
+
+            }
+        }
+        @AfterClass
+        @JvmStatic
+        fun tearDownClass() {
+            server.shutdown()
+        }
+    }
+
     @Before
     fun setUp() {
-        Log.d("Port", server.port.toString())
-        server.dispatcher = successDispatcher()
 
         hiltRule.inject()
         composeTestRule.activity.apply {
@@ -97,20 +88,22 @@ class ApodUITest {
     fun tearDown() {
         server.shutdown()
         server.close()
-        Log.d("port", server.port.toString())
     }
 
     @Test
     fun test_apod_title() {
-       // successfulDispatcher()
+        successfulResponse()
         composeTestRule.waitForIdle()
-//        composeTestRule.onNodeWithTag(apodTitleTag, true).assertIsDisplayed()
-        Thread.sleep(1000)
+        Thread.sleep(3000)
+        composeTestRule.onNodeWithTag(apodTitleTag, true).assertIsDisplayed()
     }
 
     @Test
     fun test_apod_image() {
-        //successfulDispatcher()
+        successfulResponse()
+        composeTestRule.waitForIdle()
+        Thread.sleep(500)
+        composeTestRule.waitForIdle()
         composeTestRule.waitUntil {
             composeTestRule.onAllNodes(hasTestTag(apodImageTag), true)
                 .fetchSemanticsNodes().size == 1
@@ -126,7 +119,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_description() {
-        successfulDispatcher()
+        successfulResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodDescriptionTag, true)
             .assertIsDisplayed()
@@ -134,7 +127,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_copyright() {
-        successfulDispatcher()
+
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodCopyrightText, true)
             .assertIsDisplayed()
@@ -142,7 +135,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_date() {
-        successfulDispatcher()
+
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodDateText, true)
             .assertIsDisplayed()
@@ -150,7 +143,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_share_button() {
-        successfulDispatcher()
+
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(shareButtonTag, true)
             .assertIsDisplayed()
@@ -159,7 +152,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_download_button() {
-        successfulDispatcher()
+
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(downloadButtonTag, true)
             .assertIsDisplayed()
@@ -168,7 +161,7 @@ class ApodUITest {
 
     @Test
     fun testFailedResponse() {
-        failedDispatcher()
+        failedResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(errorTag).assertIsDisplayed()
     }

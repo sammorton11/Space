@@ -1,4 +1,4 @@
-package com.samm.space.tests.mock_web_server_tests.repository
+package com.samm.space.repository
 
 import android.util.Log
 import com.samm.space.core.Resource
@@ -20,7 +20,6 @@ class FakeMediaLibraryRepositoryMock @Inject constructor (
 ): MediaLibraryRepository {
 
     override suspend fun getData(query: String): NasaLibraryResponse? {
-        Log.d("I love maty:", api.fetchData(query).toString())
         return api.fetchData(query)
     }
 

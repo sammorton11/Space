@@ -1,4 +1,4 @@
-package com.samm.space.tests.mock_web_server_tests.util
+package com.samm.space.util
 
 object ApodTestTags {
     const val apodImageTag = "Apod Picture"

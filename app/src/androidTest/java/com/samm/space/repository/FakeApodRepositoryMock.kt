@@ -1,4 +1,4 @@
-package com.samm.space.tests.mock_web_server_tests.repository
+package com.samm.space.repository
 
 import android.util.Log
 import com.samm.space.core.Resource
@@ -14,7 +14,6 @@ import javax.inject.Inject
 class FakeApodRepositoryMock @Inject constructor (private val api: ApodApi): ApodRepository {
 
     override suspend fun getData(): Apod? {
-        Log.d("Apod Api:", api.getApod().toString())
         return api.getApod()
     }
 
@@ -23,6 +22,7 @@ class FakeApodRepositoryMock @Inject constructor (private val api: ApodApi): Apo
             emit(Resource.Loading())
             val response = getData()
             emit(Resource.Success(response))
+            Log.d("response:", response.toString())
         }
         catch (e: HttpException){
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))

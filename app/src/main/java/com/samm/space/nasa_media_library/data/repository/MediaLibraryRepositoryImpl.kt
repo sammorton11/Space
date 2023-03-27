@@ -29,6 +29,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         try {
             emit(Resource.Loading())
             val response = getData(query)
+            Log.d("Raw Response Apod:", response.toString())
             emit(Resource.Success(response))
         }
         catch (e: HttpException){

@@ -21,11 +21,8 @@ import kotlinx.coroutines.launch
 /*
     In-Progress:
 
-    Todo (Fix):
-        - Media library data isnt showing up
-        - Is it blocking the main thread? im using Dispathers.IO in a runBlocking block in the test module
-        - that might be an issue? its not for the Apod tests
-        - Maybe just have fakes for the UI tests and then use MWS for the integration tests? idk.
+    Todo:
+        - Need to add more UI and integration tests - mock web server is now working
  */
 
 

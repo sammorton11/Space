@@ -1,6 +1,5 @@
 package com.samm.space.util
 
-import com.samm.space.nasa_media_library.di.MediaLibraryModule
 import com.samm.space.picture_of_the_day.ApodModule
 import com.samm.space.picture_of_the_day.data.ApodApi
 import com.samm.space.picture_of_the_day.domain.repository.ApodRepository
@@ -25,7 +24,7 @@ import javax.inject.Singleton
     replaces = [ApodModule::class]
 )
 @Module
-object MockModule {
+object ApodMockModule {
 
     private fun baseUrl(): HttpUrl = runBlocking(Dispatchers.Default) {
         server.url("/")
@@ -35,7 +34,7 @@ object MockModule {
     @Singleton
     fun provideMockApodApi(): ApodApi {
 
-        var clientBuilder = OkHttpClient.Builder()
+        val clientBuilder = OkHttpClient.Builder()
 
         if (BuildConfig.DEBUG) {
             clientBuilder.addNetworkInterceptor(HttpLoggingInterceptor().setLevel(

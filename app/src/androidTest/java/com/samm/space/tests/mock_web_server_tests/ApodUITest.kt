@@ -26,9 +26,10 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
 
+// Todo: Tests fail when running class. server throws error.
+
 @HiltAndroidTest
 class ApodUITest {
-
 
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
@@ -50,14 +51,8 @@ class ApodUITest {
 
     companion object {
         val server = MockWebServer()
-        val jsonString = this.javaClass.classLoader?.getResource("res/raw/apod_response.json")?.readText()
-        @BeforeClass
-        @JvmStatic
-        fun serverSetup() {
-            if (server.requestCount == 0) {
-
-            }
-        }
+        val jsonString = this.javaClass
+            .classLoader?.getResource("res/raw/apod_response.json")?.readText()
         @AfterClass
         @JvmStatic
         fun tearDownClass() {
@@ -67,8 +62,8 @@ class ApodUITest {
 
     @Before
     fun setUp() {
-
         hiltRule.inject()
+        successfulResponse()
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
@@ -76,7 +71,7 @@ class ApodUITest {
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colorScheme.background
                     ) {
-                        var viewModel: ApodViewModel = hiltViewModel()
+                        val viewModel: ApodViewModel = hiltViewModel()
                         ApodContent(viewModel = viewModel)
                     }
                 }
@@ -88,11 +83,11 @@ class ApodUITest {
     fun tearDown() {
         server.shutdown()
         server.close()
+        Thread.sleep(1000)
     }
 
     @Test
     fun test_apod_title() {
-        successfulResponse()
         composeTestRule.waitForIdle()
         Thread.sleep(3000)
         composeTestRule.onNodeWithTag(apodTitleTag, true).assertIsDisplayed()
@@ -100,7 +95,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_image() {
-        successfulResponse()
+
         composeTestRule.waitForIdle()
         Thread.sleep(500)
         composeTestRule.waitForIdle()
@@ -127,7 +122,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_copyright() {
-
+        successfulResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodCopyrightText, true)
             .assertIsDisplayed()
@@ -135,7 +130,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_date() {
-
+        successfulResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodDateText, true)
             .assertIsDisplayed()
@@ -143,7 +138,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_share_button() {
-
+        successfulResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(shareButtonTag, true)
             .assertIsDisplayed()
@@ -152,7 +147,7 @@ class ApodUITest {
 
     @Test
     fun test_apod_download_button() {
-
+        successfulResponse()
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(downloadButtonTag, true)
             .assertIsDisplayed()

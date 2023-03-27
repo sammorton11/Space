@@ -22,18 +22,10 @@ import kotlinx.coroutines.launch
     In-Progress:
 
     Todo (Fix):
-        - ExoPlayer not showing up in tests
-        - Image not showing up in details screen for image cards in tests
-        - Replace hardcoded strings
-        - All error tests are failing - I must be handling errors incorrectly
-
-        Todo:
-            - Network logic shouldn't be in the main activity but im not sure how to handle missing network errors
-            - Try StateFlow instead of State/MutableState
-            - Alright.. didn't need to use Response<T> for the get request response - can remove that from the rest of the code
-            - Progress bar or placeholder image for apod screen when image is loading
-            - Options menu should change when on details or apod screens
-
+        - Media library data isnt showing up
+        - Is it blocking the main thread? im using Dispathers.IO in a runBlocking block in the test module
+        - that might be an issue? its not for the Apod tests
+        - Maybe just have fakes for the UI tests and then use MWS for the integration tests? idk.
  */
 
 

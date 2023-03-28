@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.cards
+package com.samm.space.nasa_media_library.presentation.library_search_screen.components.cards
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text

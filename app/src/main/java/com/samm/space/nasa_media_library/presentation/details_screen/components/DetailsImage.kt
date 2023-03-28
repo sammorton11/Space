@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.cards
+package com.samm.space.nasa_media_library.presentation.details_screen.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -50,7 +50,7 @@ fun DetailsImage(
                         viewUtil.openWithChrome(imageLink, context)
                     }
                     .semantics {
-                        testTag = "Details Image - Image Url"
+                        testTag = "Details Image"
                     },
                 contentScale = scale,
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),

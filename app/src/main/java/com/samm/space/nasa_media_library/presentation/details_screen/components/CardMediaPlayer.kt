@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.cards
+package com.samm.space.nasa_media_library.presentation.details_screen.components
 
 import android.util.Log
 import android.webkit.URLUtil
@@ -54,7 +54,6 @@ fun CardMediaPlayer(videoViewModel: VideoDataViewModel, uri: String) {
             onDispose {
                 exoPlayer.stop()
                 exoPlayer.release()
-                Log.d("Is exoplayer Playing?", exoPlayer.isPlaying.toString())
             }
         }
     }

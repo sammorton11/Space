@@ -1,4 +1,4 @@
-package com.samm.space.util
+package com.samm.space.util.module_mocks
 
 import com.samm.space.nasa_media_library.data.network.MetadataApi
 import com.samm.space.nasa_media_library.data.network.NasaApi

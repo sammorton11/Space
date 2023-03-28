@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.other
+package com.samm.space.nasa_media_library.presentation.library_search_screen.components.other
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
@@ -15,7 +15,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.navigation.NavController
 import com.samm.space.core.MediaType
 import com.samm.space.nasa_media_library.domain.models.Item
-import com.samm.space.nasa_media_library.presentation.components.cards.ListCard
+import com.samm.space.nasa_media_library.presentation.library_search_screen.components.cards.ListCard
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

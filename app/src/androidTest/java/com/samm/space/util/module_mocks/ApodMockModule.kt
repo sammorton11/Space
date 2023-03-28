@@ -1,4 +1,4 @@
-package com.samm.space.util
+package com.samm.space.util.module_mocks
 
 import com.samm.space.picture_of_the_day.ApodModule
 import com.samm.space.picture_of_the_day.data.ApodApi

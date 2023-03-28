@@ -56,6 +56,36 @@
             "render": "image"
           }
         ]
+      },
+      {
+        "href": "https://images-api.nasa.gov/search?q=mars&media_type=image,audio,video",
+        "data": [
+          {
+            "center": "HQ",
+            "description": "NASA astronaut Drew Feustel talks about the importance of human space exploration, and what it's like to live and work in space.",
+            "description_508": "NASA astronaut Drew Feustel talks about the importance of human space exploration, and what it's like to live and work in space.",
+            "media_type": "audio",
+            "nasa_id": "NASAEpx",
+            "title": "Importance of Human Space Exploration: Drew Feustel",
+            "keywords": [
+              "Drew Feustel",
+              "NASA astronaut",
+              "human space exploration",
+              "space",
+              "exploration",
+              "ISS",
+              "International Space Station"
+            ],
+            "date_created": "2021-03-26T16:57:17Z"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://images-assets.nasa.gov/audio/NASAEpx/NASAEpx~128k.mp3",
+            "rel": "self",
+            "render": "audio"
+          }
+        ]
       }
     ]
   }

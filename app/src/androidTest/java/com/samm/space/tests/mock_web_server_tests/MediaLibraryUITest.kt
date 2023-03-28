@@ -5,55 +5,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.*
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.samm.space.MainActivity
 import com.samm.space.core.Constants
-import com.samm.space.nasa_media_library.presentation.library_search_screen.LibraryScreenContent
 import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.presentation.MainScaffold
+import com.samm.space.presentation.SideNavigationDrawer
 import com.samm.space.ui.theme.SpaceTheme
-import dagger.hilt.android.testing.HiltAndroidRule
+import com.samm.space.util.test_tags.MediaLibraryTestTags.detailsScreenTag
+import com.samm.space.util.test_tags.MediaLibraryTestTags.listCardTag
+import com.samm.space.util.test_tags.MediaLibraryTestTags.searchFieldTag
 import dagger.hilt.android.testing.HiltAndroidTest
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
-import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.AfterClass
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 @HiltAndroidTest
-class MediaLibraryUITest {
-
-    @get:Rule(order = 0)
-    val hiltRule = HiltAndroidRule(this)
-    @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<MainActivity>()
+class MediaLibraryUITest: BaseTest() {
 
     private lateinit var navController: TestNavHostController
-    lateinit var viewModel: MediaLibraryViewModel
-
-    private fun successfulDispatcher() {
-        server.enqueue(
-            MockResponse()
-                .setResponseCode(200)
-                .setBody(jsonString!!)
-        )
-    }
-
-    private fun failedDispatcher() {
-        server.enqueue(
-            MockResponse()
-                .setResponseCode(404)
-                .setBody("Error")
-        )
-    }
 
     companion object {
         val server = MockWebServer()
@@ -80,17 +56,30 @@ class MediaLibraryUITest {
 
                         navController = TestNavHostController(LocalContext.current)
                         navController.navigatorProvider.addNavigator(ComposeNavigator())
+                        val drawerState = rememberDrawerState(DrawerValue.Closed)
                         val filterType = remember { mutableStateOf("") }
                         val backgroundType = remember { mutableStateOf(Constants.NO_BACKGROUND) }
-                        viewModel = hiltViewModel()
+
+                        val scope = rememberCoroutineScope()
+                        val title = remember { mutableStateOf("NASA Media Library") }
+                        val viewModel: MediaLibraryViewModel = hiltViewModel()
                         viewModel.getData("Mars")
 
-                        LibraryScreenContent(
-                            viewModel = viewModel,
+                        SideNavigationDrawer(
                             navController = navController,
-                            filterType = filterType,
-                            backgroundType = backgroundType
-                        )
+                            drawerState = drawerState,
+                            scope = scope,
+                            title = title
+                        ) {
+                            MainScaffold(
+                                filterType = filterType,
+                                drawerState = drawerState,
+                                scope = scope,
+                                backgroundType = backgroundType,
+                                title = title,
+                                navController = navController
+                            )
+                        }
                     }
                 }
             }
@@ -98,19 +87,44 @@ class MediaLibraryUITest {
     }
 
     @Test
-    fun test_library_list_card() {
-        successfulDispatcher()
-        composeTestRule.waitForIdle()
-        composeTestRule.waitUntil(8000) {
-            composeTestRule.onAllNodes(hasTestTag("List Card"), true)
-                .fetchSemanticsNodes().size == 1
-        }
-        Thread.sleep(5000)
+    fun test_search_field() {
+        composeTestRule.onNodeWithTag(searchFieldTag, true)
+            .assertExists()
+            .assertIsDisplayed()
+            .assertHasClickAction()
+            .performTextInput("Test")
+
+        composeTestRule.onNodeWithTag(searchFieldTag, true)
+            .performImeAction()
+
     }
 
     @Test
-    fun failedResponse() = runBlocking {
-        failedDispatcher()
-        delay(3000)
+    fun test_library_list_card() {
+        successfulResponse(jsonString!!, server)
+        val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
+
+        composeTestRule.waitUntil(2000) {
+            listOfCards.fetchSemanticsNodes().isNotEmpty()
+        }
+        for (index in 0 until listOfCards.fetchSemanticsNodes().size) {
+            listOfCards[index]
+                .assertIsDisplayed()
+                .performClick()
+
+            composeTestRule.waitForIdle()
+            composeTestRule.onNodeWithTag(detailsScreenTag)
+                .assertIsDisplayed()
+
+            pressBackButton()
+        }
+
+        composeTestRule.waitForIdle()
+
+    }
+
+    @Test
+    fun test_failedResponse() {
+        failedResponse(server)
     }
 }

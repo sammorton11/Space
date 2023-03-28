@@ -1,4 +1,4 @@
-package com.samm.space.util
+package com.samm.space.util.test_tags
 
 object ApodTestTags {
     const val apodImageTag = "Apod Picture"
@@ -7,10 +7,4 @@ object ApodTestTags {
     const val apodDateText = "Apod Date Text"
     const val apodCopyrightText = "Apod Copyright Text"
     const val apodImageCard = "Apod Image Card"
-}
-
-object GlobalTestTags {
-    const val shareButtonTag = "Share Button"
-    const val downloadButtonTag = "Download Button"
-    const val errorTag = "Error Tag"
 }

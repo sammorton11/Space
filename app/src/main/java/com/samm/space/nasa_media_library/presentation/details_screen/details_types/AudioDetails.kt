@@ -6,10 +6,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import com.samm.space.R
 import com.samm.space.core.MediaDownloadType
 import com.samm.space.core.MediaType
-import com.samm.space.nasa_media_library.presentation.components.cards.DetailsImage
-import com.samm.space.nasa_media_library.presentation.components.cards.ExpandableDetailsCard
+import com.samm.space.nasa_media_library.presentation.details_screen.components.AudioPlayer
+import com.samm.space.nasa_media_library.presentation.details_screen.components.DetailsImage
+import com.samm.space.nasa_media_library.presentation.details_screen.components.ExpandableDetailsCard
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.presentation.buttons.ShareButton
@@ -17,14 +19,13 @@ import com.samm.space.presentation.labels.Title
 import com.samm.space.presentation.buttons.DownloadFile
 
 @Composable
-fun ImageDetails(
+fun AudioDetails(
     viewModel: VideoDataViewModel,
     mediaType: MediaType,
     context: Context,
-    url: String,
     title: String?,
     description: String,
-    backgroundColor: Color,
+    backgroundColor: Color
 ) {
     val utils = ViewUtils()
     val mUri = utils.getUri(viewModel, mediaType)
@@ -34,22 +35,26 @@ fun ImageDetails(
     }
 
     DetailsImage(
-        imageLink = mUri,
+        id = R.drawable.tipper_space_man,
         scale = ContentScale.FillBounds
+    )
+    AudioPlayer(
+        viewModel = viewModel,
+        mediaType = mediaType
     )
     ExpandableDetailsCard(
         content = description,
         color = backgroundColor
     )
     DownloadFile(
-        url = url,
+        url = mUri,
         context = context,
-        filename = url,
-        mimeType = MediaDownloadType.IMAGE_JPEG.mimeType,
-        subPath = MediaDownloadType.IMAGE_JPEG.subPath
+        filename = mUri,
+        mimeType = MediaDownloadType.AUDIO_WAV.mimeType,
+        subPath = MediaDownloadType.AUDIO_WAV.subPath
     )
     ShareButton(
-        uri = url.toUri(),
-        type = MediaDownloadType.IMAGE_JPEG.mimeType
+        uri = mUri.toUri(),
+        type = MediaDownloadType.AUDIO_WAV.mimeType
     )
 }

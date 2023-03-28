@@ -23,6 +23,13 @@ import kotlinx.coroutines.launch
 
     Todo:
         - Need to add more UI and integration tests - mock web server is now working
+        - I don't want the cards to be clickable if they aren't expandable
+        - I want the size of the images to be scaled efficiently
+        - Full Screen ability for images
+        - Different font style
+        - Accessibility
+        - Need fake JSON for the details screen
+        - Details Screen tests
  */
 
 
@@ -48,7 +55,7 @@ class MainActivity : ComponentActivity() {
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
                     val scope = rememberCoroutineScope()
-                    val filterType = remember { mutableStateOf("") }
+                    val listFilterType = remember { mutableStateOf("") }
                     val backgroundType = remember { mutableStateOf(NO_BACKGROUND) }
                     val title = remember { mutableStateOf("NASA Media Library") }
 
@@ -59,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         title = title
                     ) {
                         MainScaffold(
-                            filterType = filterType,
+                            filterType = listFilterType,
                             drawerState = drawerState,
                             scope = scope,
                             backgroundType = backgroundType,

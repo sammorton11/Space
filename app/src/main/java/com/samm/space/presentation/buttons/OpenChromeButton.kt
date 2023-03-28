@@ -6,6 +6,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.samm.space.nasa_media_library.util.ViewUtils
 
@@ -16,7 +18,9 @@ fun OpenChromeButton(context: Context, uri: String) {
         onClick = {
             viewUtil.openWithChrome(uri, context)
         },
-        modifier = Modifier.padding(15.dp)
+        modifier = Modifier
+            .semantics { testTag = "Open Chrome Button" }
+            .padding(15.dp)
     ) {
         Text(text = "Open in Chrome")
     }

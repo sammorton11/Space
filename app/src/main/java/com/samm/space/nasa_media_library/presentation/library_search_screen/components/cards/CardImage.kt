@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.cards
+package com.samm.space.nasa_media_library.presentation.library_search_screen.components.cards
 
 import android.util.Log
 import androidx.compose.animation.animateContentSize

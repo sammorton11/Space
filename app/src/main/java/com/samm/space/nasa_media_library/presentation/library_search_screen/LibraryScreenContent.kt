@@ -10,8 +10,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import com.samm.space.core.Constants.NO_BACKGROUND
-import com.samm.space.nasa_media_library.presentation.components.other.LibraryList
-import com.samm.space.nasa_media_library.presentation.components.other.SearchField
+import com.samm.space.nasa_media_library.presentation.library_search_screen.components.other.LibraryList
+import com.samm.space.nasa_media_library.presentation.library_search_screen.components.other.SearchField
 import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.presentation.labels.ErrorText
 import com.samm.space.presentation.ProgressBar

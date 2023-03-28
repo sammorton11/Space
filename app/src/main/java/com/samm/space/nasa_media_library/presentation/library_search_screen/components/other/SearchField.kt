@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.components.other
+package com.samm.space.nasa_media_library.presentation.library_search_screen.components.other
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -49,7 +49,7 @@ fun SearchField(
             .padding(horizontal = 20.dp)
             .padding(bottom = 15.dp)
             .semantics {
-                testTag = "Search"
+                testTag = "Search Field"
                 imeAction = ImeAction.Search
             },
         label = { Text("Search") },

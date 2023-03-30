@@ -1,5 +1,6 @@
 package com.samm.space.presentation.util
 
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -20,7 +21,12 @@ object DateConverter {
         return formatter.parse(dateString)
     }
 
-    fun formatDisplayDate(date: String): String {
+
+    fun formatDisplayDate(date: String?): String {
+        if (date == "null" || date == null) {
+            return ""
+        }
+        Log.d("Date:", date)
         return formatDate(date, DISPLAY_FORMAT)
     }
 }

@@ -13,8 +13,8 @@ import com.samm.space.core.Constants.NO_BACKGROUND
 import com.samm.space.nasa_media_library.presentation.library_search_screen.components.other.LibraryList
 import com.samm.space.nasa_media_library.presentation.library_search_screen.components.other.SearchField
 import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation.labels.ErrorText
 import com.samm.space.presentation.ProgressBar
+import com.samm.space.presentation.labels.ErrorText
 import com.samm.space.presentation.util.WindowInfo
 import com.samm.space.presentation.util.rememberWindowInfo
 
@@ -80,6 +80,7 @@ fun LibraryScreenContent(
             list.isNotEmpty() -> {
                 LibraryList(
                     navController = navController,
+                    viewModel = viewModel,
                     data = list,
                     scrollState = lazyGridState,
                     filterType = filterType,

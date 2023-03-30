@@ -1,7 +1,6 @@
 package com.samm.space.nasa_media_library.presentation.details_screen
 
 import androidx.compose.runtime.Composable
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 
 @Composable
@@ -10,13 +9,15 @@ fun DetailsScreen(
     description: String,
     mediaType: String,
     title: String?,
-    viewModel: VideoDataViewModel = hiltViewModel()
+    date: String?,
+    viewModel: VideoDataViewModel
 ) {
     DetailsScreenContent(
         url = url,
         description = description,
-        mediaType = mediaType,
+        type = mediaType,
         title = title,
+        date = date,
         viewModel = viewModel
     )
 }

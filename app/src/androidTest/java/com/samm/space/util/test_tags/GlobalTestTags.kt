@@ -4,6 +4,7 @@ object GlobalTestTags {
     const val shareButtonTag = "Share Button"
     const val downloadButtonTag = "Download Button"
     const val errorTag = "Error Tag"
+    const val expandButton = "Expand Button"
     const val optionsMenuButtonTag = "Options Menu"
     const val sideNavigationButtonTag = "Navigation Button"
     const val titleTag = "Title Text"

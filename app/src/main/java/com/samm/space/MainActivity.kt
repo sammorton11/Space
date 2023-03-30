@@ -22,14 +22,15 @@ import kotlinx.coroutines.launch
     In-Progress:
 
     Todo:
+        - Consistent button size
+        - Date component - Apod details, Image;Video;Audio Details pages
         - Need to add more UI and integration tests - mock web server is now working
-        - I don't want the cards to be clickable if they aren't expandable
         - I want the size of the images to be scaled efficiently
         - Full Screen ability for images
         - Different font style
-        - Accessibility
         - Need fake JSON for the details screen
         - Details Screen tests
+        - Pass background type value to the Apod and Details screens - background will be the same across the app
  */
 
 
@@ -50,7 +51,7 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
-                ){
+                ) {
 
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)

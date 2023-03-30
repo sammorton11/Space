@@ -16,11 +16,13 @@ import androidx.navigation.NavController
 import com.samm.space.core.MediaType
 import com.samm.space.nasa_media_library.domain.models.Item
 import com.samm.space.nasa_media_library.presentation.library_search_screen.components.cards.ListCard
+import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryList(
     navController: NavController,
+    viewModel: MediaLibraryViewModel,
     data: List<Item?>,
     scrollState: LazyStaggeredGridState,
     filterType: MutableState<String>,
@@ -48,15 +50,18 @@ fun LibraryList(
             val links = item?.links // meta data urls
             val itemData = item?.data?.first() // json url to request meta data
             val title = itemData?.title
+            val date = itemData?.date_created
             val description = itemData?.description
             val mediaType_ = MediaType.fromString(itemData?.media_type?: "image") ?: MediaType.IMAGE
 
             ListCard(
                 navController = navController,
+                viewModel = viewModel,
                 item = item,
                 color = secondaryColor,
                 links = links,
                 title = title,
+                date = date,
                 description = description,
                 mediaType = mediaType_,
                 imageScaleType = imageScaleType

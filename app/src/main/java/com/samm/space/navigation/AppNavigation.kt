@@ -41,7 +41,7 @@ fun AppNavigation(
         }
 
         composable(
-            "cardDetails/{url}/{description}/{mediaType}/{title}",
+            "cardDetails/{url}/{description}/{mediaType}/{title}/{date}",
             arguments = listOf(navArgument("url") {
                 type = NavType.StringType
             })
@@ -51,14 +51,16 @@ fun AppNavigation(
             val urlId = backStackEntry.arguments?.getString("url")
             val mediaType = backStackEntry.arguments?.getString("mediaType")
             val title = backStackEntry.arguments?.getString("title")
+            val date = backStackEntry.arguments?.getString("date")
 
-            if (urlId != null && descriptionId != null && mediaType != null) {
+            if ((urlId != null) && (descriptionId != null) && (mediaType != null)) {
                 DetailsScreen(
                     url = urlId,
                     description = descriptionId,
                     mediaType = mediaType,
                     viewModel = videoViewModel,
-                    title = title
+                    title = title,
+                    date = date
                 )
             }
         }

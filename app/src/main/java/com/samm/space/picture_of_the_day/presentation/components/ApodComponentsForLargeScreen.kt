@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.core.MediaDownloadType
+import com.samm.space.presentation.buttons.DownloadFile
 import com.samm.space.presentation.buttons.ShareButton
 import com.samm.space.presentation.labels.Title
-import com.samm.space.presentation.buttons.DownloadFile
 
 @Composable
 fun ApodComponentsForLargeScreen(

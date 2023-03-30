@@ -17,21 +17,22 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.samm.space.core.Constants
 import com.samm.space.core.MediaType
 import com.samm.space.core.MediaType.Companion.toBundle
 import com.samm.space.nasa_media_library.domain.models.Item
 import com.samm.space.nasa_media_library.domain.models.Link
-import java.net.URLEncoder
+import com.samm.space.nasa_media_library.presentation.view_models.MediaLibraryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListCard(
     navController: NavController,
+    viewModel: MediaLibraryViewModel,
     item: Item?,
     color: Color,
     links: List<Link>?,
     title: String?,
+    date: String?,
     description: String?,
     mediaType: MediaType,
     imageScaleType: ContentScale
@@ -41,6 +42,8 @@ fun ListCard(
     val roundedCornerAmount = 10
     val cardElevationAmount = 55.dp
     val cardImageLink = links?.first()?.href
+//    var encodedDescription = "Not Available"
+//    var encodedUrl = "Not Available"
 
     Card(
         modifier = Modifier
@@ -51,11 +54,11 @@ fun ListCard(
             )
             .semantics { testTag = "List Card" },
         onClick = {
-            val encodedUrl = URLEncoder.encode(detailsDataUrl ?: "", Constants.utf8Encoding)
-            val encodedDescription = URLEncoder.encode(description, Constants.utf8Encoding)
+            val encodedUrl = viewModel.encodeText(detailsDataUrl)
+            val encodedDescription = viewModel.encodeText(description)
 
             navController.navigate(
-                "cardDetails/$encodedUrl/$encodedDescription/${mediaType.toBundle()}/$title"
+                "cardDetails/$encodedUrl/$encodedDescription/${mediaType.toBundle()}/$title/$date"
             )
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount),

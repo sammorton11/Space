@@ -10,9 +10,9 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.core.MediaDownloadType
+import com.samm.space.presentation.buttons.DownloadFile
 import com.samm.space.presentation.buttons.ShareButton
 import com.samm.space.presentation.labels.Title
-import com.samm.space.presentation.buttons.DownloadFile
 
 @Composable
 fun ApodComponents(
@@ -20,12 +20,18 @@ fun ApodComponents(
     context: Context,
     hdImage: String?,
     explanation: String?,
-    date: String?, copyright: String?,
+    date: String?,
+    copyright: String?,
     modifier: Modifier
 ) {
-    title?.let { Title(text = it, paddingValue = 15.dp) }
-    PictureOfTheDay(imageLink = hdImage, modifier = modifier)
-    ApodExplanation(explanation)
+    title?.let {
+        Title(text = it, paddingValue = 15.dp)
+    }
+    PictureOfTheDay(
+        imageLink = hdImage,
+        modifier = modifier
+    )
+    ApodExplanation(text = explanation)
 
     hdImage?.let { image ->
         DownloadFile(
@@ -35,8 +41,25 @@ fun ApodComponents(
             mimeType = MediaDownloadType.IMAGE_JPEG.mimeType,
             subPath = MediaDownloadType.IMAGE_JPEG.subPath
         )
-        ShareButton(uri = image.toUri(), type = MediaDownloadType.IMAGE_JPEG.mimeType)
+        ShareButton(
+            uri = image.toUri(),
+            type = MediaDownloadType.IMAGE_JPEG.mimeType
+        )
     }
-    date?.let { Text(text = date, modifier = Modifier.padding(5.dp).semantics { testTag = "Apod Date Text" }) }
-    copyright?.let { Text(text = it, modifier = Modifier.padding(5.dp).semantics { testTag = "Apod Copyright Text" }) }
+    date?.let {
+        Text(
+            text = date,
+            modifier = Modifier
+                .padding(5.dp)
+                .semantics { testTag = "Apod Date Text" }
+        )
+    }
+    copyright?.let {
+        Text(
+            text = it,
+            modifier = Modifier
+                .padding(5.dp)
+                .semantics { testTag = "Apod Copyright Text" }
+        )
+    }
 }

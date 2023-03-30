@@ -1,6 +1,5 @@
 package com.samm.space.picture_of_the_day.data.repository
 
-import android.util.Log
 import com.samm.space.core.Resource
 import com.samm.space.picture_of_the_day.data.ApodApi
 import com.samm.space.picture_of_the_day.domain.models.Apod

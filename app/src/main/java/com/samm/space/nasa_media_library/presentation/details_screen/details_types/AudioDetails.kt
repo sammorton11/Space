@@ -14,9 +14,10 @@ import com.samm.space.nasa_media_library.presentation.details_screen.components.
 import com.samm.space.nasa_media_library.presentation.details_screen.components.ExpandableDetailsCard
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
-import com.samm.space.presentation.buttons.ShareButton
-import com.samm.space.presentation.labels.Title
 import com.samm.space.presentation.buttons.DownloadFile
+import com.samm.space.presentation.buttons.ShareButton
+import com.samm.space.presentation.labels.DateLabel
+import com.samm.space.presentation.labels.Title
 
 @Composable
 fun AudioDetails(
@@ -24,6 +25,7 @@ fun AudioDetails(
     mediaType: MediaType,
     context: Context,
     title: String?,
+    date: String?,
     description: String,
     backgroundColor: Color
 ) {
@@ -57,4 +59,5 @@ fun AudioDetails(
         uri = mUri.toUri(),
         type = MediaDownloadType.AUDIO_WAV.mimeType
     )
+    DateLabel(date = date)
 }

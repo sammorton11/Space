@@ -123,8 +123,7 @@ class ViewUtils {
         intent.setPackage("com.android.chrome")
         try {
             context.startActivity(intent)
-        }
-        catch (e: ActivityNotFoundException) {
+        } catch (e: ActivityNotFoundException) {
             // Chrome is not installed, open the default browser
             intent.setPackage(null)
             context.startActivity(intent)

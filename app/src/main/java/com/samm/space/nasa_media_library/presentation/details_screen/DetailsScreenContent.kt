@@ -22,17 +22,19 @@ import com.samm.space.presentation.ProgressBar
 
 @Composable
 fun DetailsScreenContent(
-    url: String, 
-    description: String, 
-    mediaType: String,
+    url: String,
+    description: String,
+    type: String,
     title: String?,
+    date: String?,
     viewModel: VideoDataViewModel
 ) {
     val utils = ViewUtils()
     val decodedDescription = utils.decodeText(description)
     val context = LocalContext.current
     val backgroundColor = MaterialTheme.colorScheme.background
-    val mediaType_ = mediaType.toMediaType()
+    val mediaType = type.toMediaType() // converting the media type string to a type from the Media Type Enum
+    viewModel.getVideoData(url = url)
 
     LazyColumn (
         modifier = Modifier
@@ -42,19 +44,19 @@ fun DetailsScreenContent(
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        viewModel.getVideoData(
-            url = url
-        )
 
         item {
-            if (viewModel.state.value.isLoading) { ProgressBar() }
-            when (mediaType_) {
+            if (viewModel.state.value.isLoading) {
+                ProgressBar()
+            }
+            when (mediaType) {
                 MediaType.VIDEO -> {
                     VideoDetails(
                         context = context,
                         viewModel = viewModel,
-                        mediaType = mediaType_,
+                        mediaType = mediaType,
                         title = title,
+                        date = date,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
                     )
@@ -62,9 +64,10 @@ fun DetailsScreenContent(
                 MediaType.AUDIO -> {
                     AudioDetails(
                         viewModel = viewModel,
-                        mediaType = mediaType_,
+                        mediaType = mediaType,
                         context = context,
                         title = title,
+                        date = date,
                         description = decodedDescription,
                         backgroundColor = backgroundColor
                     )
@@ -72,10 +75,11 @@ fun DetailsScreenContent(
                 MediaType.IMAGE -> {
                     ImageDetails(
                         viewModel = viewModel,
-                        mediaType = mediaType_,
+                        mediaType = mediaType,
                         context = context,
                         url = url,
                         title = title,
+                        date = date,
                         description = decodedDescription,
                         backgroundColor = backgroundColor,
                     )

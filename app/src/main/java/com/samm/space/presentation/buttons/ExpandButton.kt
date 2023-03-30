@@ -1,31 +1,40 @@
 package com.samm.space.presentation.buttons
 
-import android.content.Context
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.samm.space.core.Constants
-import com.samm.space.nasa_media_library.util.ViewUtils
 
 @Composable
-fun OpenChromeButton(context: Context, uri: String) {
-    val viewUtil = ViewUtils()
+fun ExpandButton(expanded: MutableState<Boolean>) {
+
+    var text by remember {
+        mutableStateOf("Read More")
+    }
+
     OutlinedButton(
         onClick = {
-            viewUtil.openWithChrome(uri, context)
+            expanded.value = !expanded.value
         },
         modifier = Modifier
-            .padding(15.dp)
+            .padding(top = 8.dp)
             .width(Constants.buttonWidth)
-            .semantics { testTag = "Open Chrome Button" }
+            .semantics { testTag = "Expand Button" }
 
     ) {
-        Text(text = "Open in Chrome")
+
+        text = if (expanded.value) {
+            "Show Less"
+        } else {
+            "Read More"
+        }
+
+        Text(text = text)
     }
 }

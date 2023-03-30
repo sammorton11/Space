@@ -1,0 +1,92 @@
+{
+  "collection": {
+    "version": "1.0",
+    "href": "http://images-api.nasa.gov/search?&q=Mars",
+    "items": [
+      {
+        "href": "https://images-assets.nasa.gov/image/NHQ201905310026/collection.json",
+        "data": [
+          {
+            "center": "HQ",
+            "title": "Mars Celebration",
+            "nasa_id": "NHQ201905310026",
+            "date_created": null,
+            "keywords": [
+              "Mars",
+              "Mars Celebration",
+              "Pennsylvania"
+            ],
+            "media_type": "image",
+            "description_508": null,
+            "secondary_creator": null,
+            "description": null
+          }
+        ],
+        "links": [
+          {
+            "href": "https://images-assets.nasa.gov/image/NHQ201905310026/NHQ201905310026~thumb.jpg",
+            "rel": "preview",
+            "render": "image"
+          }
+        ]
+      },
+      {
+        "href": "https://images-assets.nasa.gov/image/NHQ201905310033/collection.json",
+        "data": [
+          {
+            "center": "HQ",
+            "title": "Mars Celebration",
+            "nasa_id": "NHQ201905310033",
+            "date_created": "2019-05-31T00:00:00Z",
+            "keywords": [
+              "Mars",
+              "Mars Celebration",
+              "Pennsylvania"
+            ],
+            "media_type": "image",
+            "description_508": null,
+            "secondary_creator": null,
+            "description": ""
+          }
+        ],
+        "links": [
+          {
+            "href": "https://images-assets.nasa.gov/image/NHQ201905310033/NHQ201905310033~thumb.jpg",
+            "rel": "preview",
+            "render": "image"
+          }
+        ]
+      },
+      {
+        "href": "https://images-api.nasa.gov/search?q=mars&media_type=image,audio,video",
+        "data": [
+          {
+            "center": "HQ",
+            "description": "",
+            "description_508": "NASA astronaut Drew Feustel talks about the importance of human space exploration, and what it's like to live and work in space.",
+            "media_type": "audio",
+            "nasa_id": "NASAEpx",
+            "title": "Importance of Human Space Exploration: Drew Feustel",
+            "keywords": [
+              "Drew Feustel",
+              "NASA astronaut",
+              "human space exploration",
+              "space",
+              "exploration",
+              "ISS",
+              "International Space Station"
+            ],
+            "date_created": "2021-03-26T16:57:17Z"
+          }
+        ],
+        "links": [
+          {
+            "href": "https://images-assets.nasa.gov/audio/NASAEpx/NASAEpx~128k.mp3",
+            "rel": "self",
+            "render": "audio"
+          }
+        ]
+      }
+    ]
+  }
+}

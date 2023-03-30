@@ -33,8 +33,19 @@ class MediaLibraryUITest: BaseTest() {
 
     companion object {
         val server = MockWebServer()
+
+        // contains non-null data
         val jsonString = this.javaClass
-            .classLoader?.getResource("res/raw/media_library_response.json")?.readText()
+            .classLoader
+            ?.getResource("res/raw/media_library_response.json")
+            ?.readText()
+
+        // contains null and empty data
+        val jsonStringNullData = this.javaClass
+            .classLoader
+            ?.getResource("res/raw/media_library_response_blank_data.json")
+            ?.readText()
+
         @AfterClass
         @JvmStatic
         fun tearDownClass() {
@@ -96,7 +107,6 @@ class MediaLibraryUITest: BaseTest() {
 
         composeTestRule.onNodeWithTag(searchFieldTag, true)
             .performImeAction()
-
     }
 
     @Test
@@ -121,6 +131,32 @@ class MediaLibraryUITest: BaseTest() {
 
         composeTestRule.waitForIdle()
 
+    }
+
+    @Test
+    fun test_null_data_for_details_screen() {
+        successfulResponse(jsonStringNullData!!, server)
+        val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
+
+        composeTestRule.waitUntil(2000) {
+            listOfCards.fetchSemanticsNodes().isNotEmpty()
+        }
+        for (index in 0 until listOfCards.fetchSemanticsNodes().size) {
+            listOfCards[index]
+                .assertIsDisplayed()
+                .performClick()
+
+            composeTestRule.waitForIdle()
+            composeTestRule.onNodeWithTag(detailsScreenTag)
+                .assertIsDisplayed()
+
+            composeTestRule.onNodeWithTag("Details Text" )
+                .assertIsDisplayed()
+
+            pressBackButton()
+        }
+
+        composeTestRule.waitForIdle()
     }
 
     @Test

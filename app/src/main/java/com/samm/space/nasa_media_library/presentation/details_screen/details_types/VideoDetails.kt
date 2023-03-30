@@ -11,10 +11,11 @@ import com.samm.space.nasa_media_library.presentation.details_screen.components.
 import com.samm.space.nasa_media_library.presentation.details_screen.components.ExpandableDetailsCard
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
+import com.samm.space.presentation.buttons.DownloadFile
 import com.samm.space.presentation.buttons.OpenChromeButton
 import com.samm.space.presentation.buttons.ShareButton
+import com.samm.space.presentation.labels.DateLabel
 import com.samm.space.presentation.labels.Title
-import com.samm.space.presentation.buttons.DownloadFile
 
 @Composable
 fun VideoDetails(
@@ -22,6 +23,7 @@ fun VideoDetails(
     viewModel: VideoDataViewModel,
     mediaType: MediaType,
     title: String?,
+    date: String?,
     description: String,
     backgroundColor: Color,
 ) {
@@ -54,4 +56,5 @@ fun VideoDetails(
         uri = mUri.toUri(),
         type = MediaDownloadType.VIDEO.mimeType
     )
+    DateLabel(date = date)
 }

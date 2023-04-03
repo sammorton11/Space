@@ -18,20 +18,16 @@ import com.samm.space.util.test_tags.ApodTestTags.apodTitleTag
 import com.samm.space.util.test_tags.GlobalTestTags.downloadButtonTag
 import com.samm.space.util.test_tags.GlobalTestTags.shareButtonTag
 import dagger.hilt.android.testing.HiltAndroidTest
-import okhttp3.mockwebserver.MockWebServer
-import org.junit.After
-import org.junit.AfterClass
-import org.junit.Before
-import org.junit.Test
+import okhttp3.mockwebserver.MockResponse
+import org.junit.*
 
 // Todo: Tests fail when running class. server throws error.
 
 @HiltAndroidTest
 class ApodUITest : BaseTest() {
 
-    companion object {
 
-        val server = MockWebServer() // fake back end server
+    companion object {
 
         // Getting the fake payload from resources
         val jsonString = this.javaClass
@@ -39,17 +35,31 @@ class ApodUITest : BaseTest() {
             ?.getResource("res/raw/apod_response.json")
             ?.readText()
 
+        fun successfulResponse(body: String) {
+            server.enqueue(
+                MockResponse()
+                    .setResponseCode(200)
+                    .setBody(body)
+            )
+        }
+
+        @BeforeClass
+        @JvmStatic
+        fun setUpClass() {
+            successfulResponse(jsonString!!)
+        }
+
         @AfterClass
         @JvmStatic
         fun tearDownClass() {
             server.shutdown()
+            server.close()
         }
     }
 
     @Before
     fun setUp() {
         hiltRule.inject()
-        successfulResponse(jsonString!!, server)
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
@@ -79,15 +89,13 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_image() {
-
         composeTestRule.waitForIdle()
         composeTestRule.waitUntil(2000) {
             composeTestRule.onAllNodes(hasTestTag(apodImageTag), true)
                 .fetchSemanticsNodes()
                 .isNotEmpty()
         }
-        Thread.sleep(1000) // Todo: Find another way to wait. Fails without this though.
-
+        asyncTimerWait(1000)
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodImageTag, true)
             .assertIsDisplayed()
@@ -95,7 +103,6 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_description() {
-
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodDescriptionTag, true)
             .assertIsDisplayed()
@@ -103,7 +110,6 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_copyright() {
-
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodCopyrightText, true)
             .assertIsDisplayed()
@@ -111,7 +117,6 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_date() {
-
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(apodDateText, true)
             .assertIsDisplayed()
@@ -119,7 +124,6 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_share_button() {
-
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(shareButtonTag, true)
             .assertIsDisplayed()
@@ -129,17 +133,9 @@ class ApodUITest : BaseTest() {
 
     @Test
     fun test_apod_download_button() {
-
         composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(downloadButtonTag, true)
             .assertIsDisplayed()
             .assertHasClickAction()
     }
-
-//    @Test
-//    fun testFailedResponse() {
-//        failedResponse(server)
-//        composeTestRule.waitForIdle()
-//        composeTestRule.onNodeWithTag(errorTag).assertIsDisplayed()
-//    }
 }

@@ -55,7 +55,7 @@ class MediaLibraryViewModel @Inject constructor
         var result = ""
         mediaLibraryRepository.savedQueryFlow().onEach { query ->
             query?.let { savedQuery ->
-                result = savedQuery
+                result = "${savedQuery}..."
             }
         }.onCompletion {
             if (result.isEmpty()) {

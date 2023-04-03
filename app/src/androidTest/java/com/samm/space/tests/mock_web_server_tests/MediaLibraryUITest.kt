@@ -29,10 +29,8 @@ import org.junit.Test
 @HiltAndroidTest
 class MediaLibraryUITest: BaseTest() {
 
-    private lateinit var navController: TestNavHostController
-
     companion object {
-        val server = MockWebServer()
+        val serverMediaLibraryScreen = MockWebServer()
 
         // contains non-null data
         val jsonString = this.javaClass
@@ -49,7 +47,7 @@ class MediaLibraryUITest: BaseTest() {
         @AfterClass
         @JvmStatic
         fun tearDownClass() {
-            server.shutdown()
+            serverMediaLibraryScreen.shutdown()
         }
     }
 
@@ -57,44 +55,7 @@ class MediaLibraryUITest: BaseTest() {
     @Before
     fun setUp() {
         hiltRule.inject()
-        composeTestRule.activity.apply {
-            setContent {
-                SpaceTheme {
-                    Surface(
-                        modifier = Modifier.fillMaxSize(),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-
-                        navController = TestNavHostController(LocalContext.current)
-                        navController.navigatorProvider.addNavigator(ComposeNavigator())
-                        val drawerState = rememberDrawerState(DrawerValue.Closed)
-                        val filterType = remember { mutableStateOf("") }
-                        val backgroundType = remember { mutableStateOf(Constants.NO_BACKGROUND) }
-
-                        val scope = rememberCoroutineScope()
-                        val title = remember { mutableStateOf("NASA Media Library") }
-                        val viewModel: MediaLibraryViewModel = hiltViewModel()
-                        viewModel.getData("Mars")
-
-                        SideNavigationDrawer(
-                            navController = navController,
-                            drawerState = drawerState,
-                            scope = scope,
-                            title = title
-                        ) {
-                            MainScaffold(
-                                filterType = filterType,
-                                drawerState = drawerState,
-                                scope = scope,
-                                backgroundType = backgroundType,
-                                title = title,
-                                navController = navController
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        mediaLibraryScreenSetup()
     }
 
     @Test
@@ -111,12 +72,14 @@ class MediaLibraryUITest: BaseTest() {
 
     @Test
     fun test_library_list_card() {
-        successfulResponse(jsonString!!, server)
+
+        successfulResponse(jsonString!!)
         val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
 
         composeTestRule.waitUntil(2000) {
             listOfCards.fetchSemanticsNodes().isNotEmpty()
         }
+
         for (index in 0 until listOfCards.fetchSemanticsNodes().size) {
             listOfCards[index]
                 .assertIsDisplayed()
@@ -135,7 +98,7 @@ class MediaLibraryUITest: BaseTest() {
 
     @Test
     fun test_null_data_for_details_screen() {
-        successfulResponse(jsonStringNullData!!, server)
+        successfulResponse(jsonStringNullData!!)
         val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
 
         composeTestRule.waitUntil(2000) {
@@ -161,6 +124,6 @@ class MediaLibraryUITest: BaseTest() {
 
     @Test
     fun test_failedResponse() {
-        failedResponse(server)
+        failedResponse()
     }
 }

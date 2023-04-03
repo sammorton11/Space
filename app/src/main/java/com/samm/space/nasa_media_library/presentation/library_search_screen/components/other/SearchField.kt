@@ -62,7 +62,7 @@ fun SearchField(
         placeholder = {
             savedQuery?.let {
                 Text(
-                    text = "$it...",
+                    text = it,
                     fontStyle = FontStyle.Italic
                 )
             }

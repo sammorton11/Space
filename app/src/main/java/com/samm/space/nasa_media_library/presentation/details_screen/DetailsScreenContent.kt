@@ -1,5 +1,6 @@
 package com.samm.space.nasa_media_library.presentation.details_screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,12 +9,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.samm.space.core.MediaType
 import com.samm.space.core.MediaType.Companion.toMediaType
+import com.samm.space.nasa_media_library.presentation.details_screen.details_types.VideoDetails
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.presentation.ProgressBar
@@ -36,9 +39,13 @@ fun DetailsScreenContent(
     val mediaType = type.toMediaType() // converting the media type string to a type from the Media Type Enum
     viewModel.getVideoData(url = url)
 
+    // Todo: this is not setting the orientation
+    val configuration = LocalConfiguration.current
+    configuration.orientation = Configuration.ORIENTATION_PORTRAIT
+
     LazyColumn (
         modifier = Modifier
-            .padding(10.dp)
+            .padding(0.dp)
             .fillMaxSize()
             .semantics { testTag = "Details Screen" },
         verticalArrangement = Arrangement.Top,

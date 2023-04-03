@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
@@ -29,8 +30,8 @@ fun DetailsImage(
     val viewUtil = ViewUtils()
     Card(
         modifier = Modifier
-            .padding(25.dp)
-            .wrapContentWidth()
+            .padding(10.dp)
+            .wrapContentWidth(unbounded = true)
             .semantics { testTag = "Details Image Card" },
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -40,12 +41,12 @@ fun DetailsImage(
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize()
-                    .sizeIn(
-                        minHeight = 125.dp,
-                        minWidth = 125.dp,
-                        maxHeight = 265.dp,
-                        maxWidth = 200.dp
-                    )
+//                    .sizeIn(
+//                        minHeight = 225.dp,
+//                        minWidth = 307.dp,
+//                        maxHeight = 465.dp,
+//                        maxWidth = 500.dp
+//                    )
                     .clickable {
                         viewUtil.openWithChrome(imageLink, context)
                     }
@@ -56,12 +57,14 @@ fun DetailsImage(
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             )
         }
+
+        // Audio cards have a stock image from resources not an image url
         id?.let {
             SubcomposeAsyncImage(
                 model = id,
                 contentDescription = "",
                 modifier = Modifier
-                    .fillMaxSize()
+
                     .sizeIn(
                         minHeight = 125.dp,
                         minWidth = 125.dp,

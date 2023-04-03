@@ -1,5 +1,6 @@
 package com.samm.space.nasa_media_library.presentation.library_search_screen.components.cards
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -42,8 +43,6 @@ fun ListCard(
     val roundedCornerAmount = 10
     val cardElevationAmount = 55.dp
     val cardImageLink = links?.first()?.href
-//    var encodedDescription = "Not Available"
-//    var encodedUrl = "Not Available"
 
     Card(
         modifier = Modifier

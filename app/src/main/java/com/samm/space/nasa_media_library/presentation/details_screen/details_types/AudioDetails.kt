@@ -11,7 +11,7 @@ import com.samm.space.core.MediaDownloadType
 import com.samm.space.core.MediaType
 import com.samm.space.nasa_media_library.presentation.details_screen.components.AudioPlayer
 import com.samm.space.nasa_media_library.presentation.details_screen.components.DetailsImage
-import com.samm.space.nasa_media_library.presentation.details_screen.components.ExpandableDetailsCard
+import com.samm.space.nasa_media_library.presentation.details_screen.components.DescriptionText
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.presentation.buttons.DownloadFile
@@ -44,7 +44,7 @@ fun AudioDetails(
         viewModel = viewModel,
         mediaType = mediaType
     )
-    ExpandableDetailsCard(
+    DescriptionText(
         content = description,
         color = backgroundColor
     )

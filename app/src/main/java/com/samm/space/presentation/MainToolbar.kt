@@ -111,6 +111,12 @@ fun MyToolbar(
                     }
                 )
                 DropdownMenuItem(
+                    text = { Text(text = "Sci-Fi Planets Background") },
+                    onClick = {
+                        backgroundType.value = R.drawable.space_background_04
+                    }
+                )
+                DropdownMenuItem(
                     text = { Text(text = "No Background") },
                     onClick = {
                         backgroundType.value = NO_BACKGROUND

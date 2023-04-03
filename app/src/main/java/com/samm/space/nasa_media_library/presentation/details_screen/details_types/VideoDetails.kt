@@ -1,4 +1,4 @@
-package com.samm.space.nasa_media_library.presentation.details_screen
+package com.samm.space.nasa_media_library.presentation.details_screen.details_types
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import com.samm.space.core.MediaDownloadType
 import com.samm.space.core.MediaType
 import com.samm.space.nasa_media_library.presentation.details_screen.components.CardMediaPlayer
-import com.samm.space.nasa_media_library.presentation.details_screen.components.ExpandableDetailsCard
+import com.samm.space.nasa_media_library.presentation.details_screen.components.DescriptionText
 import com.samm.space.nasa_media_library.presentation.view_models.VideoDataViewModel
 import com.samm.space.nasa_media_library.util.ViewUtils
 import com.samm.space.presentation.buttons.DownloadFile
@@ -37,7 +37,7 @@ fun VideoDetails(
         videoViewModel = viewModel,
         uri = mUri
     )
-    ExpandableDetailsCard(
+    DescriptionText(
         content = description,
         color = backgroundColor
     )

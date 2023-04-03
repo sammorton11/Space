@@ -16,10 +16,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.samm.space.presentation.buttons.ExpandButton
 
 @Composable
-fun ExpandableDetailsCard(content: String, color: Color) {
+fun DescriptionText(content: String, color: Color) {
 
     var isExpanded = remember { mutableStateOf(false) }
     val lines = content.length
@@ -46,9 +45,6 @@ fun ExpandableDetailsCard(content: String, color: Color) {
                     overflow = TextOverflow.Ellipsis
                 )
             }
-        }
-        if (!overLineLimit) {
-            ExpandButton(isExpanded)
         }
     }
 }

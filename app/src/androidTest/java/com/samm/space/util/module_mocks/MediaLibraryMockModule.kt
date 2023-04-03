@@ -29,7 +29,7 @@ import javax.inject.Singleton
 object MediaLibraryMockModule {
 
     private fun baseUrl(): HttpUrl = runBlocking(Dispatchers.Default) {
-        MediaLibraryUITest.server.url("/")
+        MediaLibraryUITest.serverMediaLibraryScreen.url("/")
     }
 
     @Provides

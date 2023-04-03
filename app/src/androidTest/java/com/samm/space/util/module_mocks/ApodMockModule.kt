@@ -5,7 +5,7 @@ import com.samm.space.picture_of_the_day.data.ApodApi
 import com.samm.space.picture_of_the_day.domain.repository.ApodRepository
 import com.samm.space.repository.FakeApodRepositoryMock
 import com.samm.space.test.BuildConfig
-import com.samm.space.tests.mock_web_server_tests.ApodUITest.Companion.server
+import com.samm.space.tests.mock_web_server_tests.BaseTest.Companion.server
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent

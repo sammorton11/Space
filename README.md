@@ -21,6 +21,7 @@ Technologies:
 - Hilt
 - Coil
 - Flow
+- StateFlow
 - ExoPlayer
 - Material Design Components
 - Download Manager

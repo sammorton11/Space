@@ -2,10 +2,10 @@ package com.samm.space.repository
 
 import android.util.Log
 import com.samm.space.core.Resource
-import com.samm.space.nasa_media_library.data.network.MetadataApi
-import com.samm.space.nasa_media_library.data.network.NasaApi
-import com.samm.space.nasa_media_library.domain.models.NasaLibraryResponse
-import com.samm.space.nasa_media_library.domain.repository.MediaLibraryRepository
+import com.samm.space.nasa_media_library_page.data.network.MetadataApi
+import com.samm.space.nasa_media_library_page.data.network.NasaApi
+import com.samm.space.nasa_media_library_page.domain.models.NasaLibraryResponse
+import com.samm.space.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

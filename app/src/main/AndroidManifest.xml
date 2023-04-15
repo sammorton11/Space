@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name=".presentation.util.DownloadCompletedReceiver"
+            android:name=".presentation_common.util.DownloadCompletedReceiver"
             android:exported="true">
             <intent-filter>
                 <action

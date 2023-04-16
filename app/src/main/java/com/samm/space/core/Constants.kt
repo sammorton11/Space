@@ -16,8 +16,15 @@ object Constants {
 
     val utf8Encoding = StandardCharsets.UTF_8.toString()
     var BASE_URL = "https://images-api.nasa.gov/"
-    val mimeTypeForDownload = MediaDownloadType.IMAGE_JPEG.mimeType
-    val subPathForDownload = MediaDownloadType.IMAGE_JPEG.subPath
+
+    val imageMimeTypeForDownload = MediaDownloadType.IMAGE_JPEG.mimeType
+    val videoMimeTypeForDownload = MediaDownloadType.VIDEO.mimeType
+    val audioMimeTypeForDownload = MediaDownloadType.AUDIO_WAV.mimeType
+
+    val imageSubPathForDownload = MediaDownloadType.IMAGE_JPEG.subPath
+    val videoSubPathForDownload = MediaDownloadType.VIDEO.subPath
+    val audioSubPathForDownload = MediaDownloadType.AUDIO_WAV.subPath
+
     val buttonWidth = 150.dp
 
     val cubicAnimation = Modifier.animateContentSize(

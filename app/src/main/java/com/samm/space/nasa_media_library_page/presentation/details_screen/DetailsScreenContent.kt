@@ -38,6 +38,7 @@ fun DetailsScreenContent(
         MediaType.VIDEO -> {
             VideoDetails(
                 context = context,
+                mediaType = mediaType.type,
                 state = state,
                 mUri = mUri,
                 title = title,
@@ -49,6 +50,7 @@ fun DetailsScreenContent(
             AudioDetails(
                 audioPlayerUri = audioPlayerUri,
                 mUri = mUri,
+                mediaType = mediaType.type,
                 context = context,
                 title = title,
                 date = date,
@@ -58,6 +60,7 @@ fun DetailsScreenContent(
         MediaType.IMAGE -> {
             ImageDetails(
                 mUri = mUri,
+                mediaType = mediaType.type,
                 context = context,
                 url = metaDataUrl,
                 title = title,

@@ -13,8 +13,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.core.Constants.mimeTypeForDownload
-import com.samm.space.core.Constants.subPathForDownload
+import com.samm.space.core.Constants.videoMimeTypeForDownload
+import com.samm.space.core.Constants.videoSubPathForDownload
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.CardMediaPlayer
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.DescriptionText
 import com.samm.space.presentation_common.buttons.DownloadFile
@@ -28,6 +28,7 @@ import com.samm.space.presentation_common.util.rememberWindowInfo
 @Composable
 fun VideoDetails(
     context: Context,
+    mediaType: String,
     state: String?,
     mUri: String,
     title: String?,
@@ -69,12 +70,13 @@ fun VideoDetails(
                         url = mUri,
                         context = context,
                         filename = mUri,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        mimeType = videoMimeTypeForDownload,
+                        subPath = videoSubPathForDownload
                     )
                     ShareButton(
                         uri = mUri.toUri(),
-                        mediaType = mimeTypeForDownload
+                        mimeType = videoMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -111,12 +113,13 @@ fun VideoDetails(
                         url = mUri,
                         context = context,
                         filename = mUri,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        mimeType = videoMimeTypeForDownload,
+                        subPath = videoSubPathForDownload
                     )
                     ShareButton(
                         uri = mUri.toUri(),
-                        mediaType = mimeTypeForDownload
+                        mimeType = videoMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -158,12 +161,13 @@ fun VideoDetails(
                             url = mUri,
                             context = context,
                             filename = mUri,
-                            mimeType = mimeTypeForDownload,
-                            subPath = subPathForDownload
+                            mimeType = videoMimeTypeForDownload,
+                            subPath = videoSubPathForDownload
                         )
                         ShareButton(
                             uri = mUri.toUri(),
-                            mediaType = mimeTypeForDownload
+                            mimeType = videoMimeTypeForDownload,
+                            mediaType = mediaType
                         )
                         DateLabel(date = date)
                     }

@@ -14,8 +14,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.core.Constants.mimeTypeForDownload
-import com.samm.space.core.Constants.subPathForDownload
+import com.samm.space.core.Constants.imageMimeTypeForDownload
+import com.samm.space.core.Constants.imageSubPathForDownload
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.DescriptionText
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.DetailsImage
 import com.samm.space.presentation_common.buttons.DownloadFile
@@ -29,6 +29,7 @@ import com.samm.space.presentation_common.util.rememberWindowInfo
 @Composable
 fun ImageDetails(
     mUri: String,
+    mediaType: String,
     context: Context,
     url: String,
     title: String?,
@@ -68,15 +69,16 @@ fun ImageDetails(
                         uri = mUri
                     )
                     DownloadFile(
-                        url = url,
+                        url = mUri,
                         context = context,
-                        filename = url,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        filename = mUri,
+                        mimeType = imageMimeTypeForDownload,
+                        subPath = imageSubPathForDownload
                     )
                     ShareButton(
-                        uri = url.toUri(),
-                        mediaType = mimeTypeForDownload
+                        uri = mUri.toUri(),
+                        mimeType = imageMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -112,12 +114,13 @@ fun ImageDetails(
                         url = url,
                         context = context,
                         filename = url,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        mimeType = imageMimeTypeForDownload,
+                        subPath = imageSubPathForDownload
                     )
                     ShareButton(
                         uri = url.toUri(),
-                        mediaType = mimeTypeForDownload
+                        mimeType = imageMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -158,12 +161,13 @@ fun ImageDetails(
                             url = url,
                             context = context,
                             filename = url,
-                            mimeType = mimeTypeForDownload,
-                            subPath = subPathForDownload
+                            mimeType = imageMimeTypeForDownload,
+                            subPath = imageSubPathForDownload
                         )
                         ShareButton(
                             uri = url.toUri(),
-                            mediaType = mimeTypeForDownload
+                            mimeType = imageMimeTypeForDownload,
+                            mediaType = mediaType
                         )
                         DateLabel(date = date)
                     }

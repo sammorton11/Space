@@ -6,29 +6,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samm.space.picture_of_the_day_page.presentation.components.ApodComponents
 import com.samm.space.picture_of_the_day_page.presentation.components.ApodComponentsForLargeScreen
 import com.samm.space.presentation_common.ProgressBar
 import com.samm.space.presentation_common.labels.ErrorText
 import com.samm.space.presentation_common.util.DateConverter
-import com.samm.space.presentation_common.util.FileHandler
 import com.samm.space.presentation_common.util.WindowInfo
 import com.samm.space.presentation_common.util.rememberWindowInfo
-
-
-// Todo: Code is repeated here - needs clean up
 
 @Composable
 fun ApodScreen(viewModel: ApodViewModel) {
 
     val context = LocalContext.current
     val window = rememberWindowInfo()
-    val state = viewModel.state.collectAsState()
+    val state = viewModel.state.collectAsStateWithLifecycle()
     val data = state.value.data
 
     val hdImage = data?.hdurl

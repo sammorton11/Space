@@ -10,6 +10,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.core.Constants
+import com.samm.space.core.MediaType
 import com.samm.space.presentation_common.buttons.DownloadFile
 import com.samm.space.presentation_common.buttons.ShareButton
 import com.samm.space.presentation_common.labels.Title
@@ -38,15 +39,15 @@ fun ApodComponents(
             url = image,
             context = context,
             filename = hdImage,
-            mimeType = Constants.mimeTypeForDownload,
-            subPath = Constants.subPathForDownload
+            mimeType = Constants.imageMimeTypeForDownload,
+            subPath = Constants.imageSubPathForDownload
         )
 
         ShareButton(
             uri = image.toUri(),
-            mediaType = Constants.mimeTypeForDownload
+            mimeType = Constants.imageMimeTypeForDownload,
+            mediaType = MediaType.IMAGE.type
         )
-
     }
 
     date?.let {

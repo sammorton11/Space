@@ -15,8 +15,8 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.R
-import com.samm.space.core.Constants.mimeTypeForDownload
-import com.samm.space.core.Constants.subPathForDownload
+import com.samm.space.core.Constants.audioMimeTypeForDownload
+import com.samm.space.core.Constants.audioSubPathForDownload
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.AudioPlayer
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.DescriptionText
 import com.samm.space.nasa_media_library_page.presentation.details_screen.components.DetailsImage
@@ -32,6 +32,7 @@ import com.samm.space.presentation_common.util.rememberWindowInfo
 fun AudioDetails(
     audioPlayerUri: String,
     mUri: String,
+    mediaType: String,
     context: Context,
     title: String?,
     date: String?,
@@ -77,12 +78,13 @@ fun AudioDetails(
                         url = mUri,
                         context = context,
                         filename = mUri,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        mimeType = audioMimeTypeForDownload,
+                        subPath = audioSubPathForDownload
                     )
                     ShareButton(
                         uri = mUri.toUri(),
-                        mediaType = mimeTypeForDownload
+                        mimeType = audioMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -98,7 +100,6 @@ fun AudioDetails(
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
                 item {
                     Title(
                         text = title,
@@ -124,12 +125,13 @@ fun AudioDetails(
                         url = mUri,
                         context = context,
                         filename = mUri,
-                        mimeType = mimeTypeForDownload,
-                        subPath = subPathForDownload
+                        mimeType = audioMimeTypeForDownload,
+                        subPath = audioSubPathForDownload
                     )
                     ShareButton(
                         uri = mUri.toUri(),
-                        mediaType = mimeTypeForDownload
+                        mimeType = audioMimeTypeForDownload,
+                        mediaType = mediaType
                     )
                     DateLabel(date = date)
                 }
@@ -179,12 +181,13 @@ fun AudioDetails(
                             url = mUri,
                             context = context,
                             filename = mUri,
-                            mimeType = mimeTypeForDownload,
-                            subPath = subPathForDownload
+                            mimeType = audioMimeTypeForDownload,
+                            subPath = audioSubPathForDownload
                         )
                         ShareButton(
                             uri = mUri.toUri(),
-                            mediaType = mimeTypeForDownload
+                            mimeType = audioMimeTypeForDownload,
+                            mediaType = mediaType
                         )
                         DateLabel(date = date)
                     }

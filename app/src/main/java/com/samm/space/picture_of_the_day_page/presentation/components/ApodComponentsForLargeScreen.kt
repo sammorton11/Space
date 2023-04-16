@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.core.Constants.mimeTypeForDownload
-import com.samm.space.core.Constants.subPathForDownload
+import com.samm.space.core.Constants
+import com.samm.space.core.MediaType
 import com.samm.space.presentation_common.buttons.DownloadFile
 import com.samm.space.presentation_common.buttons.ShareButton
 import com.samm.space.presentation_common.labels.Title
@@ -42,13 +42,14 @@ fun ApodComponentsForLargeScreen(
                     url = image,
                     context = context,
                     filename = hdImage,
-                    mimeType = mimeTypeForDownload,
-                    subPath = subPathForDownload
+                    mimeType = Constants.imageMimeTypeForDownload,
+                    subPath = Constants.imageSubPathForDownload
                 )
 
                 ShareButton(
                     uri = image.toUri(),
-                    mediaType = mimeTypeForDownload
+                    mimeType = Constants.imageMimeTypeForDownload,
+                    mediaType = MediaType.IMAGE.type
                 )
             }
 

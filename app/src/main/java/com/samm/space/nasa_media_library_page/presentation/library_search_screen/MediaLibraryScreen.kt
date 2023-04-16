@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.samm.space.core.Constants.NO_BACKGROUND
 import com.samm.space.nasa_media_library_page.presentation.library_search_screen.components.other.LibraryListContent
@@ -34,7 +35,7 @@ fun MediaLibraryScreen(
     val window = rememberWindowInfo()
 
     val imageScaleType = ContentScale.FillBounds
-    val savedSearchTextState = viewModel.getSavedSearchText().collectAsState(initial = "")
+    val savedSearchTextState = viewModel.getSavedSearchText().collectAsStateWithLifecycle("")
     val background = viewModel.backgroundType.observeAsState(initial = NO_BACKGROUND)
 
     val filterType = viewModel.listFilterType.observeAsState("")

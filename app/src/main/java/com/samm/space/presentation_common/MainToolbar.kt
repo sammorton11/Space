@@ -106,35 +106,30 @@ fun MyToolbar(
                 DropdownMenuItem(
                     text = { Text(text = "Planets Background") },
                     onClick = {
-                        //backgroundType.value = R.drawable.space_background_01
                         viewModel.updateBackgroundType(R.drawable.space_background_01)
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Space Man Background") },
                     onClick = {
-                        //backgroundType.value = R.drawable.space_background_02
                         viewModel.updateBackgroundType(R.drawable.space_background_02)
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Galaxy Background") },
                     onClick = {
-                        //backgroundType.value = R.drawable.space_background_03
                         viewModel.updateBackgroundType(R.drawable.space_background_03)
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Sci-Fi Planets Background") },
                     onClick = {
-                       // backgroundType.value = R.drawable.space_background_04
                         viewModel.updateBackgroundType(R.drawable.space_background_04)
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "No Background") },
                     onClick = {
-                        //backgroundType.value = NO_BACKGROUND
                         viewModel.updateBackgroundType(NO_BACKGROUND)
                     }
                 )

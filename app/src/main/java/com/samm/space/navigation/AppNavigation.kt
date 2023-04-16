@@ -49,7 +49,7 @@ fun AppNavigation(
             val date = backStackEntry.arguments?.getString("date")
 
             if ((urlId != null) && (descriptionId != null) && (mediaType != null)) {
-//                mediaDataViewModel.getMediaData(url = urlId)
+                mediaDataViewModel.getMediaData(url = urlId)
                 DetailsScreen(
                     metaDataUrl = urlId,
                     description = descriptionId,

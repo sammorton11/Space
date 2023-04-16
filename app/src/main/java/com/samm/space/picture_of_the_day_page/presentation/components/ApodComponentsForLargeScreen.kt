@@ -27,7 +27,8 @@ fun ApodComponentsForLargeScreen(
 
     LazyColumn(modifier = Modifier
         .padding(25.dp)
-        .fillMaxSize()) {
+        .fillMaxSize()
+    ) {
 
         item {
 

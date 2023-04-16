@@ -25,7 +25,6 @@ import kotlinx.coroutines.launch
     Todo:
         ----
         - Add the background type as a value to pass through to the apod screen and details screen
-        - Image, Audio, and Video Details screen contain repeated code - fix this!
         - Orientation Issue - Details Screen
         - Need to add more UI and integration tests - mock web server is now working
         - Need fake JSON for the details screen
@@ -55,10 +54,7 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
-
                     val viewModel: MediaLibraryViewModel = hiltViewModel()
-                    val savedSearch = viewModel.getSavedSearchText().collectAsState(initial = "Moon").value
-                    viewModel.getData(savedSearch)
 
                     SideNavigationDrawer(
                         navController = navController,

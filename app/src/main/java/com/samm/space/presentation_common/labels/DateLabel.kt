@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.samm.space.presentation_common.util.DateConverter
 
 @Composable
-fun DateLabel(date: String?, padding: Dp = 25.dp) {
+fun DateLabel(date: String?, padding: Dp = 15.dp) {
     date?.let {
         Text(
             text = DateConverter.formatDisplayDate(it),

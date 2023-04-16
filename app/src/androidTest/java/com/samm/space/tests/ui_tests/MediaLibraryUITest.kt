@@ -17,9 +17,18 @@ class MediaLibraryUITest: BaseTest() {
 
     companion object {
         val serverMediaLibrary = MockWebServer()
+        val serverMetadata = MockWebServer()
 
         fun successfulResponse(body: String) {
             serverMediaLibrary.enqueue(
+                MockResponse()
+                    .setResponseCode(200)
+                    .setBody(body)
+            )
+        }
+
+        fun successfulMetadataResponse(body: String) {
+            serverMetadata.enqueue(
                 MockResponse()
                     .setResponseCode(200)
                     .setBody(body)
@@ -60,7 +69,7 @@ class MediaLibraryUITest: BaseTest() {
     }
 
     @Test
-    fun test_library_list_card() {
+    fun test_library_list_cards() {
         successfulResponse(jsonStringMediaLibrary!!)
         val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
 
@@ -74,8 +83,15 @@ class MediaLibraryUITest: BaseTest() {
                 .performClick()
 
             composeTestRule.waitForIdle()
+            composeTestRule.waitUntil(3000) {
+                composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
+                    .fetchSemanticsNodes().isNotEmpty()
+            }
             composeTestRule.onNodeWithTag(detailsScreenTag)
                 .assertIsDisplayed()
+
+            successfulMetadataResponse(jsonStringMetadata!!)
+            composeTestRule.waitForIdle()
 
             pressBackButton(composeTestRule)
         }
@@ -98,6 +114,10 @@ class MediaLibraryUITest: BaseTest() {
                 .performClick()
 
             composeTestRule.waitForIdle()
+            composeTestRule.waitUntil(3000) {
+                composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
+                    .fetchSemanticsNodes().isNotEmpty()
+            }
             composeTestRule.onNodeWithTag(detailsScreenTag)
                 .assertIsDisplayed()
 

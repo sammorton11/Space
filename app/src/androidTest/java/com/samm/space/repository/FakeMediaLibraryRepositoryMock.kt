@@ -54,7 +54,7 @@ class FakeMediaLibraryRepositoryMock @Inject constructor (
             emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         }
         catch (e: IOException){
-            emit(Resource.Error("Check Internet Connection"))
+            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
         }
     }
 }

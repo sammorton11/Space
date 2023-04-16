@@ -39,7 +39,7 @@ open class BaseTest {
             ?.getResource("res/raw/media_library_response.json")
             ?.readText()
 
-        val jsonStringVideoDetails = Companion::class.java.classLoader
+        val jsonStringMetadata = Companion::class.java.classLoader
             ?.getResource("res/raw/video_metadata_response.json")
             ?.toString()
 

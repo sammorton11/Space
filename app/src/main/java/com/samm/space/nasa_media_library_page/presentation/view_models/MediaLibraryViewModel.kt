@@ -1,6 +1,5 @@
 package com.samm.space.nasa_media_library_page.presentation.view_models
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -50,8 +49,7 @@ class MediaLibraryViewModel @Inject constructor
                 }
                 is Resource.Error -> {
                     error.let {
-                        _state.value = NasaLibraryState(error = "Error! $it")
-                        Log.d("Error", it.toString())
+                        _state.value = NasaLibraryState(error = "Error: $it")
                     }
                 }
                 is Resource.Loading -> {
@@ -62,12 +60,9 @@ class MediaLibraryViewModel @Inject constructor
     }
 
     fun getSavedSearchText(): Flow<String> {
-        return mediaLibraryRepository.savedQueryFlow()
-            .map { query ->
-                query?.let { savedQuery ->
-                    "${savedQuery}..."
-                } ?: "Search..."
-            }
+        return mediaLibraryRepository
+            .savedQueryFlow()
+            .map { query -> query ?: "Search" }
     }
 
     fun updateListFilterType(filterType: String) {

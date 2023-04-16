@@ -27,7 +27,7 @@ fun ShareButton(uri: Uri, mediaType: String) {
     OutlinedButton(
         onClick = { util.shareFile(uri, shareLauncher, mediaType) },
         modifier = Modifier
-            .padding(bottom = 25.dp)
+            .padding(15.dp)
             .width(Constants.buttonWidth)
             .semantics {
                 testTag = "Share Button"

@@ -19,13 +19,12 @@ import coil.compose.SubcomposeAsyncImage
 fun DetailsImage(
     imageLink: String? = null,
     id: Int? = null,
-    scale: ContentScale,
+    scale: ContentScale
 ) {
 
     Card(
         modifier = Modifier
             .padding(10.dp)
-            .wrapContentWidth(unbounded = true)
             .semantics { testTag = "Details Image Card" },
         shape = RoundedCornerShape(10.dp)
     ) {
@@ -34,7 +33,10 @@ fun DetailsImage(
                 model = imageLink,
                 contentDescription = "",
                 modifier = Modifier
-                    .fillMaxSize()
+                    .sizeIn(
+                        minWidth = 125.dp,
+                        maxWidth = 400.dp
+                    )
                     .semantics {
                         testTag = "Details Image"
                     },
@@ -49,12 +51,11 @@ fun DetailsImage(
                 model = id,
                 contentDescription = "",
                 modifier = Modifier
-
                     .sizeIn(
                         minHeight = 125.dp,
                         minWidth = 125.dp,
                         maxHeight = 265.dp,
-                        maxWidth = 200.dp
+                        maxWidth = 300.dp
                     )
                     .semantics {
                         testTag = "Details Image - ID"

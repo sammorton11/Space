@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.R
@@ -23,9 +24,9 @@ import com.samm.space.R
 @Composable
 fun AudioPlayer(
     audioPlayerUri: String,
-    mContext: Context
+    mContext: Context,
+    iconSize: Dp = 150.dp
 ) {
-    val iconSize = 150.dp
     val mMediaPlayer = MediaPlayer.create(mContext, audioPlayerUri.toUri())
     val paused = remember { mutableStateOf(true) }
 

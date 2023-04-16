@@ -15,7 +15,11 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.ui.StyledPlayerView
 
 @Composable
-fun CardMediaPlayer(state: String?, uri: String) {
+fun CardMediaPlayer(
+    state: String?,
+    uri: String,
+    aspectRatio: Float
+) {
 
     val context = LocalContext.current
 
@@ -43,7 +47,7 @@ fun CardMediaPlayer(state: String?, uri: String) {
                 }
             },
             modifier = Modifier
-                .aspectRatio(1f)
+                .aspectRatio(aspectRatio)
                 .semantics { testTag = "Card Media Player" }
         )
 

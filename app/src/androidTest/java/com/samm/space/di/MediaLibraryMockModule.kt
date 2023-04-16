@@ -7,6 +7,7 @@ import com.samm.space.nasa_media_library_page.domain.repository.MediaLibraryRepo
 import com.samm.space.repository.FakeMediaLibraryRepositoryMock
 import com.samm.space.test.BuildConfig
 import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMediaLibrary
+import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMetadata
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
@@ -30,6 +31,10 @@ object MediaLibraryMockModule {
 
     private fun baseUrl(): HttpUrl = runBlocking(Dispatchers.Default) {
         serverMediaLibrary.url("/")
+    }
+
+    private fun baseUrlMetadata(): HttpUrl = runBlocking(Dispatchers.Default) {
+        serverMetadata.url("/")
     }
 
     @Provides
@@ -66,7 +71,7 @@ object MediaLibraryMockModule {
         }
 
         return Retrofit.Builder()
-            .baseUrl(baseUrl())
+            .baseUrl(baseUrlMetadata())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

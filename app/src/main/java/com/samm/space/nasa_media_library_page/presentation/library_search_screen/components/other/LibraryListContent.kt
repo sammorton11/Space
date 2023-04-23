@@ -29,7 +29,6 @@ fun LibraryListContent(
     gridCells: Int,
     imageScaleType: ContentScale
 ) {
-    val secondaryColor = MaterialTheme.colorScheme.secondary
 
     LazyVerticalStaggeredGrid(
         modifier = Modifier.semantics {
@@ -39,18 +38,7 @@ fun LibraryListContent(
         state = scrollState
     ) {
 
-        items(
-            // Todo: move the null check and type check into a separate function.
-
-            /**
-             *  Filter out items containing the filter type value - image, video, or audio
-             */
-            data.filter { item ->
-                val dataList = item?.data?.first()
-                val mediaType = dataList?.media_type
-                filterType.value.let { mediaType?.contains(it) } ?: false
-            }
-        ) { item ->
+        items(viewModel.filterList(data, filterType)) { item ->
 
             val itemListOfLinks = item?.links
             val itemMetaDataUrl = item?.href
@@ -67,7 +55,7 @@ fun LibraryListContent(
             ListCard(
                 navController = navController,
                 metaDataUrl = encodedUrl,
-                color = secondaryColor,
+                color = MaterialTheme.colorScheme.secondary,
                 links = itemListOfLinks,
                 title = itemTitle,
                 date = itemDate,

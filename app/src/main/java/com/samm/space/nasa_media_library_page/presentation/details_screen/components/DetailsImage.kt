@@ -13,6 +13,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import com.samm.space.presentation_common.ProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +43,9 @@ fun DetailsImage(
                     },
                 contentScale = scale,
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                loading = {
+                    ProgressBar()
+                }
             )
         }
 
@@ -62,6 +66,9 @@ fun DetailsImage(
                     },
                 contentScale = scale,
                 colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
+                loading = {
+                    ProgressBar()
+                }
             )
         }
     }

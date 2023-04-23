@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Constants
 import com.samm.space.core.DataStoreManager
 import com.samm.space.core.Resource
+import com.samm.space.nasa_media_library_page.domain.models.Item
 import com.samm.space.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.nasa_media_library_page.presentation.state.NasaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,8 +32,6 @@ class MediaLibraryViewModel @Inject constructor
 
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
-
-
 
     fun getData(query: String) {
 
@@ -73,7 +72,6 @@ class MediaLibraryViewModel @Inject constructor
         _backgroundType.value = backgroundType
     }
 
-    // Todo: Put this in Media Library View Model
     fun encodeText(text: String?): String {
         var encode = URLEncoder.encode(text ?: "", Constants.utf8Encoding)
         when {
@@ -83,5 +81,14 @@ class MediaLibraryViewModel @Inject constructor
         }
 
         return encode
+    }
+
+    // Filters out items containing the filter type value - image, video, or audio
+    fun filterList(data: List<Item?>, filterType: State<String>): List<Item?> {
+        return data.filter { item ->
+            val dataList = item?.data?.first()
+            val mediaType = dataList?.media_type
+            filterType.value.let { mediaType?.contains(it) } ?: false
+        }
     }
 }

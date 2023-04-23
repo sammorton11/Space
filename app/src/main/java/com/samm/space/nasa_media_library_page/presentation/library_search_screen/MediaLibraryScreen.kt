@@ -33,20 +33,17 @@ fun MediaLibraryScreen(
     val lazyGridState = rememberLazyStaggeredGridState()
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex }}
     val window = rememberWindowInfo()
-
-    val imageScaleType = ContentScale.FillBounds
     val savedSearchTextState = viewModel.getSavedSearchText().collectAsStateWithLifecycle("")
     val background = viewModel.backgroundType.observeAsState(initial = NO_BACKGROUND)
-
     val filterType = viewModel.listFilterType.observeAsState("")
 
+    val imageScaleType = ContentScale.FillBounds
     val gridCells = when (window.screenWidthInfo) {
         is WindowInfo.WindowType.Compact -> 2
         is WindowInfo.WindowType.Medium -> 3
         is WindowInfo.WindowType.Expanded -> 4
     }
 
-    // Two modifiers for if the user does not select a background
     val modifier = if (background.value == NO_BACKGROUND) {
         Modifier.fillMaxSize()
     } else {

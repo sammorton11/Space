@@ -18,10 +18,6 @@ enum class MediaType(val type: String) {
 
         fun fromString(type: String): MediaType? = valuesMap[type.lowercase()]
 
-        fun MediaType.toBundle(): String {
-            return this.type
-        }
-
         fun String.toMediaType(): MediaType {
             return MediaType.values().firstOrNull { mediaTypeValue ->
                 mediaTypeValue.type == this

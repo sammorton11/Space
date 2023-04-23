@@ -18,7 +18,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.samm.space.core.MediaType
-import com.samm.space.core.MediaType.Companion.toBundle
 import com.samm.space.nasa_media_library_page.domain.models.Link
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +47,7 @@ fun ListCard(
             .semantics { testTag = "List Card" },
         onClick = {
             navController.navigate(
-                "cardDetails/$metaDataUrl/$description/${mediaType.toBundle()}/$title/$date"
+                "cardDetails/$metaDataUrl/$description/${mediaType.type}/$title/$date"
             )
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount),
@@ -90,4 +89,3 @@ fun ListCard(
         }
     }
 }
-

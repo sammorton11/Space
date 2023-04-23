@@ -12,7 +12,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.samm.space.presentation_common.ProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,12 +25,15 @@ fun PictureOfTheDay(imageLink: String?) {
         shape = AbsoluteRoundedCornerShape(10)
     ) {
 
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = imageLink,
             contentDescription = "",
             modifier = Modifier.semantics { testTag = "Apod Picture" },
             colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
-            contentScale = ContentScale.Fit
+            contentScale = ContentScale.Fit,
+            loading = {
+                ProgressBar()
+            }
         )
     }
 }

@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.json.JSONArray
 import org.json.JSONException
+import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import javax.inject.Inject
 
@@ -63,7 +64,7 @@ class MediaDataViewModel @Inject constructor
         Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
     fun extractUrlsFromJsonArray(stringResponse: String): ArrayList<String> {
-        Log.d("STRING RESPONSE EXTRACTED", stringResponse)
+
         val arrayList: ArrayList<String> = arrayListOf()
 
         try {
@@ -73,7 +74,7 @@ class MediaDataViewModel @Inject constructor
             }
         }
         catch (e: JSONException) {
-            Log.d("Can't convert to JSON Array", e.toString())
+            Log.d("Can't convert to JSON Array", e.localizedMessage ?: "Unexpected JSON Exception")
         }
         Log.d("STRING RESPONSE ARRAY", arrayList.first().toString())
         return arrayList
@@ -82,7 +83,9 @@ class MediaDataViewModel @Inject constructor
     fun fileTypeCheck(array: ArrayList<String>, mediaType: MediaType): String {
 
         for (i in 0 until array.size) {
+
             val file = array[i].replace("http://", "https://")
+
             when (mediaType) {
                 MediaType.VIDEO -> {
                     when {
@@ -113,11 +116,9 @@ class MediaDataViewModel @Inject constructor
         var decodedText = "Decoding Failed"
         try {
             decodedText = URLDecoder.decode(text, Constants.utf8Encoding)
-        } catch (e: Exception) {
-            e.printStackTrace()
+        } catch (e: UnsupportedEncodingException) {
+            //Log.e("Decoding Failed", e.localizedMessage ?: "Unexpected Exception")
         }
         return decodedText
     }
 }
-
-

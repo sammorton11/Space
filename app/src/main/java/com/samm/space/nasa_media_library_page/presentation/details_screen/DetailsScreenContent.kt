@@ -27,6 +27,7 @@ fun DetailsScreenContent(
     val mUri = viewModel.getUri(state, mediaType)
 
     var audioPlayerUri = ""
+
     state?.let {
         if (it.isNotEmpty()) {
             val uriList = viewModel.extractUrlsFromJsonArray(it)

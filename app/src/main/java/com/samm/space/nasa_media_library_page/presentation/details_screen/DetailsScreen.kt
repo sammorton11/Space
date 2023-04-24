@@ -1,7 +1,10 @@
 package com.samm.space.nasa_media_library_page.presentation.details_screen
 
 import androidx.compose.runtime.Composable
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaDataViewModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.tooling.preview.Preview
+import com.samm.space.core.MediaType
+import com.samm.space.nasa_media_library_page.presentation.state.VideoDataState
 import com.samm.space.presentation_common.ProgressBar
 import com.samm.space.presentation_common.labels.ErrorText
 
@@ -12,10 +15,18 @@ fun DetailsScreen(
     type: String,
     title: String?,
     date: String?,
-    viewModel: MediaDataViewModel
+    state: VideoDataState,
+    getMediaData: (url: String) -> Unit,
+    decodeText: (String) -> String,
+    getUri: (String?, MediaType) -> String,
+    extractUrlsFromJsonArray: (String) -> ArrayList<String>,
+    fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
 ) {
 
-    val state = viewModel.state.value
+    LaunchedEffect(metaDataUrl) {
+        getMediaData(metaDataUrl)
+    }
+
 
     when {
         state.isLoading -> {
@@ -28,11 +39,42 @@ fun DetailsScreen(
                 type = type,
                 title = title,
                 date = date,
-                viewModel = viewModel
+                state = state,
+                decodeText = decodeText,
+                getUri = getUri,
+                extractUrlsFromJsonArray = extractUrlsFromJsonArray,
+                fileTypeCheck = fileTypeCheck
             )
         }
         state.error.isNotEmpty() -> {
             ErrorText(error = state.error)
         }
     }
+}
+
+
+@Preview
+@Composable
+fun  DetailsScreenPreview() {
+    DetailsScreen(
+        metaDataUrl = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY",
+        description = "This is a description",
+        type = "image",
+        title = "This is a title",
+        date = "This is a date",
+        state = VideoDataState(
+            isLoading = false,
+            data = null,
+            error = ""
+        ),
+        getMediaData = {  },
+        decodeText = { "" },
+        getUri = { _, _ -> "" },
+        extractUrlsFromJsonArray = { arrayListOf("") },
+        fileTypeCheck = {
+            array, _ ->
+            array.first()
+        }
+    )
+
 }

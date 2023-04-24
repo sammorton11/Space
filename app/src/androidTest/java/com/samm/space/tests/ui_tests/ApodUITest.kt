@@ -46,7 +46,8 @@ class ApodUITest: BaseTest() {
     @Test
     fun test_apod_title() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag(apodTitleTag, true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag(apodTitleTag, true)
+            .assertIsDisplayed()
     }
 
     @Test

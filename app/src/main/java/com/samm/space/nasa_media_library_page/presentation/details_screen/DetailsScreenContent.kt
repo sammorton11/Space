@@ -7,7 +7,7 @@ import com.samm.space.core.MediaType.Companion.toMediaType
 import com.samm.space.nasa_media_library_page.presentation.details_screen.details_types.AudioDetails
 import com.samm.space.nasa_media_library_page.presentation.details_screen.details_types.ImageDetails
 import com.samm.space.nasa_media_library_page.presentation.details_screen.details_types.VideoDetails
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaDataViewModel
+import com.samm.space.nasa_media_library_page.presentation.state.VideoDataState
 
 @Composable
 fun DetailsScreenContent(
@@ -16,31 +16,30 @@ fun DetailsScreenContent(
     type: String,
     title: String?,
     date: String?,
-    viewModel: MediaDataViewModel
+    state: VideoDataState,
+    decodeText: (String) -> String,
+    getUri: (String?, MediaType) -> String,
+    extractUrlsFromJsonArray: (String) -> ArrayList<String>,
+    fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
 ) {
 
-    val decodedDescription = viewModel.decodeText(description)
     val context = LocalContext.current
+    val decodedDescription = decodeText(description)
     val mediaType = type.toMediaType()
 
-    val state = viewModel.state.value.data
-    val mUri = viewModel.getUri(state, mediaType)
+    val data = state.data
+    val mUri = getUri(data, mediaType)
 
-    var audioPlayerUri = ""
+    val uriList = data?.let { extractUrlsFromJsonArray(it) }
+    val audioPlayerUri = uriList?.let { fileTypeCheck(it, mediaType) }
 
-    state?.let {
-        if (it.isNotEmpty()) {
-            val uriList = viewModel.extractUrlsFromJsonArray(it)
-            audioPlayerUri = viewModel.fileTypeCheck(uriList, mediaType)
-        }
-    }
 
     when (mediaType) {
         MediaType.VIDEO -> {
             VideoDetails(
                 context = context,
                 mediaType = mediaType.type,
-                state = state,
+                state = data,
                 mUri = mUri,
                 title = title,
                 date = date,
@@ -49,7 +48,7 @@ fun DetailsScreenContent(
         }
         MediaType.AUDIO -> {
             AudioDetails(
-                audioPlayerUri = audioPlayerUri,
+                audioPlayerUri = audioPlayerUri ?: "",
                 mUri = mUri,
                 mediaType = mediaType.type,
                 context = context,

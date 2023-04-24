@@ -1,6 +1,7 @@
 package com.samm.space.nasa_media_library_page.presentation.details_screen.details_types
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +39,10 @@ fun AudioDetails(
     date: String?,
     description: String
 ) {
+
+
+    Log.d("mUri", mUri)
+    Log.d("audioPlayerUri", audioPlayerUri)
 
     val window = rememberWindowInfo()
 

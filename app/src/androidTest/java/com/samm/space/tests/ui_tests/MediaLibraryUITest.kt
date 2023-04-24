@@ -92,13 +92,12 @@ class MediaLibraryUITest: BaseTest() {
 
             successfulMetadataResponse(jsonStringMetadata!!)
             composeTestRule.waitForIdle()
-            Thread.sleep(3000)
             pressBackButton(composeTestRule)
         }
     }
 
     @Test
-    fun test_image_audio_details_screen() {
+    fun test_image_video_details_screen() {
         successfulResponse(jsonStringMediaLibrary!!)
         val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
 
@@ -110,7 +109,6 @@ class MediaLibraryUITest: BaseTest() {
             .assertIsDisplayed()
             .performClick()
 
-        composeTestRule.waitForIdle()
         composeTestRule.waitUntil(3000) {
             composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
                 .fetchSemanticsNodes().isNotEmpty()
@@ -139,7 +137,6 @@ class MediaLibraryUITest: BaseTest() {
                 .assertIsDisplayed()
                 .performClick()
 
-            composeTestRule.waitForIdle()
             composeTestRule.waitUntil(3000) {
                 composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
                     .fetchSemanticsNodes().isNotEmpty()

@@ -24,7 +24,6 @@ fun ApodComponents(
     copyright: String?
 ) {
 
-
     Title(text = "Picture of the Day", paddingValue = 15.dp)
 
     PictureOfTheDay(

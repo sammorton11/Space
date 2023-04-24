@@ -18,6 +18,7 @@ import com.samm.space.presentation_common.ProgressBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PictureOfTheDay(imageLink: String?) {
+
     Card(
         modifier = Modifier
             .padding(10.dp)
@@ -28,7 +29,8 @@ fun PictureOfTheDay(imageLink: String?) {
         SubcomposeAsyncImage(
             model = imageLink,
             contentDescription = "",
-            modifier = Modifier.semantics { testTag = "Apod Picture" },
+            modifier = Modifier
+                .semantics { testTag = "Apod Picture" },
             colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
             contentScale = ContentScale.Fit,
             loading = {

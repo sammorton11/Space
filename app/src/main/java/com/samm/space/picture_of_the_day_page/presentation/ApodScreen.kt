@@ -13,19 +13,22 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samm.space.picture_of_the_day_page.presentation.components.ApodComponents
 import com.samm.space.picture_of_the_day_page.presentation.components.ApodComponentsForLargeScreen
+import com.samm.space.picture_of_the_day_page.presentation.state.ApodState
 import com.samm.space.presentation_common.ProgressBar
 import com.samm.space.presentation_common.labels.ErrorText
 import com.samm.space.presentation_common.util.DateConverter
 import com.samm.space.presentation_common.util.WindowInfo
 import com.samm.space.presentation_common.util.rememberWindowInfo
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
-fun ApodScreen(viewModel: ApodViewModel) {
+fun ApodScreen(stateFlow: StateFlow<ApodState>) {
+
+    val state = stateFlow.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
     val window = rememberWindowInfo()
-    val state = viewModel.state.collectAsStateWithLifecycle()
-    val data = state.value.data
+    val data = state.data
 
     val hdImage = data?.hdurl
     val explanation = data?.explanation
@@ -42,10 +45,10 @@ fun ApodScreen(viewModel: ApodViewModel) {
             ) {
                 item {
                     when {
-                        state.value.isLoading -> {
+                        state.isLoading -> {
                             ProgressBar()
                         }
-                        state.value.data?.url?.isNotEmpty() == true -> {
+                        state.data?.url?.isNotEmpty() == true -> {
                             ApodComponents(
                                 context = context,
                                 hdImage = hdImage,
@@ -54,8 +57,8 @@ fun ApodScreen(viewModel: ApodViewModel) {
                                 copyright = copyright
                             )
                         }
-                        state.value.error?.isNotBlank() == true -> {
-                            state.value.error?.let { ErrorText(error = it) }
+                        state.error?.isNotBlank() == true -> {
+                            ErrorText(error = state.error)
                         }
                     }
                 }
@@ -70,10 +73,10 @@ fun ApodScreen(viewModel: ApodViewModel) {
             ) {
                 item {
                     when {
-                        state.value.isLoading -> {
+                        state.isLoading -> {
                             ProgressBar()
                         }
-                        state.value.data?.url?.isNotEmpty() == true -> {
+                        state.data?.url?.isNotEmpty() == true -> {
                             ApodComponents(
                                 context = context,
                                 hdImage = hdImage,
@@ -82,8 +85,8 @@ fun ApodScreen(viewModel: ApodViewModel) {
                                 copyright = copyright
                             )
                         }
-                        state.value.error?.isNotBlank() == true -> {
-                            state.value.error?.let { ErrorText(error = it) }
+                        state.error?.isNotBlank() == true -> {
+                            ErrorText(error = state.error)
                         }
                     }
                 }
@@ -99,10 +102,10 @@ fun ApodScreen(viewModel: ApodViewModel) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 when {
-                    state.value.isLoading -> {
+                    state.isLoading -> {
                         ProgressBar()
                     }
-                    state.value.data?.url?.isNotEmpty() == true -> {
+                    state.data?.url?.isNotEmpty() == true -> {
                         ApodComponentsForLargeScreen(
                             context = context,
                             hdImage = hdImage,
@@ -111,8 +114,8 @@ fun ApodScreen(viewModel: ApodViewModel) {
                             copyright = copyright
                         )
                     }
-                    state.value.error?.isNotBlank() == true -> {
-                        state.value.error?.let { ErrorText(error = it) }
+                    state.error?.isNotBlank() == true -> {
+                        ErrorText(error = state.error)
                     }
                 }
             }

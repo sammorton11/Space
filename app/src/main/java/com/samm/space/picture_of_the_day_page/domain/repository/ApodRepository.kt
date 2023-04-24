@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface ApodRepository {
     suspend fun getData(): Apod?
     fun getApodData(): Flow<Resource<Apod?>>
+
 }

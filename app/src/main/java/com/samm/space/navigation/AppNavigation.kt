@@ -49,20 +49,28 @@ fun AppNavigation(
             val date = backStackEntry.arguments?.getString("date")
 
             if ((urlId != null) && (descriptionId != null) && (mediaType != null)) {
-                mediaDataViewModel.getMediaData(url = urlId)
+
+                val state = mediaDataViewModel.state.value
+
                 DetailsScreen(
                     metaDataUrl = urlId,
                     description = descriptionId,
                     type = mediaType,
-                    viewModel = mediaDataViewModel,
                     title = title,
-                    date = date
+                    date = date,
+                    state = state,
+                    getMediaData = mediaDataViewModel::getMediaData,
+                    decodeText = mediaDataViewModel::decodeText,
+                    getUri = mediaDataViewModel::getUri,
+                    extractUrlsFromJsonArray = mediaDataViewModel::extractUrlsFromJsonArray,
+                    fileTypeCheck = mediaDataViewModel::fileTypeCheck
                 )
             }
         }
 
         composable("apod_screen") {
-            ApodScreen(viewModel = apodViewModel)
+            val state = apodViewModel.state
+            ApodScreen(stateFlow = state)
         }
     }
 }

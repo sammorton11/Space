@@ -23,14 +23,19 @@ import com.samm.space.R
 
 @Composable
 fun AudioPlayer(
-    audioPlayerUri: String,
+    audioPlayerUri: String?,
     mContext: Context,
     iconSize: Dp = 150.dp
 ) {
-    val mMediaPlayer = MediaPlayer.create(mContext, audioPlayerUri.toUri())
+
+    val mMediaPlayer = audioPlayerUri?.let { string ->
+        MediaPlayer.create(mContext, string.toUri())
+    }
     val paused = remember { mutableStateOf(true) }
 
+
     Row(modifier = Modifier.padding(15.dp)) {
+
         // IconButton for Play Action
         IconButton(
             onClick = {
@@ -54,6 +59,7 @@ fun AudioPlayer(
                 )
             }
         }
+
         // IconButton for Pause Action
         IconButton(
             onClick = {

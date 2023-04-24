@@ -27,6 +27,7 @@ class MediaDataViewModel @Inject constructor
     val state: State<VideoDataState> = _state
 
     fun getMediaData(url: String) {
+
         mediaLibraryRepository.videoDataFlow(url).onEach { response ->
             val mediaData = response.data
 
@@ -76,7 +77,6 @@ class MediaDataViewModel @Inject constructor
         catch (e: JSONException) {
             Log.d("Can't convert to JSON Array", e.localizedMessage ?: "Unexpected JSON Exception")
         }
-        Log.d("STRING RESPONSE ARRAY", arrayList.first().toString())
         return arrayList
     }
 

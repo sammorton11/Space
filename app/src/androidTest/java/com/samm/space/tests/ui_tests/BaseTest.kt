@@ -1,5 +1,6 @@
 package com.samm.space.tests.ui_tests
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.*
@@ -58,8 +59,10 @@ open class BaseTest {
         }
     }
 
+    @SuppressLint("StateFlowValueCalledInComposition")
     fun apodScreenSetup() {
         composeTestRule.activity.apply {
+
             setContent {
                 SpaceTheme {
                     Surface(
@@ -67,7 +70,8 @@ open class BaseTest {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val viewModel: ApodViewModel = hiltViewModel()
-                        ApodScreen(viewModel = viewModel)
+                        val state = viewModel.state
+                        ApodScreen(stateFlow = state)
                     }
                 }
             }

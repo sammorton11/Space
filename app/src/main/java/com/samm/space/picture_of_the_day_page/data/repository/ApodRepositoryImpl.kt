@@ -11,6 +11,7 @@ class ApodRepositoryImpl @Inject constructor(private val api: ApodApi): ApodRepo
     override suspend fun getData(): Apod? {
         return api.getApod()
     }
+
     override fun getApodData() = flow {
         try {
             emit(Resource.Loading())

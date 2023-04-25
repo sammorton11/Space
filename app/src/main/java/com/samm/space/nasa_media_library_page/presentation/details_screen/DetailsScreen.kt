@@ -61,10 +61,10 @@ fun  DetailsScreenPreview() {
         description = "This is a description",
         type = "image",
         title = "This is a title",
-        date = "This is a date",
+        date = "2022-04-04",
         state = VideoDataState(
             isLoading = false,
-            data = null,
+            data = "Im not empty",
             error = ""
         ),
         getMediaData = {  },
@@ -76,5 +76,4 @@ fun  DetailsScreenPreview() {
             array.first()
         }
     )
-
 }

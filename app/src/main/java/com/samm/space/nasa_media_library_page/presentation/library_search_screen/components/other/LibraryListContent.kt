@@ -16,18 +16,18 @@ import androidx.navigation.NavController
 import com.samm.space.core.MediaType
 import com.samm.space.nasa_media_library_page.domain.models.Item
 import com.samm.space.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCard
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryListContent(
     navController: NavController,
-    viewModel: MediaLibraryViewModel,
     filterType: State<String>,
     data: List<Item?>,
     scrollState: LazyStaggeredGridState,
     gridCells: Int,
-    imageScaleType: ContentScale
+    imageScaleType: ContentScale,
+    filterList: (data: List<Item?>, filterType: State<String>) -> List<Item?>,
+    encodeText:(text: String?) -> String
 ) {
 
     LazyVerticalStaggeredGrid(
@@ -38,7 +38,7 @@ fun LibraryListContent(
         state = scrollState
     ) {
 
-        items(viewModel.filterList(data, filterType)) { item ->
+        items(filterList(data, filterType)) { item ->
 
             val itemListOfLinks = item?.links
             val itemMetaDataUrl = item?.href
@@ -49,8 +49,8 @@ fun LibraryListContent(
             val mediaTypeString = MediaType.fromString(itemData?.media_type?: "image")
                 ?: MediaType.IMAGE
 
-            val encodedUrl = viewModel.encodeText(itemMetaDataUrl) // pass this as an arg instead of vm
-            val encodedDescription = viewModel.encodeText(itemDescription) // pass this as an arg instead of vm
+            val encodedUrl = encodeText(itemMetaDataUrl) // pass this as an arg instead of vm
+            val encodedDescription = encodeText(itemDescription) // pass this as an arg instead of vm
 
             ListCard(
                 navController = navController,

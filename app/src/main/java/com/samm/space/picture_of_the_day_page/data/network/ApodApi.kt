@@ -1,4 +1,4 @@
-package com.samm.space.picture_of_the_day_page.data
+package com.samm.space.picture_of_the_day_page.data.network
 
 import com.samm.space.core.Constants.API_KEY
 import com.samm.space.picture_of_the_day_page.domain.models.Apod

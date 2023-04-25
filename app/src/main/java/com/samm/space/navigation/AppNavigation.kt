@@ -29,9 +29,19 @@ fun AppNavigation(
     ) {
 
         composable("library_search_screen") {
+
+            val state = libraryViewModel.state.value
+
             MediaLibraryScreen(
-                viewModel = libraryViewModel,
-                navController = navController
+                state = state,
+                navController = navController,
+                getData = libraryViewModel::getData,
+                updateFilterType = libraryViewModel::updateListFilterType,
+                getSavedSearchText = libraryViewModel::getSavedSearchText,
+                listFilterType = libraryViewModel.listFilterType,
+                backgroundType = libraryViewModel.backgroundType,
+                filterList = libraryViewModel::filterList,
+                encodeText = libraryViewModel::encodeText
             )
         }
 
@@ -70,7 +80,10 @@ fun AppNavigation(
 
         composable("apod_screen") {
             val state = apodViewModel.state
-            ApodScreen(stateFlow = state)
+            ApodScreen(
+                stateFlow = state,
+                refresh = apodViewModel::getApodState
+            )
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.samm.space.picture_of_the_day_page.data.repository
 
 import com.samm.space.core.Resource
-import com.samm.space.picture_of_the_day_page.data.ApodApi
+import com.samm.space.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.picture_of_the_day_page.domain.models.Apod
 import com.samm.space.picture_of_the_day_page.domain.repository.ApodRepository
 import kotlinx.coroutines.flow.flow
@@ -19,7 +19,7 @@ class ApodRepositoryImpl @Inject constructor(private val api: ApodApi): ApodRepo
             emit(Resource.Success(response))
         }
         catch (e: Exception) {
-            emit(Resource.Error(e.localizedMessage ?: "Unknown Error"))
+            emit(Resource.Error(e.toString()))
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.samm.space.di
 
-import com.samm.space.picture_of_the_day_page.data.ApodApi
+import com.samm.space.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.picture_of_the_day_page.di.ApodModule
 import com.samm.space.picture_of_the_day_page.domain.repository.ApodRepository
 import com.samm.space.repository.FakeApodRepositoryMock

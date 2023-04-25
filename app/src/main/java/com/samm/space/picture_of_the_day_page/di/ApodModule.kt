@@ -1,7 +1,7 @@
 package com.samm.space.picture_of_the_day_page.di
 
 import com.samm.space.core.Constants.BASE_URL_MARS_DATA
-import com.samm.space.picture_of_the_day_page.data.ApodApi
+import com.samm.space.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.picture_of_the_day_page.data.repository.ApodRepositoryImpl
 import com.samm.space.picture_of_the_day_page.domain.repository.ApodRepository
 import dagger.Module

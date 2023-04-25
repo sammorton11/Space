@@ -1,6 +1,7 @@
 package com.samm.space.tests.error_tests
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import com.samm.space.tests.ui_tests.BaseTest
 import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMediaLibrary
@@ -22,6 +23,7 @@ class MediaLibraryErrorTests: BaseTest() {
                 .setResponseCode(404)
                 .setBody("Error")
         )
+        mediaLibraryScreenSetup()
     }
 
     @After
@@ -32,10 +34,9 @@ class MediaLibraryErrorTests: BaseTest() {
 
     @Test
     fun test_failed_response_media_library() {
-        mediaLibraryScreenSetup()
-        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithTag(errorTag, true)
             .assertExists()
             .assertIsDisplayed()
+            .assertTextEquals("Error: HTTP 404 Client Error")
     }
 }

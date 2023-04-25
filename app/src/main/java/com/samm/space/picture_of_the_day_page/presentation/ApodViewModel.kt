@@ -21,7 +21,7 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
         getApodState()
     }
 
-    private fun getApodState() {
+    fun getApodState() {
         repository.getApodData().onEach { response ->
             when(response) {
                 is Resource.Loading -> {
@@ -31,7 +31,7 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
                     _state.value = ApodState(data = response.data)
                 }
                 is Resource.Error -> {
-                    _state.value = ApodState(error = response.message.toString())
+                    _state.value = ApodState(error = "Error: ${response.message.toString()}")
                 }
             }
         }.launchIn(viewModelScope)

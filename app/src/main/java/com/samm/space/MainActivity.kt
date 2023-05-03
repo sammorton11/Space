@@ -12,7 +12,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.samm.space.core.DataStoreManager
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.presentation_common.MainScaffold
 import com.samm.space.presentation_common.SideNavigationDrawer
 import com.samm.space.ui.theme.SpaceTheme

@@ -1,11 +1,20 @@
 package com.samm.space.tests.error_tests
 
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
 import com.samm.space.tests.ui_tests.ApodUITest.Companion.serverApod
 import com.samm.space.tests.ui_tests.BaseTest
+import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.GlobalTestTags.errorTag
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.MockResponse
@@ -35,7 +44,21 @@ class ApodErrorTests: BaseTest() {
     @Before
     fun setup() {
         hiltRule.inject()
-        apodScreenSetup()
+        composeTestRule.activity.apply {
+
+            setContent {
+                SpaceTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        val viewModel: ApodViewModel = hiltViewModel()
+                        val state = viewModel.state
+                        ApodScreen(stateFlow = state, refresh = viewModel::getApodState)
+                    }
+                }
+            }
+        }
     }
     @After
     fun tearDownClass() {

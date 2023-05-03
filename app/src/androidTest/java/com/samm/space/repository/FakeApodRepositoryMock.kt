@@ -2,9 +2,9 @@ package com.samm.space.repository
 
 import android.util.Log
 import com.samm.space.core.Resource
-import com.samm.space.picture_of_the_day_page.data.network.ApodApi
-import com.samm.space.picture_of_the_day_page.domain.models.Apod
-import com.samm.space.picture_of_the_day_page.domain.repository.ApodRepository
+import com.samm.space.pages.picture_of_the_day_page.data.network.ApodApi
+import com.samm.space.pages.picture_of_the_day_page.domain.models.Apod
+import com.samm.space.pages.picture_of_the_day_page.domain.repository.ApodRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException
@@ -29,8 +29,6 @@ class FakeApodRepositoryMock @Inject constructor (private val api: ApodApi): Apo
         }
         catch (e: IOException){
             emit(Resource.Error(e.toString()))
-            Log.d("Error:", e.toString())
-            println("Error: $e")
         }
     }
 }

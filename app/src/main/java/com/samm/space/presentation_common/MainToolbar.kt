@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.samm.space.R
 import com.samm.space.core.Constants.NO_BACKGROUND
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.presentation_common.labels.Title
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

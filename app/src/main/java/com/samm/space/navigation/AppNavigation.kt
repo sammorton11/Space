@@ -7,12 +7,12 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.samm.space.nasa_media_library_page.presentation.details_screen.DetailsScreen
-import com.samm.space.nasa_media_library_page.presentation.library_search_screen.MediaLibraryScreen
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaDataViewModel
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.picture_of_the_day_page.presentation.ApodScreen
-import com.samm.space.picture_of_the_day_page.presentation.ApodViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.DetailsScreen
+import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.MediaLibraryScreen
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
 
 @Composable
 fun AppNavigation(
@@ -29,7 +29,6 @@ fun AppNavigation(
     ) {
 
         composable("library_search_screen") {
-
             val state = libraryViewModel.state.value
 
             MediaLibraryScreen(

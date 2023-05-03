@@ -1,6 +1,15 @@
 package com.samm.space.tests.ui_tests
 
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
+import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
+import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.ApodTestTags.apodCopyrightText
 import com.samm.space.util.test_tags.ApodTestTags.apodDateText
 import com.samm.space.util.test_tags.ApodTestTags.apodDescriptionTag
@@ -34,9 +43,25 @@ class ApodUITest: BaseTest() {
                 .setResponseCode(200)
                 .setBody(jsonStringApod!!)
         )
+
         hiltRule.inject()
-        apodScreenSetup()
+        composeTestRule.activity.apply {
+
+            setContent {
+                SpaceTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+                        val viewModel: ApodViewModel = hiltViewModel()
+                        val state = viewModel.state
+                        ApodScreen(stateFlow = state, refresh = viewModel::getApodState)
+                    }
+                }
+            }
+        }
     }
+
     @After
     fun tearDownClass() {
         serverApod.shutdown()

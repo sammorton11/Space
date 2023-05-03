@@ -1,11 +1,11 @@
 package com.samm.space.di
 
-import com.samm.space.nasa_media_library_page.data.network.MetadataApi
-import com.samm.space.nasa_media_library_page.data.network.NasaApi
-import com.samm.space.nasa_media_library_page.di.MediaLibraryModule
-import com.samm.space.nasa_media_library_page.domain.repository.MediaLibraryRepository
+import com.samm.space.BuildConfig
+import com.samm.space.pages.nasa_media_library_page.data.network.MetadataApi
+import com.samm.space.pages.nasa_media_library_page.data.network.NasaApi
+import com.samm.space.pages.nasa_media_library_page.di.MediaLibraryModule
+import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.repository.FakeMediaLibraryRepositoryMock
-import com.samm.space.test.BuildConfig
 import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMediaLibrary
 import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMetadata
 import dagger.Module
@@ -42,6 +42,7 @@ object MediaLibraryMockModule {
     fun provideMockNasaApi(): NasaApi {
         val clientBuilder = OkHttpClient.Builder()
 
+        // Logging the request and response when in debug mode
         if (BuildConfig.DEBUG) {
             clientBuilder.addNetworkInterceptor(
                 HttpLoggingInterceptor().setLevel(
@@ -85,6 +86,7 @@ object MediaLibraryMockModule {
         api: NasaApi,
         metadataApi: MetadataApi
     ): MediaLibraryRepository {
+
         return FakeMediaLibraryRepositoryMock(api, metadataApi)
     }
 }

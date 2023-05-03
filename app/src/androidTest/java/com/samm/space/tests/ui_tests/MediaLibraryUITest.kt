@@ -1,6 +1,18 @@
 package com.samm.space.tests.ui_tests
 
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.*
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.testing.TestNavHostController
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.presentation_common.MainScaffold
+import com.samm.space.presentation_common.SideNavigationDrawer
+import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.MediaLibraryTestTags.detailsScreenTag
 import com.samm.space.util.test_tags.MediaLibraryTestTags.listCardTag
 import com.samm.space.util.test_tags.MediaLibraryTestTags.searchFieldTag
@@ -43,10 +55,40 @@ class MediaLibraryUITest: BaseTest() {
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
         hiltRule.inject()
-        mediaLibraryScreenSetup()
+        composeTestRule.activity.apply {
+            setContent {
+                SpaceTheme {
+                    Surface(
+                        modifier = Modifier.fillMaxSize(),
+                        color = MaterialTheme.colorScheme.background
+                    ) {
+
+                        navController = TestNavHostController(LocalContext.current)
+                        navController.navigatorProvider.addNavigator(ComposeNavigator())
+
+                        val drawerState = rememberDrawerState(DrawerValue.Closed)
+                        val viewModel: MediaLibraryViewModel = hiltViewModel()
+                        viewModel.getData("Mars")
+
+                        SideNavigationDrawer(
+                            navController = navController,
+                            drawerState = drawerState,
+
+                            ) {
+                            MainScaffold(
+                                viewModel = viewModel,
+                                drawerState = drawerState,
+                                navController = navController
+                            )
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @After

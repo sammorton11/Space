@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.navigation.AppNavigation
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -1,9 +1,10 @@
 package com.samm.space
 
 import com.samm.space.core.MediaType
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaDataViewModel
-import com.samm.space.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.presentation_common.util.FileHandler
+import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
@@ -12,6 +13,7 @@ import org.junit.Test
 
 // Todo: These tests aren't working correctly
 
+@HiltAndroidTest
 class ViewModelTests {
 
     private lateinit var utils: FileHandler
@@ -23,7 +25,7 @@ class ViewModelTests {
         utils = FileHandler()
 
         mediaDataViewModel = mockk()
-        mediaLibraryViewModel = mockk(relaxed = true)
+        mediaLibraryViewModel = mockk()
     }
 
     @Test
@@ -43,6 +45,6 @@ class ViewModelTests {
     @Test
     fun `decodeText should return the decoded text`() {
         val encoded = "Hello%20world%21"
-        every { mediaLibraryViewModel.encodeText(encoded) } returns "Hello world!"
+        every { mediaDataViewModel.decodeText(encoded) } returns "Hello world!"
     }
 }

@@ -5,8 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
 import com.samm.space.core.MediaType
 import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaDataState
-import com.samm.space.presentation_common.ProgressBar
-import com.samm.space.presentation_common.labels.ErrorText
+import com.samm.space.common.presentation.ProgressBar
+import com.samm.space.common.presentation.labels.ErrorText
 
 @Composable
 fun DetailsScreen(
@@ -26,7 +26,6 @@ fun DetailsScreen(
     LaunchedEffect(metaDataUrl) {
         getMediaData(metaDataUrl)
     }
-
 
     when {
         state.isLoading -> {

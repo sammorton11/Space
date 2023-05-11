@@ -29,6 +29,8 @@ import javax.inject.Singleton
 @Module
 object MediaLibraryMockModule {
 
+    private val clientBuilder = OkHttpClient.Builder()
+
     private fun baseUrl(): HttpUrl = runBlocking(Dispatchers.Default) {
         serverMediaLibrary.url("/")
     }
@@ -37,21 +39,24 @@ object MediaLibraryMockModule {
         serverMetadata.url("/")
     }
 
-    @Provides
-    @Singleton
-    fun provideMockNasaApi(): NasaApi {
-        val clientBuilder = OkHttpClient.Builder()
+    private fun clientLogger() {
 
         // Logging the request and response when in debug mode
         if (BuildConfig.DEBUG) {
             clientBuilder.addNetworkInterceptor(
                 HttpLoggingInterceptor().setLevel(
-                HttpLoggingInterceptor.Level.BODY
-            ))
+                    HttpLoggingInterceptor.Level.BODY
+                ))
         }
+    }
 
+    @Provides
+    @Singleton
+    fun provideMockNasaApi(): NasaApi {
+        clientLogger()
         return Retrofit.Builder()
             .baseUrl(baseUrl())
+            .client(clientBuilder.build())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(NasaApi::class.java)
@@ -61,18 +66,10 @@ object MediaLibraryMockModule {
     @Provides
     @Singleton
     fun provideMetaMockApi(): MetadataApi {
-
-        val clientBuilder = OkHttpClient.Builder()
-
-        if (BuildConfig.DEBUG) {
-            clientBuilder.addNetworkInterceptor(
-                HttpLoggingInterceptor().setLevel(
-                    HttpLoggingInterceptor.Level.BODY
-                ))
-        }
-
+        clientLogger()
         return Retrofit.Builder()
             .baseUrl(baseUrlMetadata())
+            .client(clientBuilder.build())
             .addConverterFactory(ScalarsConverterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()

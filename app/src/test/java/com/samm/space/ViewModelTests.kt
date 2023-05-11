@@ -3,15 +3,12 @@ package com.samm.space
 import com.samm.space.core.MediaType
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation_common.util.FileHandler
+import com.samm.space.common.presentation.util.FileHandler
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.Before
 import org.junit.Test
-
-
-// Todo: These tests aren't working correctly
 
 @HiltAndroidTest
 class ViewModelTests {

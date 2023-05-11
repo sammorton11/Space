@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common
+package com.samm.space.common.presentation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator

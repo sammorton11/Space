@@ -1,8 +1,8 @@
 package com.samm.space.di
 
-import com.samm.space.picture_of_the_day_page.data.network.ApodApi
-import com.samm.space.picture_of_the_day_page.di.ApodModule
-import com.samm.space.picture_of_the_day_page.domain.repository.ApodRepository
+import com.samm.space.pages.picture_of_the_day_page.data.network.ApodApi
+import com.samm.space.pages.picture_of_the_day_page.di.ApodModule
+import com.samm.space.pages.picture_of_the_day_page.domain.repository.ApodRepository
 import com.samm.space.repository.FakeApodRepositoryMock
 import com.samm.space.test.BuildConfig
 import com.samm.space.tests.ui_tests.ApodUITest.Companion.serverApod
@@ -26,22 +26,27 @@ import javax.inject.Singleton
 @Module
 object ApodMockModule {
 
+    private val clientBuilder = OkHttpClient.Builder()
+
     private fun baseUrl(): HttpUrl = runBlocking(Dispatchers.Default) {
         serverApod.url("/")
+    }
+
+    private fun clientLogger() {
+
+        // Logging the request and response when in debug mode
+        if (com.samm.space.BuildConfig.DEBUG) {
+            clientBuilder.addNetworkInterceptor(
+                HttpLoggingInterceptor().setLevel(
+                    HttpLoggingInterceptor.Level.BODY
+                ))
+        }
     }
 
     @Provides
     @Singleton
     fun provideMockApodApi(): ApodApi {
-
-        val clientBuilder = OkHttpClient.Builder()
-
-        if (BuildConfig.DEBUG) {
-            clientBuilder.addNetworkInterceptor(HttpLoggingInterceptor().setLevel(
-                HttpLoggingInterceptor.Level.BODY
-            ))
-        }
-
+        clientLogger()
         return Retrofit.Builder()
             .baseUrl(baseUrl())
             .client(clientBuilder.build())

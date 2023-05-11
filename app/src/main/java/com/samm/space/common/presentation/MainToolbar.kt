@@ -1,5 +1,6 @@
-package com.samm.space.presentation_common
+package com.samm.space.common.presentation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -14,9 +15,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.samm.space.R
 import com.samm.space.core.Constants.NO_BACKGROUND
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation_common.labels.Title
-import kotlinx.coroutines.CoroutineScope
+import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.common.presentation.labels.Title
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
@@ -24,13 +24,14 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyToolbar(
-    viewModel: MediaLibraryViewModel,
     drawerState: DrawerState,
-    scope: CoroutineScope
+    event: (LibraryUiEvent) -> Unit
 ) {
+
     var expandedOptionsMenu by remember { mutableStateOf(false) }
     var expandedSortingMenu by remember { mutableStateOf(false) }
     var expandedChangeBackground by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
 
     val changeBackGroundMenuOffset = DpOffset(0.dp, 12.dp)
     val backgroundListMenuOffset = DpOffset(0.dp, 130.dp)
@@ -38,6 +39,7 @@ fun MyToolbar(
 
     CenterAlignedTopAppBar(
         modifier = Modifier
+            .background(color = MaterialTheme.colorScheme.background)
             .semantics {
                 testTag = "Toolbar"
             },
@@ -75,25 +77,25 @@ fun MyToolbar(
                 DropdownMenuItem(
                     text = { Text(text = "Images") },
                     onClick = {
-                        viewModel.updateListFilterType("image")
+                        event(LibraryUiEvent.UpdateFilterType("image"))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Videos") },
                     onClick = {
-                        viewModel.updateListFilterType("video")
+                        event(LibraryUiEvent.UpdateFilterType("video"))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Audio") },
                     onClick = {
-                        viewModel.updateListFilterType("audio")
+                        event(LibraryUiEvent.UpdateFilterType("audio"))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "All") },
                     onClick = {
-                        viewModel.updateListFilterType("")
+                        event(LibraryUiEvent.UpdateFilterType(""))
                     }
                 )
             }
@@ -106,31 +108,32 @@ fun MyToolbar(
                 DropdownMenuItem(
                     text = { Text(text = "Planets Background") },
                     onClick = {
-                        viewModel.updateBackgroundType(R.drawable.space_background_01)
+                        event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_01))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Space Man Background") },
                     onClick = {
-                        viewModel.updateBackgroundType(R.drawable.space_background_02)
+
+                        event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_02))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Galaxy Background") },
                     onClick = {
-                        viewModel.updateBackgroundType(R.drawable.space_background_03)
+                        event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_03))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "Sci-Fi Planets Background") },
                     onClick = {
-                        viewModel.updateBackgroundType(R.drawable.space_background_04)
+                        event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_04))
                     }
                 )
                 DropdownMenuItem(
                     text = { Text(text = "No Background") },
                     onClick = {
-                        viewModel.updateBackgroundType(NO_BACKGROUND)
+                        event(LibraryUiEvent.ChangeBackground(NO_BACKGROUND))
                     }
                 )
             }

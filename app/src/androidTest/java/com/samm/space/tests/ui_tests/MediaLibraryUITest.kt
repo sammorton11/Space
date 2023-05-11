@@ -10,8 +10,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation_common.MainScaffold
-import com.samm.space.presentation_common.SideNavigationDrawer
+import com.samm.space.common.presentation.MainScaffold
+import com.samm.space.common.presentation.SideNavigationDrawer
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.MediaLibraryTestTags.detailsScreenTag
 import com.samm.space.util.test_tags.MediaLibraryTestTags.listCardTag
@@ -31,7 +31,7 @@ class MediaLibraryUITest: BaseTest() {
         val serverMediaLibrary = MockWebServer()
         val serverMetadata = MockWebServer()
 
-        fun successfulResponse(body: String) {
+        fun successfulResponse(body: String) = run {
             serverMediaLibrary.enqueue(
                 MockResponse()
                     .setResponseCode(200)
@@ -39,7 +39,7 @@ class MediaLibraryUITest: BaseTest() {
             )
         }
 
-        fun successfulMetadataResponse(body: String) {
+        fun successfulMetadataResponse(body: String) = run {
             serverMetadata.enqueue(
                 MockResponse()
                     .setResponseCode(200)
@@ -80,7 +80,8 @@ class MediaLibraryUITest: BaseTest() {
 
                             ) {
                             MainScaffold(
-                                viewModel = viewModel,
+                                updateListFilterType = viewModel::updateListFilterType,
+                                updateBackgroundType = viewModel::updateBackgroundType,
                                 drawerState = drawerState,
                                 navController = navController
                             )

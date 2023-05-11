@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.util
+package com.samm.space.common.presentation.util
 
 import android.util.Log
 import java.text.SimpleDateFormat
@@ -20,7 +20,6 @@ object DateConverter {
         val formatter = SimpleDateFormat(format, Locale.getDefault())
         return formatter.parse(dateString)
     }
-
 
     fun formatDisplayDate(date: String?): String {
         if (date == "null" || date == null) {

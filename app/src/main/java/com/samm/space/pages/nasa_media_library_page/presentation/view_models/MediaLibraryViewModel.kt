@@ -8,16 +8,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Constants
-import com.samm.space.core.DataStoreManager
 import com.samm.space.core.Resource
+import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 import com.samm.space.pages.nasa_media_library_page.domain.models.Item
 import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaLibraryState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.net.URLEncoder
 import javax.inject.Inject
 
@@ -34,9 +33,33 @@ class MediaLibraryViewModel @Inject constructor
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
 
+    private fun handleEvent(event: LibraryUiEvent) {
+        when (event) {
+            is LibraryUiEvent.SearchLibrary -> getData(event.query)
+            is LibraryUiEvent.OnCardClick -> event.navController.navigate(event.route)
+            is LibraryUiEvent.ChangeBackground -> updateBackgroundType(event.id)
+            is LibraryUiEvent.UpdateFilterType -> updateListFilterType(event.type)
+            is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
+            is LibraryUiEvent.AddLibraryFavorite -> insertFavorite(item = event.item)
+        }
+    }
+
+    private fun insertFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
+        mediaLibraryRepository.insertFavorite(item = item)
+    }
+
+    // Todo: deleteFavorite()
+
+    private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {
+        _state.value = MediaLibraryState(data = filterList(data, type))
+    }
+
+    fun sendEvent(event: LibraryUiEvent) {
+        handleEvent(event)
+    }
+
     fun getData(query: String) {
         mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
-            DataStoreManager.saveLastSearchText(query) // save this search query
 
             val success = response.data
             val error = response.message
@@ -78,22 +101,20 @@ class MediaLibraryViewModel @Inject constructor
     }
 
     fun encodeText(text: String?): String {
-        var encode = URLEncoder.encode(text ?: "", Constants.utf8Encoding)
         when {
             text.isNullOrBlank() -> {
-                encode = URLEncoder.encode("Not Available", Constants.utf8Encoding)
+                return URLEncoder.encode("Not Available", Constants.utf8Encoding)
             }
         }
-
-        return encode
+        return URLEncoder.encode(text ?: "", Constants.utf8Encoding)
     }
 
     // Filters out items containing the filter type value - image, video, or audio
-    fun filterList(data: List<Item?>, filterType: State<String>): List<Item?> {
+    fun filterList(data: List<Item?>, filterType: String): List<Item?> {
         return data.filter { item ->
             val dataList = item?.data?.first()
             val mediaType = dataList?.media_type
-            filterType.value.let { mediaType?.contains(it) } ?: false
+            filterType.let { mediaType?.contains(it) } ?: false
         }
     }
 }

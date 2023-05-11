@@ -1,6 +1,5 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -54,11 +53,13 @@ class MediaDataViewModel @Inject constructor
 
 
     fun getUri(state: String?, mediaType: MediaType): String {
-
-        if (state != null) {
-            if (state.isNotEmpty()) {
-                val uriList = extractUrlsFromJsonArray(state.toString())
-                return fileTypeCheck(uriList, mediaType)
+        state?.let { uriStrings ->
+            if (uriStrings.isNotEmpty()) {
+                return try {
+                    fileTypeCheck(createJsonArrayFromString(uriStrings), mediaType)
+                } catch (e: Exception) {
+                    e.toString()
+                }
             }
         }
         return ""
@@ -70,7 +71,7 @@ class MediaDataViewModel @Inject constructor
 
         Then add all of the items from that JSON Array to a new ArrayList and return it.
      */
-    fun extractUrlsFromJsonArray(stringResponse: String): ArrayList<String> {
+    fun createJsonArrayFromString(stringResponse: String): ArrayList<String> {
 
         val arrayList: ArrayList<String> = arrayListOf()
 
@@ -81,8 +82,9 @@ class MediaDataViewModel @Inject constructor
             }
         }
         catch (e: JSONException) {
-            Log.d("Can't convert to JSON Array", e.localizedMessage ?: "Unexpected JSON Exception")
+            e.toString()
         }
+
         return arrayList
     }
 

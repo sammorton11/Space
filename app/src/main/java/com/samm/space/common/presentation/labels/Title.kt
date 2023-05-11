@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.labels
+package com.samm.space.common.presentation.labels
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding

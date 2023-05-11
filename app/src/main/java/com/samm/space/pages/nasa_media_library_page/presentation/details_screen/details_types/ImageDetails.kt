@@ -18,13 +18,13 @@ import com.samm.space.core.Constants.imageMimeTypeForDownload
 import com.samm.space.core.Constants.imageSubPathForDownload
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DescriptionText
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DetailsImage
-import com.samm.space.presentation_common.buttons.DownloadFile
-import com.samm.space.presentation_common.buttons.OpenChromeButton
-import com.samm.space.presentation_common.buttons.ShareButton
-import com.samm.space.presentation_common.labels.DateLabel
-import com.samm.space.presentation_common.labels.Title
-import com.samm.space.presentation_common.util.WindowInfo
-import com.samm.space.presentation_common.util.rememberWindowInfo
+import com.samm.space.common.presentation.buttons.DownloadFile
+import com.samm.space.common.presentation.buttons.OpenChromeButton
+import com.samm.space.common.presentation.buttons.ShareButton
+import com.samm.space.common.presentation.labels.DateLabel
+import com.samm.space.common.presentation.labels.Title
+import com.samm.space.common.presentation.util.WindowInfo
+import com.samm.space.common.presentation.util.rememberWindowInfo
 
 @Composable
 fun ImageDetails(

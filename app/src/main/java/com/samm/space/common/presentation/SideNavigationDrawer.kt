@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common
+package com.samm.space.common.presentation
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,6 +67,26 @@ fun SideNavigationDrawer(
                     ) {
                         Text(
                             text = "Picture of the Day",
+                            modifier = Modifier.padding(20.dp)
+                        )
+                    }
+                }
+
+                item {
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(paddingValue)
+                            .semantics { testTag = "Favorites Screen Button" },
+                        onClick = {
+                            navController.navigate("favorites_screen")
+                            scope.launch(Dispatchers.Main) {
+                                drawerState.close()
+                            }
+                        }
+                    ) {
+                        Text(
+                            text = "Favorites",
                             modifier = Modifier.padding(20.dp)
                         )
                     }

@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.util
+package com.samm.space.common.presentation.util
 
 import android.app.DownloadManager
 import android.content.Context

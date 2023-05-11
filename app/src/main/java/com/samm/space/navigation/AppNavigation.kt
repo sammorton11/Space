@@ -1,12 +1,16 @@
 package com.samm.space.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.samm.space.core.Constants
+import com.samm.space.pages.favorites_page.presentation.FavoriteScreen
+import com.samm.space.pages.favorites_page.presentation.FavoritesViewModel
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.DetailsScreen
 import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.MediaLibraryScreen
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
@@ -16,12 +20,13 @@ import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController,
+    navController: NavHostController
 ) {
 
     val mediaDataViewModel: MediaDataViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
+    val favoritesViewModel: FavoritesViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -30,16 +35,21 @@ fun AppNavigation(
 
         composable("library_search_screen") {
             val state = libraryViewModel.state.value
+            val backgroundType = libraryViewModel.backgroundType
+                .observeAsState(initial = Constants.NO_BACKGROUND)
+                .value
+            val filterType = libraryViewModel.listFilterType
+                .observeAsState("")
+                .value
 
             MediaLibraryScreen(
+                event = libraryViewModel::sendEvent,
                 state = state,
                 navController = navController,
-                getData = libraryViewModel::getData,
-                updateFilterType = libraryViewModel::updateListFilterType,
                 getSavedSearchText = libraryViewModel::getSavedSearchText,
-                listFilterType = libraryViewModel.listFilterType,
-                backgroundType = libraryViewModel.backgroundType,
-                filterList = libraryViewModel::filterList,
+                listFilterType = filterType,
+                backgroundType = backgroundType,
+                filteredList = libraryViewModel::filterList,
                 encodeText = libraryViewModel::encodeText
             )
         }
@@ -71,7 +81,7 @@ fun AppNavigation(
                     getMediaData = mediaDataViewModel::getMediaData,
                     decodeText = mediaDataViewModel::decodeText,
                     getUri = mediaDataViewModel::getUri,
-                    extractUrlsFromJsonArray = mediaDataViewModel::extractUrlsFromJsonArray,
+                    extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
                     fileTypeCheck = mediaDataViewModel::fileTypeCheck
                 )
             }
@@ -82,6 +92,16 @@ fun AppNavigation(
             ApodScreen(
                 stateFlow = state,
                 refresh = apodViewModel::getApodState
+            )
+        }
+
+        composable("favorites_screen") {
+            favoritesViewModel.getFavorites()
+            val state = favoritesViewModel.state.value
+            FavoriteScreen(
+                libraryFavoriteState = state,
+                navController = navController,
+                encodeText = libraryViewModel::encodeText
             )
         }
     }

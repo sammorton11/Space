@@ -13,7 +13,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
-import com.samm.space.presentation_common.ProgressBar
+import com.samm.space.common.presentation.ProgressBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

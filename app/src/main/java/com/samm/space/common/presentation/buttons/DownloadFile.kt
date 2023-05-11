@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.buttons
+package com.samm.space.common.presentation.buttons
 
 import android.content.Context
 import android.widget.Toast
@@ -12,7 +12,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.samm.space.core.Constants.buttonWidth
-import com.samm.space.presentation_common.util.FileHandler
+import com.samm.space.common.presentation.util.FileHandler
 
 @Composable
 fun DownloadFile(

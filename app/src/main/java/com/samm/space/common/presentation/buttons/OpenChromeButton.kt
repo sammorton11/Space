@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.buttons
+package com.samm.space.common.presentation.buttons
 
 import android.content.ActivityNotFoundException
 import android.content.Context

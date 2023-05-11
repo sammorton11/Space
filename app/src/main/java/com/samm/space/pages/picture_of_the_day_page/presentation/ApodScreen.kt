@@ -6,9 +6,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponents
 import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponentsForLargeScreen
 import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
-import com.samm.space.presentation_common.util.DateConverter
-import com.samm.space.presentation_common.util.WindowInfo
-import com.samm.space.presentation_common.util.rememberWindowInfo
+import com.samm.space.common.presentation.util.DateConverter
+import com.samm.space.common.presentation.util.WindowInfo
+import com.samm.space.common.presentation.util.rememberWindowInfo
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -22,13 +22,13 @@ fun ApodScreen(
     val context = LocalContext.current
     val window = rememberWindowInfo()
     val data = state.data
-
     val hdImage = data?.hdurl
     val explanation = data?.explanation
     val copyright = data?.copyright
     val date = data?.date?.let { DateConverter.formatDisplayDate(data.date) }
 
     when(window.screenWidthInfo) {
+
         is WindowInfo.WindowType.Compact -> {
             ApodComponents(
                 state = state,

@@ -1,6 +1,7 @@
 package com.samm.space.pages.nasa_media_library_page.domain.repository
 
 import com.samm.space.core.Resource
+import com.samm.space.pages.nasa_media_library_page.domain.models.Item
 import com.samm.space.pages.nasa_media_library_page.domain.models.NasaLibraryResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -10,4 +11,6 @@ interface MediaLibraryRepository {
     fun searchImageVideoLibrary(query: String): Flow<Resource<NasaLibraryResponse?>>
     fun savedQueryFlow(): Flow<String?>
     fun videoDataFlow(url: String): Flow<Resource<String?>>
+    suspend fun insertFavorite(item: Item)
+    suspend fun deleteFavorite(item: Item)
 }

@@ -1,4 +1,4 @@
-package com.samm.space.presentation_common.util
+package com.samm.space.common.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalConfiguration

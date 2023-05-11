@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.map
 object DataStoreManager {
 
     private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-    private val LAST_SEARCH_TEXT_KEY =  stringPreferencesKey("last_search_text")
+    private val LAST_SEARCH_TEXT_KEY = stringPreferencesKey("last_search_text")
     private lateinit var dataStore: DataStore<Preferences>
     private lateinit var preferenceFlow: Flow<String>
 

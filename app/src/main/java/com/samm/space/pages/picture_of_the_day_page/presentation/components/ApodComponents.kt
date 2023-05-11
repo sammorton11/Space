@@ -16,11 +16,11 @@ import androidx.core.net.toUri
 import com.samm.space.core.Constants
 import com.samm.space.core.MediaType
 import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
-import com.samm.space.presentation_common.ProgressBar
-import com.samm.space.presentation_common.buttons.DownloadFile
-import com.samm.space.presentation_common.buttons.ShareButton
-import com.samm.space.presentation_common.labels.ErrorText
-import com.samm.space.presentation_common.labels.Title
+import com.samm.space.common.presentation.ProgressBar
+import com.samm.space.common.presentation.buttons.DownloadFile
+import com.samm.space.common.presentation.buttons.ShareButton
+import com.samm.space.common.presentation.labels.ErrorText
+import com.samm.space.common.presentation.labels.Title
 
 @Composable
 fun ApodComponents(

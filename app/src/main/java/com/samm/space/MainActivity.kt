@@ -13,8 +13,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.samm.space.core.DataStoreManager
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.presentation_common.MainScaffold
-import com.samm.space.presentation_common.SideNavigationDrawer
+import com.samm.space.common.presentation.MainScaffold
+import com.samm.space.common.presentation.SideNavigationDrawer
 import com.samm.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -23,11 +23,26 @@ import kotlinx.coroutines.launch
 
     Todo:
         ----
-        - Add the background type as a value to pass through to the apod screen and details screen
-        - Orientation Issue - Details Screen
         - Need to add more UI and integration tests - mock web server is now working
-        - Need fake JSON for the details screen
-        - Details Screen tests
+        - Refactoring to a single repo - media library repo, media details repo, apod repo
+        -
+
+        - FAVORITES DATABASE:
+            - Create database class - annotations
+            - Create Dao interface - annotations
+            - Create Dao functions
+            - Inject Dao to Repositories
+            - Use Dao functions Dao->Repo->ViewModels
+            - Add the response data to the database
+            - Use this data for the Favorites Screen
+            - Favorites Screen should be copy of the Main Screen
+              but use the data from the database instead
+            - Create Favorites Screen State
+            - Set up Repo and ViewModel for Favorite Screen
+            - Set up Favorites Screen like the Main Screen
+
+            How do I use the data models as tables in db?
+
         ----
  */
 
@@ -60,7 +75,7 @@ class MainActivity : ComponentActivity() {
                         drawerState = drawerState
                     ) {
                         MainScaffold(
-                            viewModel = viewModel,
+                            event = viewModel::sendEvent,
                             drawerState = drawerState,
                             navController = navController
                         )

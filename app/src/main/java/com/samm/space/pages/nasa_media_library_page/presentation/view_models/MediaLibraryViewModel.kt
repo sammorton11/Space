@@ -9,20 +9,28 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Constants
 import com.samm.space.core.Resource
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.pages.favorites_page.presentation.state.LibraryFavoriteState
 import com.samm.space.pages.nasa_media_library_page.domain.models.Item
 import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaLibraryState
+import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaLibraryViewModel @Inject constructor
-    (private val mediaLibraryRepository: MediaLibraryRepository): ViewModel() {
+class MediaLibraryViewModel
+@Inject constructor (
+    private val mediaLibraryRepository: MediaLibraryRepository
+): ViewModel() {
 
     private val _state = mutableStateOf(MediaLibraryState())
     val state: State<MediaLibraryState> = _state
@@ -33,6 +41,23 @@ class MediaLibraryViewModel @Inject constructor
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
 
+    private val _isFavorite = MutableLiveData(false)
+    val isFavorite: LiveData<Boolean> = _isFavorite
+
+    private val _favorites = MutableStateFlow<List<Item>>(emptyList())
+    val favorites: StateFlow<List<Item>> = _favorites
+
+    private val _favoriteState = mutableStateOf(LibraryFavoriteState())
+    var favoriteState: State<LibraryFavoriteState> = _favoriteState
+
+    private val allFavorites = mediaLibraryRepository.getAllFavorites()
+    fun getFavorites() = viewModelScope.launch {
+        allFavorites.collect {
+            _favoriteState.value = LibraryFavoriteState(libraryFavorites = it)
+        }
+    }
+
+
     private fun handleEvent(event: LibraryUiEvent) {
         when (event) {
             is LibraryUiEvent.SearchLibrary -> getData(event.query)
@@ -41,21 +66,40 @@ class MediaLibraryViewModel @Inject constructor
             is LibraryUiEvent.UpdateFilterType -> updateListFilterType(event.type)
             is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
             is LibraryUiEvent.AddLibraryFavorite -> insertFavorite(item = event.item)
+            is LibraryUiEvent.RemoveFavorite -> removeFavorite(item = event.item)
+            is LibraryUiEvent.UpdateFavorite -> updateFavorite(event.itemId)
         }
-    }
-
-    private fun insertFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
-        mediaLibraryRepository.insertFavorite(item = item)
-    }
-
-    // Todo: deleteFavorite()
-
-    private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {
-        _state.value = MediaLibraryState(data = filterList(data, type))
     }
 
     fun sendEvent(event: LibraryUiEvent) {
         handleEvent(event)
+    }
+
+    private fun updateFavorite(itemId: Int) {
+        _isFavorite.value = !_isFavorite.value!!
+    }
+
+
+    private fun insertFavorite(item: Item) = viewModelScope.launch  {
+        mediaLibraryRepository.insertFavorite(item = item)
+        Log.d("Added to database", item.toString())
+    }
+
+
+    fun getAllFavorites() {
+        viewModelScope.launch {
+            mediaLibraryRepository.getAllFavorites().collect { favorites ->
+                _favorites.value = favorites
+            }
+        }
+    }
+
+    private fun removeFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
+        mediaLibraryRepository.deleteFavorite(item)
+    }
+
+    private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {
+        _state.value = MediaLibraryState(data = filterList(data, type))
     }
 
     fun getData(query: String) {

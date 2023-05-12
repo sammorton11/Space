@@ -3,6 +3,7 @@ package com.samm.space.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -10,7 +11,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.samm.space.core.Constants
 import com.samm.space.pages.favorites_page.presentation.FavoriteScreen
-import com.samm.space.pages.favorites_page.presentation.FavoritesViewModel
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.DetailsScreen
 import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.MediaLibraryScreen
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
@@ -26,7 +26,7 @@ fun AppNavigation(
     val mediaDataViewModel: MediaDataViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
-    val favoritesViewModel: FavoritesViewModel = hiltViewModel()
+    val isFavorite = libraryViewModel.isFavorite.observeAsState(false).value
 
     NavHost(
         navController = navController,
@@ -36,15 +36,16 @@ fun AppNavigation(
         composable("library_search_screen") {
             val state = libraryViewModel.state.value
             val backgroundType = libraryViewModel.backgroundType
-                .observeAsState(initial = Constants.NO_BACKGROUND)
-                .value
+                .observeAsState(initial = Constants.NO_BACKGROUND).value
             val filterType = libraryViewModel.listFilterType
-                .observeAsState("")
-                .value
+                .observeAsState("").value
+            libraryViewModel.getAllFavorites()
+            val favorites = libraryViewModel.favorites.collectAsStateWithLifecycle().value
 
             MediaLibraryScreen(
                 event = libraryViewModel::sendEvent,
                 state = state,
+                favorites = favorites,
                 navController = navController,
                 getSavedSearchText = libraryViewModel::getSavedSearchText,
                 listFilterType = filterType,
@@ -67,28 +68,28 @@ fun AppNavigation(
             val title = backStackEntry.arguments?.getString("title")
             val date = backStackEntry.arguments?.getString("date")
 
-            if ((urlId != null) && (descriptionId != null) && (mediaType != null)) {
+            require(urlId != null && descriptionId != null && mediaType != null)
 
-                val state = mediaDataViewModel.state.value
+            val state = mediaDataViewModel.state.value
 
-                DetailsScreen(
-                    metaDataUrl = urlId,
-                    description = descriptionId,
-                    type = mediaType,
-                    title = title,
-                    date = date,
-                    state = state,
-                    getMediaData = mediaDataViewModel::getMediaData,
-                    decodeText = mediaDataViewModel::decodeText,
-                    getUri = mediaDataViewModel::getUri,
-                    extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
-                    fileTypeCheck = mediaDataViewModel::fileTypeCheck
-                )
-            }
+            DetailsScreen(
+                metaDataUrl = urlId,
+                description = descriptionId,
+                type = mediaType,
+                title = title,
+                date = date,
+                state = state,
+                getMediaData = mediaDataViewModel::getMediaData,
+                decodeText = mediaDataViewModel::decodeText,
+                getUri = mediaDataViewModel::getUri,
+                extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
+                fileTypeCheck = mediaDataViewModel::fileTypeCheck
+            )
         }
 
         composable("apod_screen") {
             val state = apodViewModel.state
+
             ApodScreen(
                 stateFlow = state,
                 refresh = apodViewModel::getApodState
@@ -96,10 +97,13 @@ fun AppNavigation(
         }
 
         composable("favorites_screen") {
-            favoritesViewModel.getFavorites()
-            val state = favoritesViewModel.state.value
+            libraryViewModel.getFavorites()
+            val state = libraryViewModel.favoriteState.value
+
             FavoriteScreen(
                 libraryFavoriteState = state,
+                sendEvent = libraryViewModel::sendEvent,
+                isFavorite = isFavorite,
                 navController = navController,
                 encodeText = libraryViewModel::encodeText
             )

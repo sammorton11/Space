@@ -2,7 +2,6 @@ package com.samm.space.pages.nasa_media_library_page.di
 
 import com.google.gson.GsonBuilder
 import com.samm.space.core.Constants.BASE_URL
-import com.samm.space.pages.favorites_page.data.database.SpaceDao
 import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
 import com.samm.space.pages.nasa_media_library_page.data.network.MetadataApi
 import com.samm.space.pages.nasa_media_library_page.data.network.NasaApi

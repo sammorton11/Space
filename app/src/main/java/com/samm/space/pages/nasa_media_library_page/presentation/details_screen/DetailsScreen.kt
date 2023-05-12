@@ -3,10 +3,10 @@ package com.samm.space.pages.nasa_media_library_page.presentation.details_screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.tooling.preview.Preview
-import com.samm.space.core.MediaType
-import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaDataState
 import com.samm.space.common.presentation.ProgressBar
 import com.samm.space.common.presentation.labels.ErrorText
+import com.samm.space.core.MediaType
+import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaDataState
 
 @Composable
 fun DetailsScreen(

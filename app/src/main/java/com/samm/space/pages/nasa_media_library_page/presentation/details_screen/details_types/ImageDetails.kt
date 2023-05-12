@@ -14,10 +14,6 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.core.Constants.imageMimeTypeForDownload
-import com.samm.space.core.Constants.imageSubPathForDownload
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DescriptionText
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DetailsImage
 import com.samm.space.common.presentation.buttons.DownloadFile
 import com.samm.space.common.presentation.buttons.OpenChromeButton
 import com.samm.space.common.presentation.buttons.ShareButton
@@ -25,6 +21,10 @@ import com.samm.space.common.presentation.labels.DateLabel
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
+import com.samm.space.core.Constants.imageMimeTypeForDownload
+import com.samm.space.core.Constants.imageSubPathForDownload
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DescriptionText
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DetailsImage
 
 @Composable
 fun ImageDetails(

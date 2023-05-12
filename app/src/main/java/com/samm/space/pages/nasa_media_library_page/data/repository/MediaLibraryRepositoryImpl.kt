@@ -1,7 +1,6 @@
 package com.samm.space.pages.nasa_media_library_page.data.repository
 
 import android.util.Log
-import com.samm.space.pages.favorites_page.data.database.SpaceDao
 import com.samm.space.core.DataStoreManager
 import com.samm.space.core.Resource
 import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
@@ -24,7 +23,9 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     ): MediaLibraryRepository {
 
     private val dataStore = DataStoreManager
-
+    override fun getAllFavorites(): Flow<List<Item>> {
+        return database.myDao().getAllLibraryFavorites()
+    }
 
     override suspend fun getData(query: String): NasaLibraryResponse? {
         return api.fetchData(query)
@@ -67,6 +68,10 @@ class MediaLibraryRepositoryImpl @Inject constructor(
 
     override suspend fun deleteFavorite(item: Item) {
         database.myDao().deleteFavorite(item)
+    }
+
+    override suspend fun updateFavorite(itemId: Int, isFavorite: Boolean) {
+        database.myDao().updateFavoriteState(itemId, if (isFavorite) 1 else 0)
     }
 
     override fun savedQueryFlow() = flow {

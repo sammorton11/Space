@@ -33,13 +33,16 @@ class ItemConverter {
     }
 
     @TypeConverter
-    fun fromLinkString(linkString: String): List<Link> {
+    fun fromLinkString(linkString: String?): List<Link> {
         val type = object : TypeToken<List<Link>>() {}.type
         return gson.fromJson(linkString, type)
     }
 
     @TypeConverter
-    fun toLinkString(link: List<Link>): String {
-        return gson.toJson(link)
+    fun toLinkString(links: List<Link>?): String {
+        links?.let {
+            return gson.toJson(links)
+        }
+        return gson.toJson(listOf(Link("", "", "")))
     }
 }

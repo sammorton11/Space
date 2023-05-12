@@ -20,42 +20,40 @@ fun CardMediaPlayer(
     uri: String,
     aspectRatio: Float
 ) {
-
     val context = LocalContext.current
 
-    if (state?.isNotBlank() == true) {
-        val exoPlayer = ExoPlayer.Builder(context).build()
+    require(!state.isNullOrBlank())
+    require(URLUtil.isValidUrl(uri))
 
-        if (URLUtil.isValidUrl(uri)) {
-            try {
-                val mediaItem = MediaItem.Builder()
-                    .setUri(uri)
-                    .build()
-                exoPlayer.setMediaItem(mediaItem)
-                exoPlayer.playWhenReady = true
-                exoPlayer.prepare()
+    val exoPlayer = ExoPlayer.Builder(context).build()
 
-            } catch (e: Exception) {
-                Log.d("ExoPlayer Error", exoPlayer.playerError.toString())
-                Log.d("AudioSink Error", e.localizedMessage?: "Error")
+    try {
+        val mediaItem = MediaItem.Builder()
+            .setUri(uri)
+            .build()
+        exoPlayer.setMediaItem(mediaItem)
+        exoPlayer.playWhenReady = true
+        exoPlayer.prepare()
+
+    } catch (e: Exception) {
+        Log.d("ExoPlayer Error", exoPlayer.playerError.toString())
+    }
+
+    AndroidView(
+        factory = {
+            StyledPlayerView(context).apply {
+                player = exoPlayer
             }
-        }
-        AndroidView(
-            factory = {
-                StyledPlayerView(context).apply {
-                    player = exoPlayer
-                }
-            },
-            modifier = Modifier
-                .aspectRatio(aspectRatio)
-                .semantics { testTag = "Card Media Player" }
-        )
+        },
+        modifier = Modifier
+            .aspectRatio(aspectRatio)
+            .semantics { testTag = "Card Media Player" }
+    )
 
-        DisposableEffect(exoPlayer) {
-            onDispose {
-                exoPlayer.stop()
-                exoPlayer.release()
-            }
+    DisposableEffect(exoPlayer) {
+        onDispose {
+            exoPlayer.stop()
+            exoPlayer.release()
         }
     }
 }

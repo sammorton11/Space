@@ -2,8 +2,7 @@ package com.samm.space.common.presentation.util
 
 import android.util.Log
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 object DateConverter {
 

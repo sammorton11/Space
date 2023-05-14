@@ -33,6 +33,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.samm.space.common.presentation.buttons.FavoritesButton
+import com.samm.space.common.presentation.labels.Title
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
 import com.samm.space.core.MediaType
@@ -63,87 +64,87 @@ fun FavoriteScreen(
 
     val context = LocalContext.current.applicationContext
 
-    LazyVerticalStaggeredGrid(
-        modifier = Modifier.semantics {
-            testTag = "Favorites List"
-        },
-        columns = StaggeredGridCells.Fixed(gridCells),
-        state = lazyGridState
-    ) {
-        libraryFavoritesList?.let { list ->
-            items(list.size) { index ->
-                val item = list[index]
+    Column(modifier = Modifier.fillMaxSize()) {
+        Row(modifier = Modifier.fillMaxWidth()) {
+            Title(text = "Favorites", paddingValue = 15.dp)
+        }
 
-                val itemListOfLinks = item.links
-                val image = itemListOfLinks.first()?.href
-                val itemMetaDataUrl = item.href
-                val itemData = item.data.first()
-                val itemDescription = itemData?.description
-                val itemTitle = itemData?.title
-                val itemDate = itemData?.date_created
+        LazyVerticalStaggeredGrid(
+            modifier = Modifier.semantics {
+                testTag = "Favorites List"
+            },
+            columns = StaggeredGridCells.Fixed(gridCells),
+            state = lazyGridState
+        ) {
 
-                val mediaTypeString = MediaType.fromString(itemData?.media_type?: "image")
-                    ?: MediaType.IMAGE
-                val encodedUrl = encodeText(itemMetaDataUrl)
-                val encodedDescription = encodeText(itemDescription)
+            libraryFavoritesList?.let { list ->
+                items(list.size) { index ->
+                    val item = list[index]
 
-                val roundedCornerAmount = 10
-                val cardElevationAmount = 55.dp
+                    val itemListOfLinks = item.links
+                    val image = itemListOfLinks.first()?.href
+                    val itemMetaDataUrl = item.href
+                    val itemData = item.data.first()
+                    val itemDescription = itemData?.description
+                    val itemTitle = itemData?.title
+                    val itemDate = itemData?.date_created
 
-                val routeToDetailsScreen =
-                    "cardDetails/$encodedUrl/$encodedDescription/" +
-                            "${mediaTypeString.type}/$itemTitle/$itemDate"
+                    val mediaTypeString = MediaType.fromString(itemData?.media_type?: "image")
+                        ?: MediaType.IMAGE
+                    val encodedUrl = encodeText(itemMetaDataUrl)
+                    val encodedDescription = encodeText(itemDescription)
 
-                Card(
-                    modifier = Modifier
-                        .wrapContentWidth()
-                        .padding(15.dp)
-                        .animateContentSize(
-                            animationSpec = tween(
-                                durationMillis = 25,
-                                easing = FastOutSlowInEasing
+                    val roundedCornerAmount = 10
+                    val cardElevationAmount = 55.dp
+
+                    val routeToDetailsScreen =
+                        "cardDetails/$encodedUrl/$encodedDescription/" +
+                                "${mediaTypeString.type}/$itemTitle/$itemDate"
+
+                    Card(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                            .padding(8.dp)
+                            .animateContentSize(
+                                animationSpec = tween(
+                                    durationMillis = 25,
+                                    easing = FastOutSlowInEasing
+                                )
                             )
-                        )
-                        .semantics { testTag = "List Card" },
-                    onClick = {
-                        navController.navigate(routeToDetailsScreen)
-                    },
-                    shape = AbsoluteRoundedCornerShape(roundedCornerAmount),
-                    elevation = cardElevation(defaultElevation = cardElevationAmount)
-                ) {
+                            .semantics { testTag = "List Card" },
+                        onClick = {
+                            navController.navigate(routeToDetailsScreen)
+                        },
+                        shape = AbsoluteRoundedCornerShape(roundedCornerAmount),
+                        elevation = cardElevation(defaultElevation = cardElevationAmount)
+                    ) {
 
-                    Box(modifier = Modifier.fillMaxSize()) {
+                        Box(modifier = Modifier.fillMaxSize()) {
 
-
-                        CardImage(
-                            imageLink = image,
-                            scale = imageScaleType,
-                            mediaType = mediaTypeString
-                        )
-
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.TopEnd)
-                        ) {
-                            var favorite by remember { mutableStateOf(isFavorite) }
-                            FavoritesButton(
-                                item = item,
-                                favorites = libraryFavoritesList,
-                                onFavoriteClick = {
-                                    sendEvent(LibraryUiEvent.RemoveFavorite(item))
-                                    Toast.makeText(context, "Removed from Favorites", Toast.LENGTH_LONG ).show()
-                                    favorite = !favorite
-                                }
+                            CardImage(
+                                imageLink = image,
+                                scale = imageScaleType,
+                                mediaType = mediaTypeString
                             )
-                        }
 
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .align(Alignment.TopEnd)
+                            ) {
+//                                var favorite by remember { mutableStateOf(isFavorite) }
+                                FavoritesButton(
+                                    item = item,
+                                    event = sendEvent,
+                                    favorites = libraryFavoritesList,
+                                )
+                            }
 
-                        Column(modifier = Modifier.align(Alignment.BottomCenter)){
-                            CardTitle(
-                                title = itemTitle
-                            )
+                            Column(modifier = Modifier.align(Alignment.BottomCenter)){
+                                CardTitle(
+                                    title = itemTitle
+                                )
+                            }
                         }
                     }
                 }
@@ -151,23 +152,3 @@ fun FavoriteScreen(
         }
     }
 }
-
-
-
-
-
-//    Column(modifier = Modifier.fillMaxSize()) {
-//        Title(text = "Favorites", paddingValue = 15.dp)
-//        LazyColumn(
-//            modifier = Modifier
-//                .fillMaxSize()
-//                .padding(15.dp)
-//        ) {
-//            libraryFavoritesList?.let { list ->
-//                items(list.size) { index ->
-//
-//                }
-//            }
-//
-//        }
-//    }

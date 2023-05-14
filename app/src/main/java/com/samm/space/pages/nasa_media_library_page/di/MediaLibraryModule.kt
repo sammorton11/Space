@@ -56,5 +56,6 @@ object MediaLibraryModule {
     ): MediaLibraryRepository {
 
         return MediaLibraryRepositoryImpl(api, metadataApi, database)
+
     }
 }

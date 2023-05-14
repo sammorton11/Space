@@ -16,6 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Space"
         android:usesCleartextTraffic="true"
+        android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
         tools:targetApi="31">
 
         <provider

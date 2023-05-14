@@ -17,10 +17,16 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -41,6 +47,7 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 fun LibraryListContent(
     sendEvent: (LibraryUiEvent) -> Unit,
     favorites: List<Item>,
+    isFavorite: Boolean,
     navController: NavController,
     filterType: String,
     data: List<Item?>,
@@ -50,8 +57,6 @@ fun LibraryListContent(
     filteredList: (data: List<Item?>, filterType: String) -> List<Item?>,
     encodeText: (text: String?) -> String
 ) {
-
-    val context = LocalContext.current.applicationContext
 
     LazyVerticalStaggeredGrid(
         modifier = Modifier.semantics {
@@ -88,7 +93,8 @@ fun LibraryListContent(
                     .semantics { testTag = "List Card" },
                 onClick = {
                     sendEvent(LibraryUiEvent.OnCardClick(
-                        route = "cardDetails/$encodedUrl/$encodedDescription/${mediaTypeString.type}/$itemTitle/$itemDate",
+                        route = "cardDetails/$encodedUrl/$encodedDescription/" +
+                                "${mediaTypeString.type}/$itemTitle/$itemDate",
                         navController = navController
                     ))
                 },
@@ -110,15 +116,13 @@ fun LibraryListContent(
                             .fillMaxWidth()
                             .align(Alignment.TopEnd)
                     ) {
+
                         FavoritesButton(
                             item = item!!,
                             favorites = favorites,
-                            onFavoriteClick = {
-                                sendEvent(LibraryUiEvent.AddLibraryFavorite(item))
-                                Toast.makeText(context, "Added to Favorites", Toast.LENGTH_SHORT).show()
-                            }
+                            event = sendEvent,
                         )
-                    }
+                }
 
                     Column(
                         modifier = Modifier.align(Alignment.BottomCenter)

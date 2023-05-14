@@ -1,9 +1,14 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
+import android.app.Application
+import android.content.Context
 import androidx.compose.runtime.State
+import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.MediaItem
 import com.samm.space.core.Constants
 import com.samm.space.core.MediaType
 import com.samm.space.core.Resource
@@ -19,8 +24,10 @@ import java.net.URLDecoder
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaDataViewModel @Inject constructor
-    (private val mediaLibraryRepository: MediaLibraryRepository) : ViewModel() {
+class MediaDataViewModel @Inject constructor(
+    private val mediaLibraryRepository: MediaLibraryRepository,
+    private val application: Application
+) : ViewModel() {
 
     private val _state = mutableStateOf(MediaDataState())
     val state: State<MediaDataState> = _state

@@ -57,7 +57,6 @@ class MediaLibraryViewModel
         }
     }
 
-
     private fun handleEvent(event: LibraryUiEvent) {
         when (event) {
             is LibraryUiEvent.SearchLibrary -> getData(event.query)
@@ -67,7 +66,8 @@ class MediaLibraryViewModel
             is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
             is LibraryUiEvent.AddLibraryFavorite -> insertFavorite(item = event.item)
             is LibraryUiEvent.RemoveFavorite -> removeFavorite(item = event.item)
-            is LibraryUiEvent.UpdateFavorite -> updateFavorite(event.itemId)
+            is LibraryUiEvent.UpdateFavorite -> updateFavorite()
+            is LibraryUiEvent.ToggleFavorite -> toggleFavorite(item = event.item)
         }
     }
 
@@ -75,8 +75,22 @@ class MediaLibraryViewModel
         handleEvent(event)
     }
 
-    private fun updateFavorite(itemId: Int) {
+    private fun toggleFavorite(item: Item) {
+        if (favorites.value.any { it.href == item.href }) {
+            removeFavorite(item)
+        } else {
+            insertFavorite(item)
+        }
+    }
+
+    private fun updateFavorite() {
         _isFavorite.value = !_isFavorite.value!!
+    }
+
+    private fun checkInDatabase(item: Item) {
+        if (favorites.value.any { it.href == item.href }) {
+
+        }
     }
 
 
@@ -94,8 +108,14 @@ class MediaLibraryViewModel
         }
     }
 
+
     private fun removeFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
-        mediaLibraryRepository.deleteFavorite(item)
+        favorites.value.forEach { favoriteItem ->
+            if (favoriteItem.href == item.href) {
+                mediaLibraryRepository.deleteFavorite(favoriteItem)
+                return@forEach
+            }
+        }
     }
 
     private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {

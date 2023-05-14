@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun rememberWindowInfo(): WindowInfo {
     val configuration = LocalConfiguration.current
+
     return WindowInfo(
         screenWidthInfo = when {
             configuration.screenWidthDp < 600 -> WindowInfo.WindowType.Compact

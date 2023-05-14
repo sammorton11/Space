@@ -2,9 +2,7 @@ package com.samm.space.pages.favorites_page.di
 
 import android.app.Application
 import androidx.room.Room
-import com.samm.space.pages.favorites_page.data.FavoritesRepositoryImpl
 import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
-import com.samm.space.pages.favorites_page.domain.FavoritesRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,14 +23,5 @@ object DatabaseModule {
         )
             .fallbackToDestructiveMigration()
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideFavoritesRepository(
-        database: SpaceExplorerDatabase
-    ): FavoritesRepository {
-
-        return FavoritesRepositoryImpl(database)
     }
 }

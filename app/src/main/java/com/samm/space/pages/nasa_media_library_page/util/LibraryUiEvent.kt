@@ -13,7 +13,7 @@ sealed class LibraryUiEvent {
     data class RemoveFavorite(val item: Item): LibraryUiEvent()
 
     data class ToggleFavorite(val item: Item): LibraryUiEvent()
-    object UpdateFavorite: LibraryUiEvent()
+    data class UpdateFavorite(val id: Int, val isFavorite: Boolean): LibraryUiEvent()
 }
 
 

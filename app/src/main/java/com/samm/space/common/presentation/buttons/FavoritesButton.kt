@@ -18,8 +18,7 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 
 /*
     Todo:
-     - Add all of the logic for this button inside the button comp. remove the function and keep it isolated
-     - This could make it to where I can add or remove the item from anywhere in the app..
+     - Redo the favorite page and button logic I'm not happy with the quality.
  */
 
 @Composable
@@ -41,6 +40,9 @@ fun FavoritesButton(
     IconButton(
         onClick = {
             event(LibraryUiEvent.ToggleFavorite(item))
+            if (icon == Icons.Default.Favorite) {
+                icon = Icons.Default.FavoriteBorder
+            }
         }
     ) {
         Icon(

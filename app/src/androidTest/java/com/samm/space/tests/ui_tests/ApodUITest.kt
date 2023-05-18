@@ -5,7 +5,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
 import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
@@ -27,7 +31,6 @@ import org.junit.Before
 import org.junit.Test
 
 // Todo: Tests fail when running class. serverApod throws error.
-// Todo: Need to test null and blank data from response - create fake json for test - add that to the base test
 
 @HiltAndroidTest
 class ApodUITest: BaseTest() {
@@ -83,7 +86,7 @@ class ApodUITest: BaseTest() {
                 .fetchSemanticsNodes().size == 1
         }
 
-        delay(500) // Trying to avoid using this but all other 'waits' do not work
+        delay(1500) // Trying to avoid using this but all other 'waits' do not work
         composeTestRule.onNodeWithTag(apodImageTag, true)
             .assertExists()
             .assertIsDisplayed()

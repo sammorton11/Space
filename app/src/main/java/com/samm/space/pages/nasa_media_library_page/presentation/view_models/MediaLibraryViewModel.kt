@@ -41,9 +41,6 @@ class MediaLibraryViewModel
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
 
-    private val _isFavorite = MutableLiveData(false)
-    val isFavorite: LiveData<Boolean> = _isFavorite
-
     private val _favorites = MutableStateFlow<List<Item>>(emptyList())
     val favorites: StateFlow<List<Item>> = _favorites
 
@@ -89,15 +86,8 @@ class MediaLibraryViewModel
         mediaLibraryRepository.updateFavorite(id, isFavorite)
     }
 
-    private fun checkInDatabase(item: Item) {
-        if (favorites.value.any { it.href == item.href }) {
-
-        }
-    }
-
     private fun insertFavorite(item: Item) = viewModelScope.launch  {
         mediaLibraryRepository.insertFavorite(item = item)
-        Log.d("Added to database", item.toString())
     }
 
 
@@ -132,7 +122,7 @@ class MediaLibraryViewModel
             when(response) {
                 is Resource.Success -> {
                     _state.value = MediaLibraryState(data = itemsList ?: emptyList())
-                    Log.d("State:", _state.value.data.toString())
+//                    Log.d("State:", _state.value.data.toString())
                 }
                 is Resource.Error -> {
                     error.let {

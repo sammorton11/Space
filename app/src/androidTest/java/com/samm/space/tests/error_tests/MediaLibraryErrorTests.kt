@@ -2,7 +2,11 @@ package com.samm.space.tests.error_tests
 
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.*
+import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
@@ -11,16 +15,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.common.presentation.SideNavigationDrawer
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.tests.ui_tests.BaseTest
-import com.samm.space.tests.ui_tests.MediaLibraryUITest.Companion.serverMediaLibrary
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.GlobalTestTags.errorTag
 import dagger.hilt.android.testing.HiltAndroidTest
-import okhttp3.mockwebserver.MockResponse
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
@@ -31,11 +32,7 @@ class MediaLibraryErrorTests: BaseTest() {
     @Before
     fun setup() {
         hiltRule.inject()
-        serverMediaLibrary.enqueue(
-            MockResponse()
-                .setResponseCode(404)
-                .setBody("Error")
-        )
+
         composeTestRule.activity.apply {
             setContent {
                 SpaceTheme {
@@ -57,8 +54,7 @@ class MediaLibraryErrorTests: BaseTest() {
 
                             ) {
                             MainScaffold(
-                                updateListFilterType = viewModel::updateListFilterType,
-                                updateBackgroundType = viewModel::updateBackgroundType,
+                                event = viewModel::sendEvent,
                                 drawerState = drawerState,
                                 navController = navController
                             )
@@ -67,12 +63,6 @@ class MediaLibraryErrorTests: BaseTest() {
                 }
             }
         }
-    }
-
-    @After
-    fun tearDownClass() {
-        serverMediaLibrary.shutdown()
-        serverMediaLibrary.close()
     }
 
     @Test

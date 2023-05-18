@@ -26,7 +26,6 @@ fun AppNavigation(
     val mediaDataViewModel: MediaDataViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
-    val isFavorite = libraryViewModel.isFavorite.observeAsState(false).value
     val favorites = libraryViewModel.favorites.collectAsStateWithLifecycle().value
     libraryViewModel.getAllFavorites()
 
@@ -46,7 +45,6 @@ fun AppNavigation(
                 event = libraryViewModel::sendEvent,
                 state = state,
                 favorites = favorites,
-                isFavorite = isFavorite,
                 navController = navController,
                 getSavedSearchText = libraryViewModel::getSavedSearchText,
                 listFilterType = filterType,
@@ -104,7 +102,6 @@ fun AppNavigation(
             FavoriteScreen(
                 libraryFavoriteState = state,
                 sendEvent = libraryViewModel::sendEvent,
-                isFavorite = isFavorite,
                 navController = navController,
                 encodeText = libraryViewModel::encodeText
             )

@@ -1,9 +1,9 @@
 package com.samm.space
 
+import com.samm.space.common.presentation.util.FileHandler
 import com.samm.space.core.MediaType
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.common.presentation.util.FileHandler
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
@@ -11,7 +11,7 @@ import org.junit.Before
 import org.junit.Test
 
 @HiltAndroidTest
-class ViewModelTests {
+class MediaFileUtilTests {
 
     private lateinit var utils: FileHandler
     private lateinit var mediaDataViewModel: MediaDataViewModel

@@ -34,7 +34,6 @@ object MediaLibraryModule {
             .create(NasaApi::class.java)
     }
 
-    // Todo: Mock this for details screen tests
     @Provides
     @Singleton
      fun provideMetaApi(): MetadataApi {
@@ -56,6 +55,5 @@ object MediaLibraryModule {
     ): MediaLibraryRepository {
 
         return MediaLibraryRepositoryImpl(api, metadataApi, database)
-
     }
 }

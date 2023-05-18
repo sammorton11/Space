@@ -23,9 +23,6 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     ): MediaLibraryRepository {
 
     private val dataStore = DataStoreManager
-    override fun getAllFavorites(): Flow<List<Item>> {
-        return database.myDao().getAllLibraryFavorites()
-    }
 
     override suspend fun getData(query: String): NasaLibraryResponse? {
         return api.fetchData(query)
@@ -37,6 +34,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
 
     override fun searchImageVideoLibrary(query: String) = flow {
         DataStoreManager.saveLastSearchText(query)
+
         try {
             emit(Resource.Loading())
             val response = getData(query)
@@ -60,6 +58,10 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         catch (e: Exception) {
             emit(Resource.Error(e.localizedMessage ?: "Unknown Error"))
         }
+    }
+
+    override fun getAllFavorites(): Flow<List<Item>> {
+        return database.myDao().getAllLibraryFavorites()
     }
 
     override suspend fun insertFavorite(item: Item) {

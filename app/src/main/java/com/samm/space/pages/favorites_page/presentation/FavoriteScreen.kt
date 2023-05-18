@@ -1,6 +1,5 @@
 package com.samm.space.pages.favorites_page.presentation
 
-import android.widget.Toast
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -19,6 +18,8 @@ import androidx.compose.foundation.shape.AbsoluteRoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
@@ -47,7 +47,6 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 fun FavoriteScreen(
     libraryFavoriteState: LibraryFavoriteState,
     sendEvent: (LibraryUiEvent) -> Unit,
-    isFavorite: Boolean,
     navController: NavController,
     encodeText: (text: String?) -> String
 ) {
@@ -61,13 +60,26 @@ fun FavoriteScreen(
         is WindowInfo.WindowType.Medium -> 3
         is WindowInfo.WindowType.Expanded -> 4
     }
-
-    val context = LocalContext.current.applicationContext
+    var filteredFavorites by remember { mutableStateOf(libraryFavoritesList ?: emptyList()) }
+    var filterText by remember { mutableStateOf("") }
 
     Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Title(text = "Favorites", paddingValue = 15.dp)
+            Title(text = "Favorites", paddingValue = 8.dp)
         }
+
+        OutlinedTextField(
+            value = filterText,
+            onValueChange = { newText ->
+                filterText = newText
+                filteredFavorites = libraryFavoritesList?.filter { item ->
+                    item.data.first()?.title?.contains(newText, ignoreCase = true) == true
+                } ?: emptyList()
+            },
+            modifier = Modifier.padding(start = 8.dp, bottom = 11.dp),
+            placeholder = { Text(text = "Search Favorites...")}
+        )
+
 
         LazyVerticalStaggeredGrid(
             modifier = Modifier.semantics {
@@ -77,7 +89,13 @@ fun FavoriteScreen(
             state = lazyGridState
         ) {
 
-            libraryFavoritesList?.let { list ->
+            val favoritesToDisplay = if (filterText.isEmpty()) {
+                libraryFavoritesList
+            } else {
+                filteredFavorites
+            }
+
+            favoritesToDisplay?.let { list ->
                 items(list.size) { index ->
                     val item = list[index]
 
@@ -132,12 +150,13 @@ fun FavoriteScreen(
                                     .fillMaxWidth()
                                     .align(Alignment.TopEnd)
                             ) {
-//                                var favorite by remember { mutableStateOf(isFavorite) }
-                                FavoritesButton(
-                                    item = item,
-                                    event = sendEvent,
-                                    favorites = libraryFavoritesList,
-                                )
+                                libraryFavoritesList?.let { list ->
+                                    FavoritesButton(
+                                        item = item,
+                                        event = sendEvent,
+                                        favorites = list,
+                                    )
+                                }
                             }
 
                             Column(modifier = Modifier.align(Alignment.BottomCenter)){

@@ -54,20 +54,18 @@ class FakeMediaLibraryRepositoryMock @Inject constructor (
         try {
             when (successOrError(query)) {
                 FakeResponseTrigger.SUCCESS -> emit(Resource.Success(FakeLibraryApiResponse.response))
-                FakeResponseTrigger.HTTP_ERROR -> {
-                    emit(Resource.Error(HttpException(
-                        Response.error<Any>(400,
-                        "Bad Request".toResponseBody(null)
-                    )).message()))
-                }
-                FakeResponseTrigger.IO_ERROR -> {
-                    //throw IOException("Network connection error")
-                    emit(Resource.Error(IOException("Network connection error").message))
-                }
+                FakeResponseTrigger.HTTP_ERROR -> throw HttpException(Response.error<Any>(400,
+                    "Bad Request".toResponseBody(null)
+                ))
+                FakeResponseTrigger.IO_ERROR -> throw IOException("Network connection error")
             }
         } catch (e: Exception) {
             // Emit the error response based on the exception type
-            emit(Resource.Error(e.message ?: "Unexpected Error"))
+            when (e) {
+                is HttpException -> emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+                is IOException -> emit(Resource.Error(e.localizedMessage ?: "Check Internet Connection"))
+                else -> emit(Resource.Error("Unknown Error"))
+            }
         }
     }
 
@@ -105,15 +103,11 @@ object FakeLibraryApiResponse {
                         "Mars Celebration",
                         "NHQ201905310033",
                         "2019-05-31T00:00:00Z",
-                       listOf("Test Data"),
+                       listOf(""),
                         "image",
                         null,
                         null,
-                        "The Mars celebration Friday, May 31, 2019, in Mars, Pennsylvania." +
-                                " NASA is in the small town to celebrate Mars exploration and share the agency’s " +
-                                "excitement about landing astronauts on the Moon in five years. " +
-                                "The celebration includes a weekend of Science, Technology, Engineering, " +
-                                "Arts and Mathematics (STEAM) activities. Photo Credit: (NASA/Bill Ingalls)",
+                        "The Mars celebration Friday, May 31, 2019, in Mars, Pennsylvania. NASA is in the small town to celebrate Mars exploration and share the agency’s excitement about landing astronauts on the Moon in five years. The celebration includes a weekend of Science, Technology, Engineering, Arts and Mathematics (STEAM) activities. Photo Credit: (NASA/Bill Ingalls)",
 
                     )),
                     links = listOf(Link(
@@ -139,8 +133,7 @@ object FakeLibraryApiResponse {
                         "audio",
                         null,
                         null,
-                        "NASA astronaut Drew Feustel talks about the importance of human space exploration, " +
-                                "and what it's like to live and work in space.",
+                        "NASA astronaut Drew Feustel talks about the importance of human space exploration, and what it's like to live and work in space.",
 
                         )),
                     links = listOf(Link(
@@ -160,14 +153,7 @@ object FakeLibraryApiResponse {
                         "image",
                         null,
                         null,
-                        "NASA is going to the Moon and on to Mars, in a measured, sustainable way." +
-                                " Working with U.S. companies and international partners, " +
-                                "NASA will push the boundaries of human exploration forward to the Moon. " +
-                                "NASA is working to establish a permanent human presence on the Moon within the next " +
-                                "decade to uncover new scientific discoveries and lay the foundation " +
-                                "for private companies to build a lunar economy.  " +
-                                "Right now, NASA is taking steps to begin this next era of exploration. " +
-                                "#Moon2Mars  Learn more at: https://www.nasa.gov/moontomars",
+                        "NASA is going to the Moon and on to Mars, in a measured, sustainable way. Working with U.S. companies and international partners, NASA will push the boundaries of human exploration forward to the Moon. NASA is working to establish a permanent human presence on the Moon within the next decade to uncover new scientific discoveries and lay the foundation for private companies to build a lunar economy.  Right now, NASA is taking steps to begin this next era of exploration. #Moon2Mars  Learn more at: https://www.nasa.gov/moontomars",
 
                         )),
                     links = listOf(Link(

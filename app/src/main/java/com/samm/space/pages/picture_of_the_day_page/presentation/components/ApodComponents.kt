@@ -13,14 +13,14 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.core.Constants
-import com.samm.space.core.MediaType
-import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
 import com.samm.space.common.presentation.ProgressBar
 import com.samm.space.common.presentation.buttons.DownloadFile
 import com.samm.space.common.presentation.buttons.ShareButton
 import com.samm.space.common.presentation.labels.ErrorText
 import com.samm.space.common.presentation.labels.Title
+import com.samm.space.core.Constants
+import com.samm.space.core.MediaType
+import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
 
 @Composable
 fun ApodComponents(

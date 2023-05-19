@@ -19,25 +19,6 @@ open class BaseTest {
 
     lateinit var navController: TestNavHostController
 
-    companion object {
-
-        val jsonStringMediaLibrary = Companion::class.java.classLoader
-            ?.getResource("res/raw/media_library_response.json")
-            ?.readText()
-
-        val jsonStringMetadata = Companion::class.java.classLoader
-            ?.getResource("res/raw/video_metadata_response.json")
-            ?.toString()
-
-        val jsonStringMediaLibraryNullData = Companion::class.java.classLoader
-            ?.getResource("res/raw/media_library_response_blank_data.json")
-            ?.readText()
-
-        val jsonStringApod = Companion::class.java.classLoader
-            ?.getResource("res/raw/apod_response.json")
-            ?.readText()
-    }
-
     fun pressBackButton(
         composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
     ) {

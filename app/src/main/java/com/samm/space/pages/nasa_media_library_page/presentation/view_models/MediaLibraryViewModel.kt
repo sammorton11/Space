@@ -122,7 +122,6 @@ class MediaLibraryViewModel
             when(response) {
                 is Resource.Success -> {
                     _state.value = MediaLibraryState(data = itemsList ?: emptyList())
-//                    Log.d("State:", _state.value.data.toString())
                 }
                 is Resource.Error -> {
                     error.let {

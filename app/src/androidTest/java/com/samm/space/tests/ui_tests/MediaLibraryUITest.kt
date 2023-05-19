@@ -95,7 +95,6 @@ class MediaLibraryUITest: BaseTest() {
                 .assertIsDisplayed()
                 .performClick()
 
-            composeTestRule.waitForIdle()
             composeTestRule.waitUntil(3000) {
                 composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
                     .fetchSemanticsNodes().isNotEmpty()
@@ -107,30 +106,4 @@ class MediaLibraryUITest: BaseTest() {
             pressBackButton(composeTestRule)
         }
     }
-
-    @Test
-    fun test_image_video_details_screen() {
-        
-        val listOfCards = composeTestRule.onAllNodes(hasTestTag(listCardTag), true)
-
-        composeTestRule.waitUntil {
-            listOfCards.fetchSemanticsNodes().isNotEmpty()
-        }
-
-        listOfCards[0]
-            .assertIsDisplayed()
-            .performClick()
-
-        composeTestRule.waitUntil(3000) {
-            composeTestRule.onAllNodes(hasTestTag(detailsScreenTag), true)
-                .fetchSemanticsNodes().isNotEmpty()
-        }
-        composeTestRule.onNodeWithTag(detailsScreenTag)
-            .assertIsDisplayed()
-
-        composeTestRule.waitForIdle()
-        pressBackButton(composeTestRule)
-    }
-
-    // TODO: Test favorites icons
 }

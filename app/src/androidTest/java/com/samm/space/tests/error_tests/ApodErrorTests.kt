@@ -25,7 +25,6 @@ import org.junit.Test
 @HiltAndroidTest
 class ApodErrorTests: BaseTest() {
 
-
     private fun serverError404() = run {
         serverApod.enqueue(
             MockResponse()

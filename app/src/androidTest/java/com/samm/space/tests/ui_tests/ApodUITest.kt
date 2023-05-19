@@ -37,6 +37,9 @@ class ApodUITest: BaseTest() {
 
     companion object {
         val serverApod = MockWebServer()
+        val jsonStringApod = Companion::class.java.classLoader
+            ?.getResource("res/raw/apod_response.json")
+            ?.readText()
     }
 
     @Before

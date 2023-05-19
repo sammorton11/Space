@@ -3,12 +3,12 @@ package com.samm.space.pages.picture_of_the_day_page.presentation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponents
-import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponentsForLargeScreen
-import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
 import com.samm.space.common.presentation.util.DateConverter
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
+import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponents
+import com.samm.space.pages.picture_of_the_day_page.presentation.components.ApodComponentsForLargeScreen
+import com.samm.space.pages.picture_of_the_day_page.presentation.state.ApodState
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable

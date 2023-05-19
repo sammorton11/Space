@@ -4,7 +4,6 @@ import com.samm.space.pages.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.pages.picture_of_the_day_page.di.ApodModule
 import com.samm.space.pages.picture_of_the_day_page.domain.repository.ApodRepository
 import com.samm.space.repository.FakeApodRepositoryMock
-import com.samm.space.test.BuildConfig
 import com.samm.space.tests.ui_tests.ApodUITest.Companion.serverApod
 import dagger.Module
 import dagger.Provides

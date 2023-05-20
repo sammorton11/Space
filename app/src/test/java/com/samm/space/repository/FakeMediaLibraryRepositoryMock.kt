@@ -1,15 +1,15 @@
 package com.samm.space.repository
 
-import com.samm.space.core.Resource
-import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
-import com.samm.space.pages.nasa_media_library_page.data.network.MetadataApi
-import com.samm.space.pages.nasa_media_library_page.data.network.NasaApi
-import com.samm.space.pages.nasa_media_library_page.domain.models.Collection
-import com.samm.space.pages.nasa_media_library_page.domain.models.Data
-import com.samm.space.pages.nasa_media_library_page.domain.models.Item
-import com.samm.space.pages.nasa_media_library_page.domain.models.Link
-import com.samm.space.pages.nasa_media_library_page.domain.models.NasaLibraryResponse
-import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
+import com.samm.core.data.database.SpaceExplorerDatabase
+import com.samm.core.util.Resource
+import com.samm.media_library.nasa_media_library_page.data.network.MetadataApi
+import com.samm.media_library.nasa_media_library_page.data.network.NasaApi
+import com.samm.core.domain.library_models.Collection
+import com.samm.core.domain.library_models.Data
+import com.samm.core.domain.library_models.Item
+import com.samm.core.domain.library_models.Link
+import com.samm.core.domain.library_models.NasaLibraryResponse
+import com.samm.media_library.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.util.FakeResponseTrigger
 import com.samm.space.util.successOrError
 import kotlinx.coroutines.flow.Flow
@@ -98,7 +98,8 @@ object FakeLibraryApiResponse {
             items = listOf(
                 Item(
                     href = "https://images-assets.nasa.gov/image/NHQ201905310026/collection.json",
-                    data = listOf(Data(
+                    data = listOf(
+                        Data(
                         "HQ",
                         "Mars Celebration",
                         "NHQ201905310033",
@@ -109,16 +110,20 @@ object FakeLibraryApiResponse {
                         null,
                         "The Mars celebration Friday, May 31, 2019, in Mars, Pennsylvania. NASA is in the small town to celebrate Mars exploration and share the agency’s excitement about landing astronauts on the Moon in five years. The celebration includes a weekend of Science, Technology, Engineering, Arts and Mathematics (STEAM) activities. Photo Credit: (NASA/Bill Ingalls)",
 
-                    )),
-                    links = listOf(Link(
+                    )
+                    ),
+                    links = listOf(
+                        Link(
                         href = "https://images-assets.nasa.gov/image/NHQ201905310026/NHQ201905310026~thumb.jpg",
                         rel = "preview",
                         render = "image"
-                    ))
+                    )
+                    )
                 ),
                 Item(
                     href = "https://images-api.nasa.gov/search?q=mars&media_type=image,audio,video",
-                    data = listOf(Data(
+                    data = listOf(
+                        Data(
                         "HQ",
                         "Importance of Human Space Exploration: Drew Feustel",
                         "NHQ201905310033",
@@ -135,16 +140,20 @@ object FakeLibraryApiResponse {
                         null,
                         "NASA astronaut Drew Feustel talks about the importance of human space exploration, and what it's like to live and work in space.",
 
-                        )),
-                    links = listOf(Link(
+                        )
+                    ),
+                    links = listOf(
+                        Link(
                         href = "https://images-assets.nasa.gov/audio/NASAEpx/NASAEpx~128k.mp3",
                         rel = "self",
                         render = "audio"
-                    ))
+                    )
+                    )
                 ),
                 Item(
                     href = "https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/collection.json",
-                    data = listOf(Data(
+                    data = listOf(
+                        Data(
                         "HQ",
                         "Go Forward to the Moon",
                         "NHQ_2019_0311_Go Forward to the Moon",
@@ -155,13 +164,17 @@ object FakeLibraryApiResponse {
                         null,
                         "NASA is going to the Moon and on to Mars, in a measured, sustainable way. Working with U.S. companies and international partners, NASA will push the boundaries of human exploration forward to the Moon. NASA is working to establish a permanent human presence on the Moon within the next decade to uncover new scientific discoveries and lay the foundation for private companies to build a lunar economy.  Right now, NASA is taking steps to begin this next era of exploration. #Moon2Mars  Learn more at: https://www.nasa.gov/moontomars",
 
-                        )),
-                    links = listOf(Link(
+                        )
+                    ),
+                    links = listOf(
+                        Link(
                         href = "https://images-assets.nasa.gov/video/NHQ_2019_0311_Go Forward to the Moon/NHQ_2019_0311_Go Forward to the Moon~thumb.jpg",
                         rel = "preview",
                         render = "image"
-                    ))
-                ))
+                    )
+                    )
+                )
+            )
         )
     )
 }

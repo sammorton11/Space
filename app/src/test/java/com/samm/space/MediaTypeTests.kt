@@ -1,7 +1,5 @@
 package com.samm.space
 
-import com.samm.space.core.MediaType
-import com.samm.space.core.MediaType.Companion.toMediaType
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

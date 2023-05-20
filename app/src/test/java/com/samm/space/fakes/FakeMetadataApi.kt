@@ -1,6 +1,6 @@
-package com.samm.space.data.fakes
+package com.samm.space.fakes
 
-import com.samm.space.pages.nasa_media_library_page.data.network.MetadataApi
+import com.samm.media_library.nasa_media_library_page.data.network.MetadataApi
 
 class FakeMetadataApi : MetadataApi {
     private val urlString = """

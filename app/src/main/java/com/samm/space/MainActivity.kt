@@ -11,19 +11,23 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.common.presentation.SideNavigationDrawer
-import com.samm.space.core.DataStoreManager
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.media_library.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.media_library.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
  *      TODO Issues:
- *          - Media Library Screen Mock Server isn't working. Not sure why.
- *          - Orientation changes restarts media players - this must be persisted
+ *          - Orientation changes restarts media players - this must be persisted - use view model?
+ *          - Titles in list cards not visible sometimes - need hue or whatever
+ *          - More pages - consume another nasa api
+ *          - Bottom navigation for screens instead of side navigation
+ *          - Maybe have a search icon in the toolbar the opens a search dialog instead of the search field
+ *              - pass the view model function to call the data into the main tool bar as a high fun
+ *          - Move Favorites button to the right side of the cards instead of the left
  *          - Favorites Screen tests
  *          - Database integration tests
  *          - App is finished once these are fixed and added
@@ -38,7 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            val dataStore = DataStoreManager
+            val dataStore = com.samm.core.common.data.DataStoreManager
             dataStore.init(applicationContext)
         }
 
@@ -51,15 +55,16 @@ class MainActivity : ComponentActivity() {
 
                     val navController = rememberNavController()
                     val drawerState = rememberDrawerState(DrawerValue.Closed)
-                    val viewModel: MediaLibraryViewModel = hiltViewModel()
-                    viewModel.sendEvent(LibraryUiEvent.SearchLibrary("2023"))
+                    val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
+
+                    libraryViewModel.sendEvent(LibraryUiEvent.SearchLibrary("2023"))
 
                     SideNavigationDrawer(
                         navController = navController,
                         drawerState = drawerState
                     ) {
                         MainScaffold(
-                            event = viewModel::sendEvent,
+                            event = libraryViewModel::sendEvent,
                             drawerState = drawerState,
                             navController = navController
                         )

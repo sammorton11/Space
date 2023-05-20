@@ -1,0 +1,176 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'dagger.hilt.android.plugin'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace 'com.samm.media_library'
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 24
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.4.1'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    def ktor_version = '2.2.0'
+    def dataStore_version = "1.0.0"
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-runtime-compose:2.6.1'
+    implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    implementation 'androidx.compose.material3:material3:1.0.0-alpha11'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    //Shared Modules
+    implementation(project((":app:core")))
+    implementation(project((":app:shared_ui_module")))
+    implementation(project((":app:shared_resources")))
+
+
+    //Room
+    implementation "androidx.room:room-runtime:2.5.1"
+    implementation "androidx.room:room-ktx:2.5.1"
+    kapt "androidx.room:room-compiler:2.5.1"
+
+    //Live Data
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+
+    // HTTP
+    implementation "com.squareup.okhttp3:okhttp:4.9.2"
+    androidTestImplementation "com.squareup.okhttp3:okhttp:4.9.2"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
+    androidTestImplementation "com.squareup.okhttp3:logging-interceptor:4.9.2"
+
+    //MockWebServer
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.9.0"
+
+    // Media3
+    implementation 'androidx.media3:media3-exoplayer:1.0.0-alpha03'
+    implementation "androidx.media3:media3-ui:1.0.0-alpha03"
+
+    //Data Store
+    implementation "androidx.datastore:datastore-preferences:$dataStore_version"
+
+    //Mockk
+    testImplementation ("io.mockk:mockk-android:1.13.3")
+    testImplementation 'org.mockito.kotlin:mockito-kotlin:4.0.0'
+
+    //For runBlockingTest, CoroutineDispatcher etc.
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2'
+
+    // Coroutines Test
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    // Retrofit Mock
+    androidTestImplementation 'com.squareup.retrofit2:retrofit-mock:2.9.0'
+
+    // Hilt Testing
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.42'
+    testImplementation 'com.google.dagger:hilt-android-testing:2.42'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.42'
+
+    // Google Truth
+    testImplementation "com.google.truth:truth:1.1.3"
+
+    // Navigation testing
+    androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+    testImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    // Mockito
+    androidTestImplementation 'org.mockito:mockito-core:4.8.1'
+    androidTestImplementation 'org.mockito:mockito-inline:3.4.0'
+    androidTestImplementation 'com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.mockito:mockito-core:4.8.1'
+    testImplementation 'org.mockito:mockito-inline:3.4.0'
+
+    //Core?
+    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:4.9"
+
+    // Needed for unit testing API
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+
+    //Foundation - Staggered Grids
+    implementation 'androidx.compose.foundation:foundation:1.3.1'
+
+
+    // Ktor
+    implementation "io.ktor:ktor-client-core:$ktor_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+
+    // Coil
+    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-video:2.2.2")
+
+    // ExoPlayer
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.18.4'
+    // for core support in exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-core:2.18.4'
+    // for adding dash support in our exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.18.4'
+    // for adding hls support in exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-hls:2.18.4'
+    // for smooth streaming of video in our exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.18.4'
+    // for generating default ui of exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer-ui:2.18.4'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
+    implementation "androidx.navigation:navigation-compose:$compose_version"
+
+    // Coroutines
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.3'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    // Coroutine Lifecycle Scopes
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
+
+    //Dagger - Hilt
+    implementation "com.google.dagger:hilt-android:2.44"
+    kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //Navigation
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+}

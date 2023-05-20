@@ -24,10 +24,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.samm.space.R
+import com.samm.media_library.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.shared_resources.R
 import com.samm.space.common.presentation.labels.Title
-import com.samm.space.core.Constants.NO_BACKGROUND
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

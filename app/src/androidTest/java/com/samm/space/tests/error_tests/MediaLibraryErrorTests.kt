@@ -16,8 +16,8 @@ import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
 import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.common.presentation.SideNavigationDrawer
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.media_library.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.media_library.nasa_media_library_page.util.LibraryUiEvent
 import com.samm.space.tests.ui_tests.BaseTest
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.FakeResponseTrigger

@@ -14,3 +14,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Space"
 include ':app'
+include ':app:media_library'
+include ':app:apod'
+include ':app:favorites'
+include ':app:core'
+include ':app:test_module'
+include ':app:shared_resources'
+include ':app:shared_ui_module'

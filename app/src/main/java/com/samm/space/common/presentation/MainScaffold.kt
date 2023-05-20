@@ -9,8 +9,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.samm.space.navigation.AppNavigation
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.media_library.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.AppNavigation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

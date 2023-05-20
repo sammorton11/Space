@@ -1,9 +1,8 @@
 package com.samm.space
 
 import com.samm.space.common.presentation.util.FileHandler
-import com.samm.space.core.MediaType
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.media_library.nasa_media_library_page.presentation.view_models.MediaDataViewModel
+import com.samm.media_library.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk

@@ -1,10 +1,10 @@
 package com.samm.space.repository
 
 import android.util.Log
-import com.samm.space.core.Resource
-import com.samm.space.pages.picture_of_the_day_page.data.network.ApodApi
-import com.samm.space.pages.picture_of_the_day_page.domain.models.Apod
-import com.samm.space.pages.picture_of_the_day_page.domain.repository.ApodRepository
+import com.samm.core.util.Resource
+import com.samm.apod.picture_of_the_day_page.data.network.ApodApi
+import com.samm.apod.picture_of_the_day_page.domain.models.Apod
+import com.samm.apod.picture_of_the_day_page.domain.repository.ApodRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import retrofit2.HttpException

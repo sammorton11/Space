@@ -126,7 +126,7 @@ class MediaDataViewModel @Inject constructor(
     fun decodeText(text: String): String {
         var decodedText = "Decoding Failed"
         try {
-            decodedText = URLDecoder.decode(text, Constants.utf8Encoding)
+            decodedText = URLDecoder.decode(text.replace("`", "/"), Constants.utf8Encoding)
         } catch (e: UnsupportedEncodingException) {
             //Log.e("Decoding Failed", e.localizedMessage ?: "Unexpected Exception")
         }

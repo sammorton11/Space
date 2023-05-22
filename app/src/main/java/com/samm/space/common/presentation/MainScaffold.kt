@@ -7,8 +7,10 @@ import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.samm.space.navigation.AppNavigation
 import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 
@@ -17,15 +19,34 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 fun MainScaffold(
     event: (LibraryUiEvent) -> Unit,
     drawerState: DrawerState,
-    navController: NavHostController
+    navController: NavController
 ) {
+
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
     Scaffold(
         topBar = {
             MyToolbar(
                 drawerState = drawerState,
-                event = event
+                event = event,
+                navBackStackEntry = navBackStackEntry
             )
+        },
+        bottomBar = {
+
+            BottomNavBar { iconIndex ->
+                when (iconIndex) {
+                    0 -> {
+                        navController.navigate("library_search_screen")
+                    }
+                    1 -> {
+                        navController.navigate("apod_screen")
+                    }
+                    2 -> {
+                        navController.navigate("favorites_screen")
+                    }
+                }
+            }
         }
     ){ padding ->
 

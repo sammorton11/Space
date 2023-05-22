@@ -15,7 +15,7 @@ import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
 import com.samm.space.tests.ui_tests.ApodUITest.Companion.serverApod
 import com.samm.space.tests.ui_tests.BaseTest
 import com.samm.space.ui.theme.SpaceTheme
-import com.samm.space.util.test_tags.GlobalTestTags.errorTag
+import com.samm.space.util.test_tags.GlobalTestTags.ERROR_TAG
 import dagger.hilt.android.testing.HiltAndroidTest
 import okhttp3.mockwebserver.MockResponse
 import org.junit.After
@@ -68,7 +68,7 @@ class ApodErrorTests: BaseTest() {
     @Test
     fun test_response_error_404() {
         serverError404()
-        composeTestRule.onNodeWithTag(errorTag, true)
+        composeTestRule.onNodeWithTag(ERROR_TAG, true)
             .assertExists()
             .assertIsDisplayed()
             .assertTextEquals("Error: HTTP 404 Client Error")
@@ -77,7 +77,7 @@ class ApodErrorTests: BaseTest() {
     @Test
     fun test_response_error_403() {
         serverError403()
-        composeTestRule.onNodeWithTag(errorTag, true)
+        composeTestRule.onNodeWithTag(ERROR_TAG, true)
             .assertExists()
             .assertIsDisplayed()
             .assertTextContains("Error: HTTP 403 Client Error")

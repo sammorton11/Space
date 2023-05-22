@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -24,43 +23,38 @@ fun CardMediaPlayer(
 ) {
 
     val context = LocalContext.current
-    val configuration = LocalConfiguration.current
     val exoPlayer = ExoPlayer.Builder(context).build()
 
+    if (!state.isNullOrBlank() && URLUtil.isValidUrl(uri)) {
+        LaunchedEffect(exoPlayer) {
+            try {
+                val mediaItem = MediaItem.Builder()
+                    .setUri(uri)
+                    .build()
+                exoPlayer.setMediaItem(mediaItem)
+                exoPlayer.prepare()
 
-    require(!state.isNullOrBlank())
-    require(URLUtil.isValidUrl(uri))
-    // Todo: No ^^^^^^
-
-    LaunchedEffect(exoPlayer) {
-        try {
-            val mediaItem = MediaItem.Builder()
-                .setUri(uri)
-                .build()
-            exoPlayer.setMediaItem(mediaItem)
-            exoPlayer.prepare()
-
-        } catch (e: Exception) {
-            Log.d("ExoPlayer Error", exoPlayer.playerError.toString())
+            } catch (e: Exception) {
+                Log.d("ExoPlayer Error", exoPlayer.playerError.toString())
+            }
         }
 
-    }
+        AndroidView(
+            factory = {
+                StyledPlayerView(context).apply {
+                    player = exoPlayer
+                }
+            },
+            modifier = Modifier
+                .aspectRatio(aspectRatio)
+                .semantics { testTag = "Card Media Player" }
+        )
 
-    AndroidView(
-        factory = {
-            StyledPlayerView(context).apply {
-                player = exoPlayer
+        DisposableEffect(exoPlayer) {
+            onDispose {
+                exoPlayer.stop()
+                exoPlayer.release()
             }
-        },
-        modifier = Modifier
-            .aspectRatio(aspectRatio)
-            .semantics { testTag = "Card Media Player" }
-    )
-
-    DisposableEffect(exoPlayer) {
-        onDispose {
-            exoPlayer.stop()
-            exoPlayer.release()
         }
     }
 }

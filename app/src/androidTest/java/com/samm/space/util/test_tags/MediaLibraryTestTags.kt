@@ -1,23 +1,26 @@
 package com.samm.space.util.test_tags
 
 object MediaLibraryTestTags {
-    const val listCardTag = "List Card"
-    const val searchFieldTag = "Search Field"
-    const val playButtonTag = "Play Button"
-    const val playButtonIconTag = "Play Button Icon"
-    const val pauseButtonTag = "Pause Button"
-    const val pauseButtonIconTag = "Pause Button Icon"
-    const val restartButtonTag = "Restart Button"
-    const val restartButtonIconTag = "Restart Button Icon"
-    const val detailsImageTag = "Details Image"
-    const val detailsImageCardTag = "Details Image Card"
-    const val detailsImageIdTag = "Details Image - ID"
-    const val detailsScreenTag = "Details Screen"
-    const val expandableDetailsCardTag = "Expandable Details Card"
-    const val expandableDetailsCardClickableTag = "Expandable Details Card - Clickable"
-    const val detailsTextTag = "Details Text"
-    const val cardTitleTag = "Card Title"
-    const val cardImageTag = "Card Image"
-    const val cardMediaPlayerTag = "Card Media Player"
-    const val libraryListTag = "Library List"
+
+    const val SEARCH_FIELD_TAG = "Search Field"
+    const val CARD_TITLE_TAG = "Card Title"
+    const val CARD_IMAGE_TAG = "Card Image"
+    const val LIBRARY_LIST_TAG = "Library List"
+
+    object DetailsTestTags {
+        const val PLAY_BUTTON_TAG = "Play Button"
+        const val PLAY_BUTTON_ICON_TAG = "Play Button Icon"
+        const val PAUSE_BUTTON_TAG = "Pause Button"
+        const val PAUSE_BUTTON_ICON_TAG = "Pause Button Icon"
+        const val RESTART_BUTTON_TAG = "Restart Button"
+        const val RESTART_BUTTON_ICON_TAG = "Restart Button Icon"
+        const val DETAILS_IMAGE_TAG = "Details Image"
+        const val DETAILS_IMAGE_CARD_TAG = "Details Image Card"
+        const val DETAILS_IMAGE_ID_TAG = "Details Image - ID"
+        const val DETAILS_SCREEN_TAG = "Details Screen"
+        const val EXPANDABLE_DETAILS_CARD_TAG = "Expandable Details Card"
+        const val EXPANDABLE_DETAILS_CARD_CLICKABLE_TAG = "Expandable Details Card - Clickable"
+        const val DETAILS_TEXT_TAG = "Details Text"
+        const val CARD_MEDIA_PLAYER_TAG = "Card Media Player"
+    }
 }

@@ -21,7 +21,8 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 import com.samm.space.tests.ui_tests.BaseTest
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.FakeResponseTrigger
-import com.samm.space.util.test_tags.GlobalTestTags.errorTag
+import com.samm.space.util.FakeResponseTrigger.HTTP_ERROR
+import com.samm.space.util.test_tags.GlobalTestTags.ERROR_TAG
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Test
@@ -51,7 +52,7 @@ class MediaLibraryErrorTests: BaseTest() {
 
                         val drawerState = rememberDrawerState(DrawerValue.Closed)
                         val viewModel: MediaLibraryViewModel = hiltViewModel()
-                        viewModel.sendEvent(LibraryUiEvent.SearchLibrary(FakeResponseTrigger.HTTP_ERROR.value))
+                        viewModel.sendEvent(LibraryUiEvent.SearchLibrary(HTTP_ERROR.value))
 
                         SideNavigationDrawer(
                             navController = navController,
@@ -68,7 +69,7 @@ class MediaLibraryErrorTests: BaseTest() {
                 }
             }
         }
-        composeTestRule.onNodeWithTag(errorTag, true)
+        composeTestRule.onNodeWithTag(ERROR_TAG, true)
             .assertExists()
             .assertIsDisplayed()
     }
@@ -107,7 +108,7 @@ class MediaLibraryErrorTests: BaseTest() {
             }
         }
 
-        composeTestRule.onNodeWithTag(errorTag, true)
+        composeTestRule.onNodeWithTag(ERROR_TAG, true)
             .assertExists()
             .assertIsDisplayed()
     }

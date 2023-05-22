@@ -1,4 +1,4 @@
-package com.samm.space.data.fakes
+package com.samm.space.fakes
 
 import com.samm.space.pages.nasa_media_library_page.data.network.NasaApi
 import com.samm.space.pages.nasa_media_library_page.domain.models.NasaLibraryResponse

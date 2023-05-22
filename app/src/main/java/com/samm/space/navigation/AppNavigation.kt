@@ -1,9 +1,11 @@
 package com.samm.space.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -20,7 +22,7 @@ import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
 
 @Composable
 fun AppNavigation(
-    navController: NavHostController
+    navController: NavController
 ) {
 
     val mediaDataViewModel: MediaDataViewModel = hiltViewModel()
@@ -30,7 +32,7 @@ fun AppNavigation(
     libraryViewModel.getAllFavorites()
 
     NavHost(
-        navController = navController,
+        navController = navController as NavHostController,
         startDestination = "library_search_screen"
     ) {
 
@@ -55,35 +57,43 @@ fun AppNavigation(
         }
 
         composable(
-            "cardDetails/{url}/{description}/{mediaType}/{title}/{date}",
-            arguments = listOf(navArgument("url") {
-                type = NavType.StringType
-            })
+            route = "cardDetails/{url}/{description}/{mediaType}/{title}/{date}",
+            arguments = listOf(
+                navArgument("url") { type = NavType.StringType },
+                navArgument("description") { type = NavType.StringType },
+                navArgument("mediaType") { type = NavType.StringType },
+                navArgument("title") { type = NavType.StringType },
+                navArgument("date") { type = NavType.StringType }
+            )
         ) { backStackEntry ->
 
-            val descriptionId = backStackEntry.arguments?.getString("description")
             val urlId = backStackEntry.arguments?.getString("url")
+            val descriptionId = backStackEntry.arguments?.getString("description")
             val mediaType = backStackEntry.arguments?.getString("mediaType")
             val title = backStackEntry.arguments?.getString("title")
             val date = backStackEntry.arguments?.getString("date")
 
-            require(urlId != null && descriptionId != null && mediaType != null)
-
             val state = mediaDataViewModel.state.value
 
-            DetailsScreen(
-                metaDataUrl = urlId,
-                description = descriptionId,
-                type = mediaType,
-                title = title,
-                date = date,
-                state = state,
-                getMediaData = mediaDataViewModel::getMediaData,
-                decodeText = mediaDataViewModel::decodeText,
-                getUri = mediaDataViewModel::getUri,
-                extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
-                fileTypeCheck = mediaDataViewModel::fileTypeCheck
-            )
+            if(urlId != null && descriptionId != null && mediaType != null) {
+                Log.d("details url", urlId)
+                Log.d("details descriptionId", descriptionId)
+                Log.d("details url", mediaType)
+
+                DetailsScreen(
+                    metaDataUrl = urlId,
+                    description = descriptionId,
+                    type = mediaType,
+                    title = title,
+                    date = date,
+                    state = state,
+                    getMediaData = mediaDataViewModel::getMediaData,
+                    decodeText = mediaDataViewModel::decodeText,
+                    getUri = mediaDataViewModel::getUri,
+                    extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
+                    fileTypeCheck = mediaDataViewModel::fileTypeCheck
+                )
+            }
         }
 
         composable("apod_screen") {

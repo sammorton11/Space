@@ -1,5 +1,6 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +8,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.samm.space.core.Constants
 import com.samm.space.core.Resource
 import com.samm.space.pages.favorites_page.presentation.state.LibraryFavoriteState
 import com.samm.space.pages.nasa_media_library_page.domain.models.Item
@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -145,21 +144,33 @@ class MediaLibraryViewModel
             .map { query -> query ?: "Search" }
     }
 
-    fun updateListFilterType(filterType: String) {
+    private fun updateListFilterType(filterType: String) {
         _listFilterType.value = filterType
     }
 
-    fun updateBackgroundType(backgroundType: Int) {
+    private fun updateBackgroundType(backgroundType: Int) {
         _backgroundType.value = backgroundType
     }
 
+
+    // Todo: some uri's contain slashes and are crashing the app
+//    fun encodeText(text: String?): String {
+//        Log.d("pre encode", text.toString())
+//        Log.d("pre encode",  URLEncoder.encode(text.toString(), Constants.utf8Encoding))
+//
+//        return text?.let {
+////            URLEncoder.encode(it, Constants.utf8Encoding)
+//            Uri.encode(it)
+//        } ?: run {
+//            URLEncoder.encode("Not Available", Constants.utf8Encoding)
+//        }
+//    }
     fun encodeText(text: String?): String {
-        when {
-            text.isNullOrBlank() -> {
-                return URLEncoder.encode("Not Available", Constants.utf8Encoding)
-            }
-        }
-        return URLEncoder.encode(text ?: "", Constants.utf8Encoding)
+        val encodedText = text?.let {
+            Uri.encode(it)
+        } ?: "Not Available"
+
+        return Uri.Builder().encodedPath(encodedText).build().toString()
     }
 
     // Filters out items containing the filter type value - image, video, or audio

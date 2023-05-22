@@ -18,13 +18,13 @@ fun CardTitle(title: String?) {
     title?.let { text ->
         Text(
             text = text,
-            fontSize = 15.sp,
+            fontSize = 13.sp,
             fontWeight = Bold,
             modifier = Modifier
-                .padding(10.dp)
+                .padding(start = 10.dp, bottom = 5.dp)
                 .semantics { testTag = "Card Title" },
             color = MaterialTheme.colorScheme.secondary,
-            maxLines = 2,
+            maxLines = 1,
             overflow = TextOverflow.Ellipsis,
             softWrap = true,
             textAlign = TextAlign.Center

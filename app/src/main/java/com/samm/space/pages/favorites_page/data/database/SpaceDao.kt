@@ -30,6 +30,9 @@ interface SpaceDao {
     @Delete
     suspend fun deleteFavorite(item: Item)
 
+    @Query("DELETE FROM library_items_table")
+    suspend fun deleteAllFavorites()
+
     @Query("UPDATE library_items_table SET favorite = :favorite WHERE id = :itemId")
     suspend fun updateFavoriteState(itemId: Int, favorite: Int)
 }

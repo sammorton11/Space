@@ -19,8 +19,8 @@ import com.samm.space.util.test_tags.ApodTestTags.apodDateText
 import com.samm.space.util.test_tags.ApodTestTags.apodDescriptionTag
 import com.samm.space.util.test_tags.ApodTestTags.apodImageTag
 import com.samm.space.util.test_tags.ApodTestTags.apodTitleTag
-import com.samm.space.util.test_tags.GlobalTestTags.downloadButtonTag
-import com.samm.space.util.test_tags.GlobalTestTags.shareButtonTag
+import com.samm.space.util.test_tags.GlobalTestTags.DOWNLOAD_BUTTON_TAG
+import com.samm.space.util.test_tags.GlobalTestTags.SHARE_BUTTON_TAG
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
@@ -119,7 +119,7 @@ class ApodUITest: BaseTest() {
     @Test
     fun test_apod_share_button() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag(shareButtonTag, true)
+        composeTestRule.onNodeWithTag(SHARE_BUTTON_TAG, true)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()
@@ -128,7 +128,7 @@ class ApodUITest: BaseTest() {
     @Test
     fun test_apod_download_button() {
         composeTestRule.waitForIdle()
-        composeTestRule.onNodeWithTag(downloadButtonTag, true)
+        composeTestRule.onNodeWithTag(DOWNLOAD_BUTTON_TAG, true)
             .assertIsDisplayed()
             .assertHasClickAction()
             .performClick()

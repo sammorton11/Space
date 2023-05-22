@@ -156,8 +156,8 @@ object FakeLibraryApiResponse {
                         "Go Forward to the Moon",
                         "NHQ_2019_0311_Go Forward to the Moon",
                         "2019-05-31T00:00:00Z",
-                        listOf(""),
-                        "image",
+                        listOf("Moon", "Mars", "Forward to the Moon"),
+                        "video",
                         null,
                         null,
                         "NASA is going to the Moon and on to Mars, in a measured, sustainable way." +

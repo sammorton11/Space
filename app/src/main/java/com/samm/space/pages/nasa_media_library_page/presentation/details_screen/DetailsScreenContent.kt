@@ -24,7 +24,6 @@ fun DetailsScreenContent(
 ) {
 
     val context = LocalContext.current
-    val decodedDescription = decodeText(description)
     val mediaType = type.toMediaType()
 
     val data = state.data
@@ -43,7 +42,7 @@ fun DetailsScreenContent(
                 mUri = mUri,
                 title = title,
                 date = date,
-                description = decodedDescription
+                description = description
             )
         }
         MediaType.AUDIO -> {
@@ -54,7 +53,7 @@ fun DetailsScreenContent(
                 context = context,
                 title = title,
                 date = date,
-                description = decodedDescription
+                description = description
             )
         }
         MediaType.IMAGE -> {
@@ -65,7 +64,7 @@ fun DetailsScreenContent(
                 url = metaDataUrl,
                 title = title,
                 date = date,
-                description = decodedDescription
+                description = description
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.samm.space.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -76,9 +75,6 @@ fun AppNavigation(
             val state = mediaDataViewModel.state.value
 
             if(urlId != null && descriptionId != null && mediaType != null) {
-                Log.d("details url", urlId)
-                Log.d("details descriptionId", descriptionId)
-                Log.d("details url", mediaType)
 
                 DetailsScreen(
                     metaDataUrl = urlId,

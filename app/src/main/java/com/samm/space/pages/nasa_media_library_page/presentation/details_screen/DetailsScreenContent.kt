@@ -17,7 +17,6 @@ fun DetailsScreenContent(
     title: String?,
     date: String?,
     state: MediaDataState,
-    decodeText: (String) -> String,
     getUri: (String?, MediaType) -> String,
     extractUrlsFromJsonArray: (String) -> ArrayList<String>,
     fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
@@ -25,10 +24,8 @@ fun DetailsScreenContent(
 
     val context = LocalContext.current
     val mediaType = type.toMediaType()
-
     val data = state.data
     val mUri = getUri(data, mediaType)
-
     val uriList = data?.let { extractUrlsFromJsonArray(it) }
     val audioPlayerUri = uriList?.let { fileTypeCheck(it, mediaType) }
 

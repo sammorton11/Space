@@ -31,8 +31,8 @@ fun AudioPlayer(
     val mMediaPlayer = audioPlayerUri?.let { string ->
         MediaPlayer.create(mContext, string.toUri())
     }
-    val paused = remember { mutableStateOf(true) }
 
+    val paused = remember { mutableStateOf(true) }
 
     Row(modifier = Modifier.padding(15.dp)) {
 

@@ -29,18 +29,14 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 @Composable
 fun ListCard(
     sendEvent: (LibraryUiEvent) -> Unit,
+    encodeText: (text: String?) -> String,
     navController: NavController,
-    favorites: List<Item>,
-    item: Item?,
-    encodedUrl: String?,
-    image: String?,
-    itemTitle: String?,
-    itemDate: String?,
-    encodedDescription: String?,
-    mediaTypeString: MediaType,
-    imageScaleType: ContentScale
+    data: ListCardData
 ){
     val roundedCornerAmount = 10
+    val encodedUrl = encodeText(data.url)
+    val encodedDescription = encodeText(data.description)
+    val encodedDateText = encodeText(data.dateText)
 
     Card(
         modifier = Modifier
@@ -50,20 +46,18 @@ fun ListCard(
             sendEvent(
                 LibraryUiEvent.OnCardClick(
                     route = "cardDetails/${encodedUrl}/${encodedDescription}/" +
-                            "${mediaTypeString.type}/$itemTitle/$itemDate",
+                            "${data.mediaTypeString.type}/${encodeText(data.itemTitle)}/$encodedDateText",
                     navController = navController
                 ))
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount)
     ) {
 
-        Box(
-
-        ) {
+        Box {
             CardImage(
-                imageLink = image,
-                scale = imageScaleType,
-                mediaType = mediaTypeString
+                imageLink = data.image,
+                scale = data.imageScaleType,
+                mediaType = data.mediaTypeString
             )
 
             Row(
@@ -72,8 +66,8 @@ fun ListCard(
             ) {
 
                 FavoritesButton(
-                    item = item!!,
-                    favorites = favorites,
+                    item = data.item!!,
+                    favorites = data.favorites,
                     event = sendEvent,
                 )
             }
@@ -90,10 +84,20 @@ fun ListCard(
                         )
                     )
             ) {
-                CardTitle(
-                    title = itemTitle
-                )
+                CardTitle(title = data.itemTitle)
             }
         }
     }
 }
+
+data class ListCardData(
+    var favorites: List<Item>,
+    var item: Item?,
+    var url: String?,
+    var image: String?,
+    var itemTitle: String?,
+    var dateText: String?,
+    var description: String?,
+    var mediaTypeString: MediaType,
+    var imageScaleType: ContentScale
+)

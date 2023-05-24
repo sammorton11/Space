@@ -7,6 +7,7 @@ The NASA Space App is an Android application built using Kotlin and Jetpack Comp
 Features:
 - Browse and search images and videos from NASA
 - View the Astronomy Picture of the Day (APOD)
+- Favorite library items
 - Download and share files
 
 

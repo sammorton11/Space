@@ -16,7 +16,7 @@ class ExoPlayerViewModel @Inject constructor(private val savedStateHandle: Saved
         get() = savedStateHandle.get(KEY_PLAYER_STATE) ?: false
         set(value) = savedStateHandle.set(KEY_PLAYER_STATE, value)
 
-    var playbackPosition: Long
+    private var playbackPosition: Long
         get() = savedStateHandle.get(KEY_PLAYBACK_POSITION) ?: 0L
         set(value) = savedStateHandle.set(KEY_PLAYBACK_POSITION, value)
 

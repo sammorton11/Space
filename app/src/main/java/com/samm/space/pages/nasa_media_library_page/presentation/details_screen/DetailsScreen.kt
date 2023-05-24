@@ -23,9 +23,7 @@ fun DetailsScreen(
     fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
 ) {
 
-    LaunchedEffect(metaDataUrl) {
-        getMediaData(metaDataUrl)
-    }
+    LaunchedEffect(metaDataUrl) { getMediaData(metaDataUrl) }
 
     when {
         state.isLoading -> {
@@ -39,7 +37,6 @@ fun DetailsScreen(
                 title = title,
                 date = date,
                 state = state,
-                decodeText = decodeText,
                 getUri = getUri,
                 extractUrlsFromJsonArray = extractUrlsFromJsonArray,
                 fileTypeCheck = fileTypeCheck

@@ -28,6 +28,7 @@ import com.samm.space.common.presentation.util.rememberWindowInfo
 import com.samm.space.core.MediaType
 import com.samm.space.pages.favorites_page.presentation.state.LibraryFavoriteState
 import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCard
+import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCardData
 import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -102,25 +103,28 @@ fun FavoriteScreen(
                     val itemDescription = itemData?.description
                     val itemTitle = itemData?.title
                     val itemDate = itemData?.date_created
-
                     val mediaTypeString = MediaType.fromString(itemData?.media_type?: "image")
                         ?: MediaType.IMAGE
-                    val encodedUrl = encodeText(itemMetaDataUrl)
-                    val encodedDescription = encodeText(itemDescription)
 
                     libraryFavoritesList?.let {
-                        ListCard(
-                            sendEvent = sendEvent,
-                            navController = navController,
-                            favorites = libraryFavoritesList,
+
+                        val listCardData = ListCardData(
+                            favorites = it,
                             item = item,
-                            encodedUrl = encodedUrl,
+                            url = itemMetaDataUrl,
                             image = image,
                             itemTitle = itemTitle,
-                            itemDate = itemDate,
+                            dateText = itemDate,
                             mediaTypeString = mediaTypeString,
-                            encodedDescription = encodedDescription,
+                            description = itemDescription,
                             imageScaleType = imageScaleType
+                        )
+
+                        ListCard(
+                            sendEvent = sendEvent,
+                            encodeText = encodeText,
+                            navController = navController,
+                            data = listCardData
                         )
                     }
                 }

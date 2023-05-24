@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.samm.space.core.MediaType
 import com.samm.space.pages.nasa_media_library_page.domain.models.Item
 import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCard
+import com.samm.space.pages.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCardData
 import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -47,25 +48,28 @@ fun LibraryListContent(
             val itemMetaDataUrl = item?.href
             val itemData = item?.data?.first()
             val itemDescription = itemData?.description
-            val itemTitle = encodeText(itemData?.title)
-            val itemDate = encodeText(itemData?.date_created)
+            val itemTitle = itemData?.title
+            val itemDate = itemData?.date_created
             val mediaTypeString = MediaType.fromString(itemData?.media_type?: "image")
                 ?: MediaType.IMAGE
-            val encodedUrl = encodeText(itemMetaDataUrl)
-            val encodedDescription = encodeText(itemDescription)
+
+            val listCardData = ListCardData(
+                favorites = favorites,
+                item = item,
+                url = itemMetaDataUrl,
+                image = image,
+                itemTitle = itemTitle,
+                dateText = itemDate,
+                mediaTypeString = mediaTypeString,
+                description = itemDescription,
+                imageScaleType = imageScaleType
+            )
 
             ListCard(
                 sendEvent = sendEvent,
+                encodeText = encodeText,
                 navController = navController,
-                favorites = favorites,
-                item = item,
-                encodedUrl = encodedUrl,
-                image = image,
-                itemTitle = itemTitle,
-                itemDate = itemDate,
-                mediaTypeString = mediaTypeString,
-                encodedDescription = encodedDescription,
-                imageScaleType = imageScaleType
+                data = listCardData
             )
         }
     }

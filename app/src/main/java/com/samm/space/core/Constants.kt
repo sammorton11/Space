@@ -25,7 +25,7 @@ object Constants {
     val videoSubPathForDownload = MediaDownloadType.VIDEO.subPath
     val audioSubPathForDownload = MediaDownloadType.AUDIO_WAV.subPath
 
-    val buttonWidth = 150.dp
+    val buttonWidth = 175.dp
 
     val cubicAnimation = Modifier.animateContentSize(
         animationSpec = tween(durationMillis = 1500,

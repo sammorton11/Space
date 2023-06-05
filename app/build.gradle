@@ -13,10 +13,9 @@ android {
         applicationId "com.samm.space"
         minSdk 29
         targetSdk 33
-        versionCode 6
-        versionName "6.0"
+        versionCode 7
+        versionName "7.0"
 
-//        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunner "com.samm.space.hilttestrunner.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary true

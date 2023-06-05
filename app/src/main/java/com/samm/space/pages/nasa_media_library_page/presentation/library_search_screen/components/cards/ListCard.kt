@@ -78,9 +78,9 @@ fun ListCard(
                     .align(Alignment.BottomCenter)
                     .background(
                         Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black),
-                            startY = 100f,
-                            endY = 10f
+                            colors = listOf(Color.Black, Color.Transparent),
+                            startY = 50f,
+                            endY = 0f
                         )
                     )
             ) {

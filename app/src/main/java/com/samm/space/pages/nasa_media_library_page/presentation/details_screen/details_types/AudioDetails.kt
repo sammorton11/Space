@@ -1,20 +1,20 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types
 
+import CustomAudioPlayer
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.samm.space.R
 import com.samm.space.common.presentation.buttons.DownloadFile
 import com.samm.space.common.presentation.buttons.OpenChromeButton
 import com.samm.space.common.presentation.buttons.ShareButton
@@ -24,9 +24,7 @@ import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
 import com.samm.space.core.Constants.audioMimeTypeForDownload
 import com.samm.space.core.Constants.audioSubPathForDownload
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.AudioPlayer
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DescriptionText
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DetailsImage
 
 @Composable
 fun AudioDetails(
@@ -59,14 +57,7 @@ fun AudioDetails(
                         paddingValue = 15.dp
                     )
 
-                    DetailsImage(
-                        id = R.drawable.tipper_space_man,
-                        scale = ContentScale.FillBounds
-                    )
-                    AudioPlayer(
-                        audioPlayerUri = audioPlayerUri,
-                        mContext = context
-                    )
+                    CustomAudioPlayer(audioPlayerUri)
                     DescriptionText(
                         content = description
                     )
@@ -106,14 +97,8 @@ fun AudioDetails(
                         paddingValue = 15.dp
                     )
 
-                    DetailsImage(
-                        id = R.drawable.tipper_space_man,
-                        scale = ContentScale.FillBounds
-                    )
-                    AudioPlayer(
-                        audioPlayerUri = audioPlayerUri,
-                        mContext = context
-                    )
+                    CustomAudioPlayer(audioPlayerUri)
+
                     DescriptionText(
                         content = description
                     )
@@ -147,10 +132,16 @@ fun AudioDetails(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                DetailsImage(
-                    id = R.drawable.tipper_space_man,
-                    scale = ContentScale.FillBounds
-                )
+//                DetailsImage(
+//                    id = R.drawable.tipper_space_man,
+//                    scale = ContentScale.FillBounds
+//                )
+
+                LazyColumn(modifier = Modifier.fillMaxHeight()) {
+                    item {
+                        CustomAudioPlayer(audioPlayerUri)
+                    }
+                }
 
                 LazyColumn(
                     modifier = Modifier.padding(5.dp),
@@ -164,11 +155,11 @@ fun AudioDetails(
                             text = title,
                             paddingValue = 15.dp
                         )
-                        AudioPlayer(
-                            audioPlayerUri = audioPlayerUri,
-                            mContext = context,
-                            iconSize = 250.dp
-                        )
+//                        AudioPlayer(
+//                            audioPlayerUri = audioPlayerUri,
+//                            mContext = context,
+//                            iconSize = 250.dp
+//                        )
 
                         DescriptionText(
                             content = description

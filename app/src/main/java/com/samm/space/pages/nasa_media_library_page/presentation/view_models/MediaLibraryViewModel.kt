@@ -1,7 +1,6 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
 import android.net.Uri
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -123,16 +122,10 @@ class MediaLibraryViewModel
                     _state.value = MediaLibraryState(data = itemsList ?: emptyList())
                 }
                 is Resource.Error -> {
-                    error.let {
-                        _state.value = MediaLibraryState(error = "Error: $it")
-                        if (error != null) {
-                            Log.d("State:", error)
-                        }
-                    }
+                    _state.value = MediaLibraryState(error = "Error: $error")
                 }
                 is Resource.Loading -> {
                     _state.value = MediaLibraryState(isLoading = true)
-                    Log.d("State:", _state.value.toString())
                 }
             }
         }.launchIn(viewModelScope)
@@ -152,19 +145,6 @@ class MediaLibraryViewModel
         _backgroundType.value = backgroundType
     }
 
-
-    // Todo: some uri's contain slashes and are crashing the app
-//    fun encodeText(text: String?): String {
-//        Log.d("pre encode", text.toString())
-//        Log.d("pre encode",  URLEncoder.encode(text.toString(), Constants.utf8Encoding))
-//
-//        return text?.let {
-////            URLEncoder.encode(it, Constants.utf8Encoding)
-//            Uri.encode(it)
-//        } ?: run {
-//            URLEncoder.encode("Not Available", Constants.utf8Encoding)
-//        }
-//    }
     fun encodeText(text: String?): String {
         val encodedText = text?.let {
             Uri.encode(it)

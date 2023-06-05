@@ -17,8 +17,8 @@ import org.junit.Test
 
 @HiltAndroidTest
 class DatabaseTest {
-    private lateinit var instrumentationContext: Context
 
+    private lateinit var instrumentationContext: Context
     private lateinit var repository: MediaLibraryRepository
     private val nasaApi = FakeNasaApi()
     private val metaDataApi = FakeMetadataApi()
@@ -37,7 +37,7 @@ class DatabaseTest {
     }
 
     @Test
-    fun test_database(): Unit = runBlocking {
+    fun test_insert_favorite(): Unit = runBlocking {
         val item = repository.getData("")?.collection?.items?.first()
         item?.let { repository.insertFavorite(it) }
         val favorites = repository.getAllFavorites()

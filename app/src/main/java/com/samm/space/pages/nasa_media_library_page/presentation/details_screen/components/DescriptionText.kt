@@ -44,7 +44,7 @@ fun DescriptionText(content: String) {
                         },
                     overflow = TextOverflow.Ellipsis,
                     softWrap = true,
-                    maxLines = if (!isExpanded) 5 else 50
+                    maxLines = if (!isExpanded) 5 else 1000
                 )
             }
         }

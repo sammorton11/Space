@@ -22,7 +22,7 @@ import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
 import com.samm.space.core.Constants.videoMimeTypeForDownload
 import com.samm.space.core.Constants.videoSubPathForDownload
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.CardMediaPlayer
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.CardVideoPlayer
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.DescriptionText
 
 @Composable
@@ -54,7 +54,7 @@ fun VideoDetails(
                         text = title,
                         paddingValue = 15.dp
                     )
-                    CardMediaPlayer(
+                    CardVideoPlayer(
                         state = state,
                         uri = mUri,
                         aspectRatio = 1f
@@ -97,7 +97,7 @@ fun VideoDetails(
                         text = title,
                         paddingValue = 15.dp
                     )
-                    CardMediaPlayer(
+                    CardVideoPlayer(
                         state = state,
                         uri = mUri,
                         aspectRatio = 1f
@@ -134,7 +134,7 @@ fun VideoDetails(
                     .semantics { testTag = "Details Screen" }
             ) {
 
-                CardMediaPlayer(
+                CardVideoPlayer(
                     state = state,
                     uri = mUri,
                     aspectRatio = 2f
@@ -171,7 +171,6 @@ fun VideoDetails(
                         )
                         DateLabel(date = date)
                     }
-
                 }
             }
         }

@@ -73,10 +73,10 @@ class MediaLibraryViewModel
     private fun toggleFavorite(item: Item) {
         if (favorites.value.any { it.href == item.href }) {
             removeFavorite(item)
-            updateFavorite(item.id, false)
+//            updateFavorite(item.id, false)
         } else {
             insertFavorite(item)
-            updateFavorite(item.id, true)
+//            updateFavorite(item.id, true)
         }
     }
 

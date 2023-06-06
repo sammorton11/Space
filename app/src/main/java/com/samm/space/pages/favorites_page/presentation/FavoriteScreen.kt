@@ -49,6 +49,7 @@ fun FavoriteScreen(
         is WindowInfo.WindowType.Medium -> 3
         is WindowInfo.WindowType.Expanded -> 4
     }
+
     var filteredFavorites by remember { mutableStateOf(libraryFavoritesList ?: emptyList()) }
     var filterText by remember { mutableStateOf("") }
 
@@ -75,7 +76,6 @@ fun FavoriteScreen(
                 .semantics { testTag = "Favorites Search Field" },
             placeholder = { Text(text = "Search Favorites...")}
         )
-
 
         LazyVerticalStaggeredGrid(
             modifier = Modifier

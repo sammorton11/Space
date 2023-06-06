@@ -1,6 +1,5 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
-import android.app.Application
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -21,8 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MediaDataViewModel @Inject constructor(
-    private val mediaLibraryRepository: MediaLibraryRepository,
-    private val application: Application
+    private val mediaLibraryRepository: MediaLibraryRepository
 ) : ViewModel() {
 
     private val _state = mutableStateOf(MediaDataState())
@@ -108,7 +106,8 @@ class MediaDataViewModel @Inject constructor(
                     when {
                         file.contains(".wav") -> { return file }
                         file.contains(".m4a") -> { return file }
-                        file.contains(".mp3") -> { return file }
+                        // Using replace() because a letter 'k' was being added to the end of some audio files.
+                        file.contains(".mp3") -> { return file.replace(".mp3k", ".mp3") }
                     }
                 }
                 MediaType.IMAGE -> {

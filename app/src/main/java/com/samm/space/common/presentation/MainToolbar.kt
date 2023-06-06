@@ -11,13 +11,13 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
@@ -29,6 +29,7 @@ import com.samm.space.R
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.core.Constants
 import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -44,11 +45,14 @@ fun MyToolbar(
     var expandedOptionsMenu by remember { mutableStateOf(false) }
     var expandedSortingMenu by remember { mutableStateOf(false) }
     var expandedChangeBackground by remember { mutableStateOf(false) }
-    val scope = rememberCoroutineScope()
-
     val changeBackGroundMenuOffset = DpOffset(0.dp, 12.dp)
     val backgroundListMenuOffset = DpOffset(0.dp, 130.dp)
     val sortMenuOffset = DpOffset(0.dp, 130.dp)
+    val onTertiaryContainer = MaterialTheme.colorScheme.onTertiaryContainer
+    val container = MaterialTheme.colorScheme.onPrimaryContainer
+
+    var selectedItemIndex by remember { mutableStateOf(0) }
+    val itemList = listOf("image", "video", "audio", "")
 
     SmallTopAppBar(
         modifier = Modifier
@@ -93,34 +97,25 @@ fun MyToolbar(
                     modifier = Modifier.semantics { testTag = "Sorting Menu Drop Down" },
                     offset = sortMenuOffset
                 ) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Images") },
-                        modifier = Modifier.semantics { testTag = "Filter Images Button" },
-                        onClick = {
-                            event(LibraryUiEvent.UpdateFilterType("image"))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "Videos") },
-                        modifier = Modifier.semantics { testTag = "Filter Videos Button" },
-                        onClick = {
-                            event(LibraryUiEvent.UpdateFilterType("video"))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "Audio") },
-                        modifier = Modifier.semantics { testTag = "Filter Audio Button" },
-                        onClick = {
-                            event(LibraryUiEvent.UpdateFilterType("audio"))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "All") },
-                        modifier = Modifier.semantics { testTag = "Filter All Button" },
-                        onClick = {
-                            event(LibraryUiEvent.UpdateFilterType(""))
-                        }
-                    )
+
+                    itemList.forEachIndexed { index, item ->
+                        var allText by remember { mutableStateOf("") }
+                        allText = if (item == "") "All" else item
+
+                        DropdownMenuItem(
+                            text = { Text(text = allText.replaceFirstChar {
+                                if (it.isLowerCase()) it.titlecase(
+                                    Locale.ENGLISH
+                                ) else it.toString()
+                            }) },
+                            modifier = Modifier.semantics { testTag = "Filter $item Button" },
+                            colors = MenuDefaults.itemColors(if (index == selectedItemIndex) onTertiaryContainer else container),
+                            onClick = {
+                                selectedItemIndex = index
+                                event(LibraryUiEvent.UpdateFilterType(item))
+                            }
+                        )
+                    }
                 }
 
                 DropdownMenu(
@@ -140,7 +135,6 @@ fun MyToolbar(
                         text = { Text(text = "Space Man Background") },
                         modifier = Modifier.semantics { testTag = "Space Man Background Button" },
                         onClick = {
-
                             event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_02))
                         }
                     )

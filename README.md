@@ -1,6 +1,7 @@
 # Space Explorer
 Nasa Open API Mobile Application 
 
+Play Store: https://play.google.com/store/apps/details?id=com.samm.space
 
 The NASA Space App is an Android application built using Kotlin and Jetpack Compose. It allows users to explore space related resources and information provided by NASA through various APIs.
 

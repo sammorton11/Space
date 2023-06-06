@@ -1,5 +1,6 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -44,14 +45,6 @@ class MediaDataViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
-
-    /**
-     *
-     *  Below are some util functions to handle the uri's from the response.
-     *  I'm not that happy with the quality of these functions and would like to improve them.
-     *
-     */
-
 
     fun getUri(state: String?, mediaType: MediaType): String {
         state?.let { uriStrings ->
@@ -118,7 +111,6 @@ class MediaDataViewModel @Inject constructor(
                 }
             }
         }
-
         return "File not found"
     }
 
@@ -127,7 +119,7 @@ class MediaDataViewModel @Inject constructor(
         try {
             decodedText = URLDecoder.decode(text.replace("`", "/"), Constants.utf8Encoding)
         } catch (e: UnsupportedEncodingException) {
-            //Log.e("Decoding Failed", e.localizedMessage ?: "Unexpected Exception")
+            Log.e("Decoding Failed", e.localizedMessage ?: "Unexpected Exception")
         }
         return decodedText
     }

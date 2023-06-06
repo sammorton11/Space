@@ -18,7 +18,7 @@ import com.google.android.exoplayer2.ui.StyledPlayerView
 import com.samm.space.pages.nasa_media_library_page.presentation.view_models.ExoPlayerViewModel
 
 @Composable
-fun CardMediaPlayer(
+fun CardVideoPlayer(
     state: String?,
     uri: String,
     aspectRatio: Float
@@ -29,6 +29,7 @@ fun CardMediaPlayer(
 
     if (!state.isNullOrBlank() && URLUtil.isValidUrl(uri)) {
         val exoPlayer = ExoPlayer.Builder(context).build()
+
         LaunchedEffect(exoPlayer) {
             try {
                 val mediaItem = MediaItem.Builder()

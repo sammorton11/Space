@@ -31,7 +31,9 @@ fun FavoritesButton(
     favorites: List<Item>,
     event: (LibraryUiEvent) -> Unit,
 ) {
-    var isFavorite by remember { mutableStateOf(favorites.any { it.href == item.href }) }
+
+    val inFavoritesList = favorites.any { it.href == item.href }
+    var isFavorite by remember { mutableStateOf(inFavoritesList) }
     var isAnimated by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -55,7 +57,7 @@ fun FavoritesButton(
         }
     }
 
-    val icon = if (isFavorite) {
+    val icon = if (inFavoritesList) {
         Icons.Default.Favorite
     } else {
         Icons.Default.FavoriteBorder
@@ -63,9 +65,9 @@ fun FavoritesButton(
 
     IconButton(
         onClick = {
+            event(LibraryUiEvent.ToggleFavorite(item))
             isFavorite = !isFavorite
             isAnimated = true
-            event(LibraryUiEvent.ToggleFavorite(item))
         },
         interactionSource = interactionSource,
         modifier = Modifier

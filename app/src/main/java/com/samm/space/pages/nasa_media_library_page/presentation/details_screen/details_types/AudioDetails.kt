@@ -52,12 +52,14 @@ fun AudioDetails(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
+
                     Title(
                         text = title,
                         paddingValue = 15.dp
                     )
 
                     CustomAudioPlayer(audioPlayerUri)
+
                     DescriptionText(
                         content = description
                     )

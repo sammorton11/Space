@@ -38,7 +38,11 @@ The application uses the MVVM architecture pattern, separating the user interfac
 
 [ezgif.com-resize.webm](https://github.com/sammorton11/Space/assets/86651172/53babbee-60d7-4768-a067-4b5509f4f0f6)
 
-[ezgif.com-resize (1).webm](https://github.com/sammorton11/Space/assets/86651172/315fd326-d468-4b17-b4b3-3ca33d759a0f) 
+<!-- [ezgif.com-resize (1).webm](https://github.com/sammorton11/Space/assets/86651172/315fd326-d468-4b17-b4b3-3ca33d759a0f)  -->
+
+
+
+https://github.com/sammorton11/Space/assets/86651172/b94b9ba1-8395-471f-a818-d03cade0a68b
 
 
 

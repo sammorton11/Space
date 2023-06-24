@@ -26,7 +26,6 @@ import kotlinx.coroutines.launch
  *          - Orientation changes restarts media players - this must be persisted
  *          - Favorites Screen tests
  *          - Database integration tests
- *          - App is finished once these are fixed and added
  */
 
 
@@ -62,7 +61,6 @@ class MainActivity : ComponentActivity() {
                     ) {
                         MainScaffold(
                             event = viewModel::sendEvent,
-                            drawerState = drawerState,
                             navController = navController
                         )
                     }

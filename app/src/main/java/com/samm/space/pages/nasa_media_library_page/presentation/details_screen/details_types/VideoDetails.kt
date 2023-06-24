@@ -45,7 +45,7 @@ fun VideoDetails(
                 modifier = Modifier
                     .padding(0.dp)
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Video Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -88,7 +88,7 @@ fun VideoDetails(
                 modifier = Modifier
                     .padding(0.dp)
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Video Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -131,7 +131,7 @@ fun VideoDetails(
             Row (
                 modifier = Modifier
                     .padding(15.dp)
-                    .semantics { testTag = "Details Screen" }
+                    .semantics { testTag = "Video Details Screen" }
             ) {
 
                 CardVideoPlayer(

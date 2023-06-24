@@ -22,7 +22,7 @@ fun CardTitle(title: String?) {
             fontWeight = Bold,
             modifier = Modifier
                 .padding(start = 10.dp, bottom = 5.dp)
-                .semantics { testTag = "Card Title" },
+                .semantics { testTag = "Card Title $title" },
             color = MaterialTheme.colorScheme.secondary,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,

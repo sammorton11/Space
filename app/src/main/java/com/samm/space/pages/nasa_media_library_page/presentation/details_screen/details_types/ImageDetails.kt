@@ -46,7 +46,7 @@ fun ImageDetails(
                 modifier = Modifier
                     .padding(0.dp)
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Image Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -89,7 +89,7 @@ fun ImageDetails(
             LazyColumn (
                 modifier = Modifier
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Image Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -98,7 +98,6 @@ fun ImageDetails(
                         text = title,
                         paddingValue = 15.dp
                     )
-
                     DetailsImage(
                         imageLink = mUri,
                         scale = ContentScale.Fit
@@ -130,6 +129,7 @@ fun ImageDetails(
 
             Row (
                 modifier = Modifier
+                    .semantics { testTag = "Image Details Screen" }
                     .padding(15.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically

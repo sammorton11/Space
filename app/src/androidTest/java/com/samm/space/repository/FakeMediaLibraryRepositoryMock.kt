@@ -91,7 +91,6 @@ class FakeMediaLibraryRepositoryMock @Inject constructor (
     }
 }
 
-
 object FakeLibraryApiResponse {
     val response = NasaLibraryResponse(
         collection = Collection(

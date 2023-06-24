@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.DpOffset
@@ -31,10 +31,8 @@ import com.samm.space.core.Constants
 import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 import java.util.Locale
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyToolbar(
-    drawerState: DrawerState,
     event: (LibraryUiEvent) -> Unit,
     navBackStackEntry: NavBackStackEntry?
 ) {
@@ -45,14 +43,15 @@ fun MyToolbar(
     var expandedOptionsMenu by remember { mutableStateOf(false) }
     var expandedSortingMenu by remember { mutableStateOf(false) }
     var expandedChangeBackground by remember { mutableStateOf(false) }
+
     val changeBackGroundMenuOffset = DpOffset(0.dp, 12.dp)
     val backgroundListMenuOffset = DpOffset(0.dp, 130.dp)
     val sortMenuOffset = DpOffset(0.dp, 130.dp)
+
     val onTertiaryContainer = MaterialTheme.colorScheme.onTertiaryContainer
     val container = MaterialTheme.colorScheme.onPrimaryContainer
 
     var selectedItemIndex by remember { mutableStateOf(0) }
-    val itemList = listOf("image", "video", "audio", "")
 
     SmallTopAppBar(
         modifier = Modifier
@@ -98,17 +97,22 @@ fun MyToolbar(
                     offset = sortMenuOffset
                 ) {
 
+                    val itemList = listOf("", "image", "video", "audio")
+
                     itemList.forEachIndexed { index, item ->
-                        var allText by remember { mutableStateOf("") }
-                        allText = if (item == "") "All" else item
+
+                        var label by remember { mutableStateOf("") }
+                        label = if (item == "") "All" else item
+
+                        val capitalizedLabel = label.replaceFirstChar {
+                            if (it.isLowerCase()) it.titlecase(
+                                Locale.ENGLISH
+                            ) else it.toString()
+                        }
 
                         DropdownMenuItem(
-                            text = { Text(text = allText.replaceFirstChar {
-                                if (it.isLowerCase()) it.titlecase(
-                                    Locale.ENGLISH
-                                ) else it.toString()
-                            }) },
-                            modifier = Modifier.semantics { testTag = "Filter $item Button" },
+                            text = { Text(text = capitalizedLabel) },
+                            modifier = Modifier.testTag("Filter List Button"),
                             colors = MenuDefaults.itemColors(if (index == selectedItemIndex) onTertiaryContainer else container),
                             onClick = {
                                 selectedItemIndex = index
@@ -124,42 +128,25 @@ fun MyToolbar(
                     onDismissRequest = { expandedChangeBackground = false },
                     offset = backgroundListMenuOffset
                 ) {
-                    DropdownMenuItem(
-                        text = { Text(text = "Planets Background") },
-                        modifier = Modifier.semantics { testTag = "Planets Background Button" },
-                        onClick = {
-                            event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_01))
-                        }
+                    val backgroundItems = mapOf(
+                        "Planets Background" to R.drawable.space_background_01,
+                        "Space Man Background" to R.drawable.space_background_02,
+                        "Galaxy Background" to R.drawable.space_background_03,
+                        "Sci-Fi Planets Background" to R.drawable.space_background_04,
+                        "No Background" to Constants.NO_BACKGROUND
                     )
-                    DropdownMenuItem(
-                        text = { Text(text = "Space Man Background") },
-                        modifier = Modifier.semantics { testTag = "Space Man Background Button" },
-                        onClick = {
-                            event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_02))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "Galaxy Background") },
-                        modifier = Modifier.semantics { testTag = "Galaxy Background Button" },
-                        onClick = {
-                            event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_03))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "Sci-Fi Planets Background") },
-                        modifier = Modifier.semantics { testTag = "Sci-Fi Planets Button" },
-                        onClick = {
-                            event(LibraryUiEvent.ChangeBackground(R.drawable.space_background_04))
-                        }
-                    )
-                    DropdownMenuItem(
-                        text = { Text(text = "No Background") },
-                        modifier = Modifier.semantics { testTag = "No Background Button" },
-                        onClick = {
-                            event(LibraryUiEvent.ChangeBackground(Constants.NO_BACKGROUND))
-                        }
-                    )
+
+                    backgroundItems.forEach { (text, backgroundResId) ->
+                        DropdownMenuItem(
+                            text = { Text(text) },
+                            modifier = Modifier.semantics { testTag = "$text Button" },
+                            onClick = {
+                                event(LibraryUiEvent.ChangeBackground(backgroundResId))
+                            }
+                        )
+                    }
                 }
+
             }
         }
     )

@@ -11,7 +11,6 @@ sealed class LibraryUiEvent {
     data class ChangeBackground(val id: Int): LibraryUiEvent()
     data class AddLibraryFavorite(val item: Item): LibraryUiEvent()
     data class RemoveFavorite(val item: Item): LibraryUiEvent()
-
     data class ToggleFavorite(val item: Item): LibraryUiEvent()
     data class UpdateFavorite(val id: Int, val isFavorite: Boolean): LibraryUiEvent()
 }

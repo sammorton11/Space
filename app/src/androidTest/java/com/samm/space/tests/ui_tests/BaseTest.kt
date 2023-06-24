@@ -1,9 +1,7 @@
 package com.samm.space.tests.ui_tests
 
-import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.navigation.testing.TestNavHostController
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.samm.space.MainActivity
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -19,11 +17,4 @@ open class BaseTest {
 
     lateinit var navController: TestNavHostController
 
-    fun pressBackButton(
-        composeTestRule: AndroidComposeTestRule<ActivityScenarioRule<MainActivity>, MainActivity>
-    ) {
-        composeTestRule.activityRule.scenario.onActivity { activity ->
-            activity.onBackPressedDispatcher.onBackPressed()
-        }
-    }
 }

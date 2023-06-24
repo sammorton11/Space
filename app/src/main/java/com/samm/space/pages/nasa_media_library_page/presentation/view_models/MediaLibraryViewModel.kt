@@ -25,8 +25,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MediaLibraryViewModel
-@Inject constructor (
+class MediaLibraryViewModel @Inject constructor (
     private val mediaLibraryRepository: MediaLibraryRepository
 ): ViewModel() {
 
@@ -73,10 +72,8 @@ class MediaLibraryViewModel
     private fun toggleFavorite(item: Item) {
         if (favorites.value.any { it.href == item.href }) {
             removeFavorite(item)
-//            updateFavorite(item.id, false)
         } else {
             insertFavorite(item)
-//            updateFavorite(item.id, true)
         }
     }
 
@@ -150,7 +147,10 @@ class MediaLibraryViewModel
             Uri.encode(it)
         } ?: "Not Available"
 
-        return Uri.Builder().encodedPath(encodedText).build().toString()
+        return Uri.Builder()
+            .encodedPath(encodedText)
+            .build()
+            .toString()
     }
 
     // Filters out items containing the filter type value - image, video, or audio

@@ -47,7 +47,7 @@ fun AudioDetails(
                 modifier = Modifier
                     .padding(0.dp)
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Audio Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -89,7 +89,7 @@ fun AudioDetails(
                 modifier = Modifier
                     .padding(0.dp)
                     .fillMaxSize()
-                    .semantics { testTag = "Details Screen" },
+                    .semantics { testTag = "Audio Details Screen" },
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -129,15 +129,11 @@ fun AudioDetails(
 
             Row (
                 modifier = Modifier
+                    .semantics { testTag = "Audio Details Screen" }
                     .padding(15.dp),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
-//                DetailsImage(
-//                    id = R.drawable.tipper_space_man,
-//                    scale = ContentScale.FillBounds
-//                )
 
                 LazyColumn(modifier = Modifier.fillMaxHeight()) {
                     item {
@@ -157,11 +153,6 @@ fun AudioDetails(
                             text = title,
                             paddingValue = 15.dp
                         )
-//                        AudioPlayer(
-//                            audioPlayerUri = audioPlayerUri,
-//                            mContext = context,
-//                            iconSize = 250.dp
-//                        )
 
                         DescriptionText(
                             content = description

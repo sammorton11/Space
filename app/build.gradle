@@ -13,8 +13,8 @@ android {
         applicationId "com.samm.space"
         minSdk 29
         targetSdk 33
-        versionCode 7
-        versionName "7.0"
+        versionCode 8
+        versionName "8.0"
 
         testInstrumentationRunner "com.samm.space.hilttestrunner.CustomTestRunner"
         vectorDrawables {
@@ -76,6 +76,9 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
+
+    implementation "com.google.accompanist:accompanist-coil:0.15.0"
+
 
     //Room
     implementation "androidx.room:room-runtime:2.5.1"
@@ -189,4 +192,5 @@ dependencies {
 
     //Navigation
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.8.10"
 }

@@ -1,5 +1,6 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ fun DetailsImage(
 
     Card(
         modifier = Modifier
+            .fillMaxSize()
             .padding(10.dp)
             .semantics { testTag = "Details Image Card" },
         shape = RoundedCornerShape(10.dp)

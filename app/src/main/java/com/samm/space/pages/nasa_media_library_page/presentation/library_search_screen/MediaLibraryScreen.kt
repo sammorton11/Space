@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -65,7 +66,7 @@ fun MediaLibraryScreen(
         }
     )
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.testTag("Media Library Screen")) {
         if (scrollState.value == 0 || state.data.size <= 2) {
             SearchField(
                 onSearch = { query ->

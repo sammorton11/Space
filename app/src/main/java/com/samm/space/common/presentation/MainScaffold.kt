@@ -3,7 +3,6 @@ package com.samm.space.common.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.DrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -18,7 +17,6 @@ import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
 @Composable
 fun MainScaffold(
     event: (LibraryUiEvent) -> Unit,
-    drawerState: DrawerState,
     navController: NavController
 ) {
 
@@ -27,13 +25,11 @@ fun MainScaffold(
     Scaffold(
         topBar = {
             MyToolbar(
-                drawerState = drawerState,
                 event = event,
                 navBackStackEntry = navBackStackEntry
             )
         },
         bottomBar = {
-
             BottomNavBar { iconIndex ->
                 when (iconIndex) {
                     0 -> {

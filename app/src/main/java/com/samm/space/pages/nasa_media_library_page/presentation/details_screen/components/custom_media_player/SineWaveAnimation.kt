@@ -38,8 +38,7 @@ fun SineWaveAnimation(color: Color, repeatMode: RepeatMode) {
 
     val waveAmplitude by animateFloatAsState(
         targetValue = waveAmplitudeState.targetState,
-        animationSpec = animationSpec,
-        label = ""
+        animationSpec = animationSpec
     )
 
     val waveFrequency = 2 * PI.toFloat() / 100
@@ -56,9 +55,9 @@ fun SineWaveAnimation(color: Color, repeatMode: RepeatMode) {
         val waveHeight = size.height / 2
         val startX = (waveAmplitude * 6 * PI).toFloat() // Adjust the multiplier as needed for the desired wave length
         val endX = (waveAmplitude * 2 * PI).toFloat()
-        val stepX = (endX - startX) / 400
+        val stepX = (endX - startX) / 1000
 
-        for (i in 0..100) {
+        for (i in 0..400) {
             val x = startX + i * stepX
             val y = waveHeight + waveAmplitude * sin(waveFrequency * x)
 

@@ -2,6 +2,7 @@ package com.samm.space.util.test_tags
 
 object MediaLibraryTestTags {
 
+    const val MEDIA_LIBRARY_SCREEN_TAG = "Media Library Screen"
     const val SEARCH_FIELD_TAG = "Search Field"
     const val CARD_TITLE_TAG = "Card Title"
     const val CARD_IMAGE_TAG = "Card Image"

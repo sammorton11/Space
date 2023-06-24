@@ -42,12 +42,12 @@ fun FavoritesButton(
         if (isFavorite)
             MaterialTheme.colorScheme.secondary
         else
-            MaterialTheme.colorScheme.onSurface, label = ""
+            MaterialTheme.colorScheme.onSurface
     )
 
     val scale by animateFloatAsState(
         targetValue = if (isAnimated) 1.2f else 1.0f,
-        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy), label = ""
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy)
     )
 
     LaunchedEffect(isAnimated) {

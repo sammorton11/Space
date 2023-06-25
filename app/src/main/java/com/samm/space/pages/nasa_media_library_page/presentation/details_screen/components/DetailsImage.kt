@@ -1,6 +1,9 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components
 
-import androidx.compose.foundation.layout.fillMaxSize
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
@@ -25,11 +29,25 @@ fun DetailsImage(
     scale: ContentScale
 ) {
 
+
+    val context = LocalContext.current
+
     Card(
         modifier = Modifier
-            .fillMaxSize()
             .padding(10.dp)
-            .semantics { testTag = "Details Image Card" },
+            .semantics { testTag = "Details Image Card" }
+            .clickable {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(imageLink))
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.setPackage("com.android.chrome")
+                try {
+                    context.startActivity(intent)
+                } catch (e: ActivityNotFoundException) {
+                    // Chrome is not installed, open the default browser
+                    intent.setPackage(null)
+                    context.startActivity(intent)
+                }
+            },
         shape = RoundedCornerShape(10.dp)
     ) {
         imageLink?.let {
@@ -39,7 +57,7 @@ fun DetailsImage(
                 modifier = Modifier
                     .sizeIn(
                         minWidth = 125.dp,
-                        maxWidth = 400.dp
+                        maxWidth = 500.dp
                     )
                     .semantics {
                         testTag = "Details Image"

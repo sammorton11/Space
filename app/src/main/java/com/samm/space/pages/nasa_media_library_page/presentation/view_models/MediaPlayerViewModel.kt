@@ -1,12 +1,11 @@
 package com.samm.space.pages.nasa_media_library_page.presentation.view_models
+
+import android.media.MediaPlayer
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.google.android.exoplayer2.ExoPlayer
-import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
-@HiltViewModel
-class ExoPlayerViewModel @Inject constructor(
+class MediaPlayerViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -23,11 +22,11 @@ class ExoPlayerViewModel @Inject constructor(
         get() = savedStateHandle[KEY_PLAYBACK_POSITION] ?: 0L
         set(value) = savedStateHandle.set(KEY_PLAYBACK_POSITION, value)
 
-    fun savePlaybackPosition(player: ExoPlayer) {
-        playbackPosition = player.currentPosition
+    fun savePlaybackPosition(player: MediaPlayer) {
+        playbackPosition = player.currentPosition.toLong()
     }
 
-    fun restorePlaybackPosition(player: ExoPlayer) {
-        player.seekTo(playbackPosition)
+    fun restorePlaybackPosition(player: MediaPlayer) {
+        player.seekTo(playbackPosition.toInt())
     }
 }

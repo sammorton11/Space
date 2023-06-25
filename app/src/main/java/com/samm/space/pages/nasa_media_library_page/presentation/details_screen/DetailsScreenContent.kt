@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.samm.space.core.MediaType
 import com.samm.space.core.MediaType.Companion.toMediaType
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.AudioDetails
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.ImageDetails
-import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.VideoDetails
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.audio.AudioDetails
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.image.ImageDetails
+import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.details_types.video.VideoDetails
 import com.samm.space.pages.nasa_media_library_page.presentation.state.MediaDataState
 
 @Composable

@@ -20,15 +20,6 @@ import com.samm.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
-/**
- *      TODO Issues:
- *          - Media Library Screen Mock Server isn't working. Not sure why.
- *          - Orientation changes restarts media players - this must be persisted
- *          - Favorites Screen tests
- *          - Database integration tests
- */
-
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 

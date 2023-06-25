@@ -17,7 +17,6 @@ fun DetailsScreen(
     date: String?,
     state: MediaDataState,
     getMediaData: (url: String) -> Unit,
-    decodeText: (String) -> String,
     getUri: (String?, MediaType) -> String,
     extractUrlsFromJsonArray: (String) -> ArrayList<String>,
     fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
@@ -64,7 +63,6 @@ fun DetailsScreenPreview() {
             error = ""
         ),
         getMediaData = {  },
-        decodeText = { "" },
         getUri = { _, _ -> "" },
         extractUrlsFromJsonArray = { arrayListOf("") },
         fileTypeCheck = {

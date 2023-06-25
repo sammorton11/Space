@@ -84,7 +84,6 @@ fun AppNavigation(
                     date = date,
                     state = state,
                     getMediaData = mediaDataViewModel::getMediaData,
-                    decodeText = mediaDataViewModel::decodeText,
                     getUri = mediaDataViewModel::getUri,
                     extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
                     fileTypeCheck = mediaDataViewModel::fileTypeCheck
@@ -94,7 +93,6 @@ fun AppNavigation(
 
         composable("apod_screen") {
             val state = apodViewModel.state
-
             ApodScreen(
                 stateFlow = state,
                 refresh = apodViewModel::getApodState

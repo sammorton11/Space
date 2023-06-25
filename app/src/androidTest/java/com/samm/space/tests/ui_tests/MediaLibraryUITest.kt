@@ -53,7 +53,6 @@ class MediaLibraryUITest: BaseTest() {
                         ) {
                             MainScaffold(
                                 event = viewModel::sendEvent,
-                                drawerState = drawerState,
                                 navController = navController
                             )
                         }

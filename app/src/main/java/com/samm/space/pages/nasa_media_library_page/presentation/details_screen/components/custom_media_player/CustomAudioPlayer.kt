@@ -1,6 +1,8 @@
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.pm.ActivityInfo
 import android.media.MediaPlayer
-import android.util.Log
 import android.webkit.URLUtil
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.foundation.layout.Arrangement
@@ -35,21 +37,25 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.samm.space.R
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.custom_media_player.CustomAudioPlayerImage
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.custom_media_player.DurationLabel
 import com.samm.space.pages.nasa_media_library_page.presentation.details_screen.components.custom_media_player.SineWaveAnimation
+import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaPlayerViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
+@SuppressLint("SourceLockedOrientationActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CustomAudioPlayer(
-    audioPlayerUri: String?
+    audioPlayerUri: String?,
+    viewModel: MediaPlayerViewModel
 ) {
-
-    Log.d("audio uri", audioPlayerUri.toString())
+    val activity = LocalContext.current as? Activity
+    activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LOCKED
 
     val primary = MaterialTheme.colorScheme.primary
     val secondary = MaterialTheme.colorScheme.secondary
@@ -145,13 +151,31 @@ fun CustomAudioPlayer(
             }
         }
     }
+//
+//    LaunchedEffect(paused) {
+//        coroutineScope.launch {
+//            while (!paused) {
+//                position = mMediaPlayer.currentPosition.milliseconds
+//                viewModel.savePlaybackPosition(mMediaPlayer)
+//                delay(100)
+//            }
+//        }
+//    }
 
-    LaunchedEffect(paused) {
-        coroutineScope.launch {
+    DisposableEffect(paused) {
+
+        val job = coroutineScope.launch {
             while (!paused) {
                 position = mMediaPlayer.currentPosition.milliseconds
+                viewModel.savePlaybackPosition(mMediaPlayer)
                 delay(100)
             }
+        }
+
+        job.start()
+
+        onDispose {
+            job.cancel()
         }
     }
 
@@ -161,6 +185,7 @@ fun CustomAudioPlayer(
             mMediaPlayer.reset()
             mMediaPlayer.setDataSource(mContext, uri)
             mMediaPlayer.prepareAsync()
+            viewModel.restorePlaybackPosition(mMediaPlayer)
         }
     }
 
@@ -169,6 +194,7 @@ fun CustomAudioPlayer(
             mMediaPlayer.reset()
             mMediaPlayer.stop()
             mMediaPlayer.release()
+            activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
 }
@@ -184,8 +210,13 @@ fun CustomAudioPlayerPreview() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         item {
-            CustomAudioPlayer(audioPlayerUri = "https://images-assets.nasa.gov/video/ksc_121304_comet_history/ksc_121304_comet_history~orig.mp4")
+            val viewModel: MediaPlayerViewModel = hiltViewModel()
+            CustomAudioPlayer(
+                viewModel = viewModel,
+                audioPlayerUri = "https://images-assets.nasa.gov/video/ksc_121304_comet_history/ksc_121304_comet_history~orig.mp4IO"
+            )
         }
     }
 }

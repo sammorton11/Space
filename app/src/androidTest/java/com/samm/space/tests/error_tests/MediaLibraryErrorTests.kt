@@ -61,7 +61,6 @@ class MediaLibraryErrorTests: BaseTest() {
                             ) {
                             MainScaffold(
                                 event = viewModel::sendEvent,
-                                drawerState = drawerState,
                                 navController = navController
                             )
                         }
@@ -99,7 +98,6 @@ class MediaLibraryErrorTests: BaseTest() {
                             ) {
                             MainScaffold(
                                 event = viewModel::sendEvent,
-                                drawerState = drawerState,
                                 navController = navController
                             )
                         }

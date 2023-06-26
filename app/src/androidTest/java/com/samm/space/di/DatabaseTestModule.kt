@@ -2,8 +2,8 @@ package com.samm.space.di
 
 import android.content.Context
 import androidx.room.Room
-import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
-import com.samm.space.pages.favorites_page.di.DatabaseModule
+import com.samm.space.features.favorites_page.data.database.SpaceExplorerDatabase
+import com.samm.space.features.favorites_page.di.DatabaseModule
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.android.qualifiers.ApplicationContext

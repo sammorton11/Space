@@ -6,8 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.test.platform.app.InstrumentationRegistry
 import com.samm.space.fakes.FakeMetadataApi
 import com.samm.space.fakes.FakeNasaApi
-import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
-import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
+import com.samm.space.features.favorites_page.data.database.SpaceExplorerDatabase
+import com.samm.space.features.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.repository.FakeMediaLibraryRepositoryMock
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.first

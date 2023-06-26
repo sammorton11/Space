@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 fun ShareButton(
     uri: Uri,
     mediaType: String,
-    mimeType: String,
+    mimeType: String
 ) {
 
     val scope = rememberCoroutineScope()

@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +27,7 @@ import androidx.navigation.NavBackStackEntry
 import com.samm.space.R
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.core.Constants
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 import java.util.Locale
 
 @Composable

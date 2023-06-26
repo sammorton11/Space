@@ -10,8 +10,8 @@ import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
-import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
+import com.samm.space.features.picture_of_the_day_page.presentation.ApodScreen
+import com.samm.space.features.picture_of_the_day_page.presentation.ApodViewModel
 import com.samm.space.tests.ui_tests.ApodUITest.Companion.serverApod
 import com.samm.space.tests.ui_tests.BaseTest
 import com.samm.space.ui.theme.SpaceTheme

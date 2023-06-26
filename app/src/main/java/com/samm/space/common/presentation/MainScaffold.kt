@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.samm.space.navigation.AppNavigation
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

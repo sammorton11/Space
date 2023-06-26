@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.common.presentation.SideNavigationDrawer
 import com.samm.space.core.DataStoreManager
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.features.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.ui.theme.SpaceTheme
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch

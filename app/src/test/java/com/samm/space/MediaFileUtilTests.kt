@@ -1,8 +1,8 @@
 package com.samm.space
 
 import com.samm.space.core.MediaType
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaDataViewModel
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.features.nasa_media_library_page.presentation.view_models.DetailsViewModel
+import com.samm.space.features.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import dagger.hilt.android.testing.HiltAndroidTest
 import io.mockk.every
 import io.mockk.mockk
@@ -12,7 +12,7 @@ import org.junit.Test
 @HiltAndroidTest
 class MediaFileUtilTests {
 
-    private lateinit var mediaDataViewModel: MediaDataViewModel
+    private lateinit var mediaDataViewModel: DetailsViewModel
     private lateinit var mediaLibraryViewModel: MediaLibraryViewModel
 
     @Before

@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import com.samm.space.pages.nasa_media_library_page.domain.models.Item
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.features.nasa_media_library_page.domain.models.Item
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 import kotlinx.coroutines.delay
 
 @Composable

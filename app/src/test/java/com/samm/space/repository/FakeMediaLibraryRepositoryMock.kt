@@ -1,15 +1,15 @@
 package com.samm.space.repository
 
 import com.samm.space.core.Resource
-import com.samm.space.pages.favorites_page.data.database.SpaceExplorerDatabase
-import com.samm.space.pages.nasa_media_library_page.data.network.MetadataApi
-import com.samm.space.pages.nasa_media_library_page.data.network.NasaApi
-import com.samm.space.pages.nasa_media_library_page.domain.models.Collection
-import com.samm.space.pages.nasa_media_library_page.domain.models.Data
-import com.samm.space.pages.nasa_media_library_page.domain.models.Item
-import com.samm.space.pages.nasa_media_library_page.domain.models.Link
-import com.samm.space.pages.nasa_media_library_page.domain.models.NasaLibraryResponse
-import com.samm.space.pages.nasa_media_library_page.domain.repository.MediaLibraryRepository
+import com.samm.space.features.favorites_page.data.database.SpaceExplorerDatabase
+import com.samm.space.features.nasa_media_library_page.data.network.MetadataApi
+import com.samm.space.features.nasa_media_library_page.data.network.NasaApi
+import com.samm.space.features.nasa_media_library_page.domain.models.Collection
+import com.samm.space.features.nasa_media_library_page.domain.models.Data
+import com.samm.space.features.nasa_media_library_page.domain.models.Item
+import com.samm.space.features.nasa_media_library_page.domain.models.Link
+import com.samm.space.features.nasa_media_library_page.domain.models.NasaLibraryResponse
+import com.samm.space.features.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.util.FakeResponseTrigger
 import com.samm.space.util.successOrError
 import kotlinx.coroutines.flow.Flow

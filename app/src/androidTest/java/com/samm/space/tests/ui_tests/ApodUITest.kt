@@ -11,8 +11,8 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.samm.space.pages.picture_of_the_day_page.presentation.ApodScreen
-import com.samm.space.pages.picture_of_the_day_page.presentation.ApodViewModel
+import com.samm.space.features.picture_of_the_day_page.presentation.ApodScreen
+import com.samm.space.features.picture_of_the_day_page.presentation.ApodViewModel
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.test_tags.ApodTestTags.apodCopyrightText
 import com.samm.space.util.test_tags.ApodTestTags.apodDateText
@@ -49,10 +49,8 @@ class ApodUITest: BaseTest() {
                 .setResponseCode(200)
                 .setBody(jsonStringApod!!)
         )
-
         hiltRule.inject()
         composeTestRule.activity.apply {
-
             setContent {
                 SpaceTheme {
                     Surface(

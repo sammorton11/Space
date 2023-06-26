@@ -14,6 +14,7 @@ import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
 
+// Todo: This is stupid and you need to move it to the view model - completely redo this
 class FileHandler {
 
     fun downloadFile(
@@ -35,6 +36,7 @@ class FileHandler {
         downloadManager.enqueue(request)
     }
 
+    // Todo: This is stupid and you need to move it to the view model - completely redo this
     suspend fun shareFile(
         uri: String,
         mimeType: String,

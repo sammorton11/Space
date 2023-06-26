@@ -8,15 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.ComposeNavigator
-import androidx.navigation.testing.TestNavHostController
 import com.samm.space.common.presentation.MainScaffold
 import com.samm.space.common.presentation.SideNavigationDrawer
-import com.samm.space.pages.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
-import com.samm.space.pages.nasa_media_library_page.util.LibraryUiEvent.SearchLibrary
-import com.samm.space.tests.MediaLibraryScreen
+import com.samm.space.features.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent.SearchLibrary
+import com.samm.space.tests.screens.MediaLibraryScreen
 import com.samm.space.ui.theme.SpaceTheme
 import com.samm.space.util.FakeResponseTrigger
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -26,11 +24,12 @@ import org.junit.Test
 @HiltAndroidTest
 class MediaLibraryUITest: BaseTest() {
 
-    private val libraryScreen = MediaLibraryScreen(composeTestRule)
+    private lateinit var libraryScreen: MediaLibraryScreen
     
     @OptIn(ExperimentalMaterial3Api::class)
     @Before
     fun setUp() {
+        libraryScreen = MediaLibraryScreen(composeTestRule, navController)
         hiltRule.inject()
         composeTestRule.activity.apply {
             setContent {
@@ -40,7 +39,6 @@ class MediaLibraryUITest: BaseTest() {
                         color = MaterialTheme.colorScheme.background
                     ) {
 
-                        navController = TestNavHostController(LocalContext.current)
                         navController.navigatorProvider.addNavigator(ComposeNavigator())
 
                         val drawerState = rememberDrawerState(DrawerValue.Closed)

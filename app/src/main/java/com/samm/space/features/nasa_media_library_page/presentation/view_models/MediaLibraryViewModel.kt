@@ -38,23 +38,13 @@ class MediaLibraryViewModel @Inject constructor (
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
 
-    private val _favorites = MutableStateFlow<List<Item>>(emptyList())
-    val favorites: StateFlow<List<Item>> = _favorites
+    private val _favoriteState = MutableStateFlow(LibraryFavoriteState())
+    var favoriteState: StateFlow<LibraryFavoriteState> = _favoriteState
 
-    private val _favoriteState = mutableStateOf(LibraryFavoriteState())
-    var favoriteState: State<LibraryFavoriteState> = _favoriteState
-
-    private val allFavorites = mediaLibraryRepository.getAllFavorites()
-    fun getFavorites() = viewModelScope.launch {
-        allFavorites.collect {
-            _favoriteState.value = LibraryFavoriteState(libraryFavorites = it)
-        }
-    }
 
     private fun handleEvent(event: LibraryUiEvent) {
         when (event) {
             is LibraryUiEvent.SearchLibrary -> getData(event.query)
-            is LibraryUiEvent.OnCardClick -> event.navController.navigate(event.route)
             is LibraryUiEvent.ChangeBackground -> updateBackgroundType(event.id)
             is LibraryUiEvent.UpdateFilterType -> updateListFilterType(event.type)
             is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
@@ -70,7 +60,7 @@ class MediaLibraryViewModel @Inject constructor (
     }
 
     private fun toggleFavorite(item: Item) {
-        if (favorites.value.any { it.href == item.href }) {
+        if (favoriteState.value.libraryFavorites?.any { it.href == item.href } == true) {
             removeFavorite(item)
         } else {
             insertFavorite(item)
@@ -89,13 +79,13 @@ class MediaLibraryViewModel @Inject constructor (
     fun getAllFavorites() {
         viewModelScope.launch {
             mediaLibraryRepository.getAllFavorites().collect { favorites ->
-                _favorites.value = favorites
+                _favoriteState.value.libraryFavorites = favorites
             }
         }
     }
 
     private fun removeFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
-        favorites.value.forEach { favoriteItem ->
+        favoriteState.value.libraryFavorites?.forEach { favoriteItem ->
             if (favoriteItem.href == item.href) {
                 mediaLibraryRepository.deleteFavorite(favoriteItem)
                 return@forEach

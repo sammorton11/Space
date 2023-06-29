@@ -1,6 +1,5 @@
 package com.samm.space.features.picture_of_the_day_page.data.repository
 
-import android.util.Log
 import com.samm.space.core.Resource
 import com.samm.space.features.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
@@ -9,6 +8,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class ApodRepositoryImpl @Inject constructor(private val api: ApodApi): ApodRepository {
+
     override suspend fun getData(): Apod? {
         return api.getApod()
     }
@@ -17,7 +17,6 @@ class ApodRepositoryImpl @Inject constructor(private val api: ApodApi): ApodRepo
         try {
             emit(Resource.Loading())
             val response = getData()
-            Log.d("Response", response.toString())
             emit(Resource.Success(response))
         }
         catch (e: Exception) {

@@ -1,69 +1,55 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen
 
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.samm.space.core.MediaType
 import com.samm.space.core.MediaType.Companion.toMediaType
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.audio.AudioDetails
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.image.ImageDetails
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.video.VideoDetails
-import com.samm.space.features.nasa_media_library_page.presentation.state.MediaDataState
-import kotlinx.coroutines.Job
+import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
 
 @Composable
 fun DetailsScreenContent(
-    metaDataUrl: String,
-    description: String,
-    type: String,
-    title: String?,
-    date: String?,
-    state: MediaDataState,
-    getUri: (String?, MediaType) -> String,
-    extractUrlsFromJsonArray: (String) -> ArrayList<String>,
-    fileTypeCheck:(array: ArrayList<String>, mediaType: MediaType) -> String
+    state: DetailsScreenState,
+    getUri: (String?, MediaType) -> String
 ) {
 
-    val context = LocalContext.current
-    val mediaType = type.toMediaType()
+    val mediaType = state.type?.toMediaType()
     val data = state.data
-    val mUri = getUri(data, mediaType)
-    val uriList = data?.let { extractUrlsFromJsonArray(it) }
-    val audioPlayerUri = uriList?.let { fileTypeCheck(it, mediaType) }
-
+    val mediaFileUri = mediaType?.let { getUri(data, it) }
 
     when (mediaType) {
         MediaType.VIDEO -> {
             VideoDetails(
-                context = context,
                 mediaType = mediaType.type,
-                state = data,
-                mUri = mUri,
-                title = title,
-                date = date,
-                description = description
+                uri = mediaFileUri,
+                title = state.title,
+                date = state.date,
+                description = state.description!!
             )
         }
         MediaType.AUDIO -> {
             AudioDetails(
-                audioPlayerUri = audioPlayerUri ?: "",
-                mUri = mUri,
+                audioPlayerUri = mediaFileUri ?: "",
+                uri = mediaFileUri!!,
                 mediaType = mediaType.type,
-                context = context,
-                title = title,
-                date = date,
-                description = description
+                title = state.title,
+                date = state.date,
+                description = state.description!!
             )
         }
         MediaType.IMAGE -> {
             ImageDetails(
-                mUri = mUri,
+                uri = mediaFileUri!!,
                 mediaType = mediaType.type,
-                context = context,
-                url = metaDataUrl,
-                title = title,
-                date = date,
-                description = description
+                title = state.title,
+                date = state.date,
+                description = state.description!!
             )
+        }
+        else -> {
+            Text(text = "Missing Media")
         }
     }
 }

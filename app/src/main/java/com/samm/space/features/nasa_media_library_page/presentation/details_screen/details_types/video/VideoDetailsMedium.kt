@@ -1,6 +1,5 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.video
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -23,10 +22,8 @@ import com.samm.space.features.nasa_media_library_page.presentation.details_scre
 
 @Composable
 fun VideoDetailsMedium(
-    context: Context,
     mediaType: String,
-    state: String?,
-    mUri: String,
+    uri: String?,
     title: String?,
     date: String?,
     description: String
@@ -45,26 +42,23 @@ fun VideoDetailsMedium(
                 paddingValue = 15.dp
             )
             CardVideoPlayer(
-                state = state,
-                uri = mUri,
+                uri = uri,
                 aspectRatio = 1f
             )
             DescriptionText(
                 content = description
             )
             OpenChromeButton(
-                context = context,
-                uri = mUri
+                uri = uri
             )
             DownloadFile(
-                url = mUri,
-                context = context,
-                filename = mUri,
+                url = uri,
+                filename = uri,
                 mimeType = Constants.videoMimeTypeForDownload,
                 subPath = Constants.videoSubPathForDownload
             )
             ShareButton(
-                uri = mUri.toUri(),
+                uri = uri?.toUri(),
                 mimeType = Constants.videoMimeTypeForDownload,
                 mediaType = mediaType
             )

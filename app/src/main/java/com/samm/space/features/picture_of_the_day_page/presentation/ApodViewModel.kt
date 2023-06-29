@@ -17,6 +17,7 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
 
     private val _state = MutableStateFlow(ApodState())
     val state: StateFlow<ApodState> = _state
+
     init {
         getApodState()
     }

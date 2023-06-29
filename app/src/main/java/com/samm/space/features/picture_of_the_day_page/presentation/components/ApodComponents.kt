@@ -53,12 +53,10 @@ fun ApodComponents(
                     hdImage?.let { image ->
                         DownloadFile(
                             url = image,
-                            context = context,
                             filename = hdImage,
                             mimeType = Constants.imageMimeTypeForDownload,
                             subPath = Constants.imageSubPathForDownload
                         )
-
                         ShareButton(
                             uri = image.toUri(),
                             mimeType = Constants.imageMimeTypeForDownload,

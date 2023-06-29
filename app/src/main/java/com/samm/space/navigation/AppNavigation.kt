@@ -1,6 +1,7 @@
 package com.samm.space.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -13,7 +14,7 @@ import androidx.navigation.navArgument
 import com.samm.space.core.Constants
 import com.samm.space.features.favorites_page.presentation.FavoriteScreen
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.DetailsScreen
-import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.MediaLibraryScreen
+import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.LibraryListScreen
 import com.samm.space.features.nasa_media_library_page.presentation.view_models.DetailsViewModel
 import com.samm.space.features.nasa_media_library_page.presentation.view_models.MediaLibraryViewModel
 import com.samm.space.features.picture_of_the_day_page.presentation.ApodScreen
@@ -27,7 +28,8 @@ fun AppNavigation(
     val mediaDataViewModel: DetailsViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
-    val favorites = libraryViewModel.favorites.collectAsStateWithLifecycle().value
+
+    val favorites = libraryViewModel.favoriteState.collectAsState().value
     libraryViewModel.getAllFavorites()
 
     NavHost(
@@ -37,19 +39,24 @@ fun AppNavigation(
 
         composable("library_search_screen") {
             val state = libraryViewModel.state.value
+
             val backgroundType = libraryViewModel.backgroundType
                 .observeAsState(initial = Constants.NO_BACKGROUND).value
+
             val filterType = libraryViewModel.listFilterType
                 .observeAsState("").value
 
-            MediaLibraryScreen(
-                event = libraryViewModel::sendEvent,
-                state = state,
-                favorites = favorites,
-                navController = navController,
-                getSavedSearchText = libraryViewModel::getSavedSearchText,
+            val updatedState = state.copy(
+                favorites = favorites.libraryFavorites,
                 listFilterType = filterType,
-                backgroundType = backgroundType,
+                backgroundType = backgroundType
+            )
+
+            LibraryListScreen(
+                event = libraryViewModel::sendEvent,
+                state = updatedState,
+                navigate = navController::navigate,
+                getSavedSearchText = libraryViewModel::getSavedSearchText,
                 filteredList = libraryViewModel::filterList,
                 encodeText = libraryViewModel::encodeText
             )
@@ -66,27 +73,29 @@ fun AppNavigation(
             )
         ) { backStackEntry ->
 
+            val state = mediaDataViewModel.state.collectAsStateWithLifecycle().value
+
             val urlId = backStackEntry.arguments?.getString("url")
             val descriptionId = backStackEntry.arguments?.getString("description")
             val mediaType = backStackEntry.arguments?.getString("mediaType")
             val title = backStackEntry.arguments?.getString("title")
             val date = backStackEntry.arguments?.getString("date")
 
-            val state = mediaDataViewModel.state.value
 
             if(urlId != null && descriptionId != null && mediaType != null) {
 
-                DetailsScreen(
-                    metaDataUrl = urlId,
-                    description = descriptionId,
-                    type = mediaType,
-                    title = title,
+                val updatedState = state.copy(
                     date = date,
-                    state = state,
+                    description = descriptionId,
+                    title = title,
+                    metaDataUrl = urlId,
+                    type = mediaType
+                )
+
+                DetailsScreen(
+                    state = updatedState,
                     getMediaData = mediaDataViewModel::getMediaData,
-                    getUri = mediaDataViewModel::getUri,
-                    extractUrlsFromJsonArray = mediaDataViewModel::createJsonArrayFromString,
-                    fileTypeCheck = mediaDataViewModel::fileTypeCheck
+                    getUri = mediaDataViewModel::getUri
                 )
             }
         }
@@ -100,13 +109,10 @@ fun AppNavigation(
         }
 
         composable("favorites_screen") {
-            libraryViewModel.getFavorites()
-            val state = libraryViewModel.favoriteState.value
-
             FavoriteScreen(
-                libraryFavoriteState = state,
+                libraryFavoriteState = favorites,
                 sendEvent = libraryViewModel::sendEvent,
-                navController = navController,
+                navigate = navController::navigate,
                 encodeText = libraryViewModel::encodeText
             )
         }

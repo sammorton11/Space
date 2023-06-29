@@ -5,30 +5,25 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.navigation.NavController
 import com.samm.space.core.MediaType
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
 import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCard
 import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCardData
+import com.samm.space.features.nasa_media_library_page.presentation.state.MediaLibraryState
 import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryListContent(
+    state: MediaLibraryState,
     sendEvent: (LibraryUiEvent) -> Unit,
-    favorites: List<Item>,
-    navController: NavController,
-    filterType: String,
-    data: List<Item?>,
     scrollState: LazyStaggeredGridState,
     gridCells: Int,
-    imageScaleType: ContentScale,
+    navigate: (route: String) -> Unit,
     filteredList: (data: List<Item?>, filterType: String) -> List<Item?>,
     encodeText: (text: String?) -> String
 ) {
@@ -41,7 +36,7 @@ fun LibraryListContent(
         state = scrollState
     ) {
 
-        items(filteredList(data, filterType)) { item ->
+        items(filteredList(state.data, state.listFilterType)) { item ->
 
             val itemListOfLinks = item?.links
             val image = itemListOfLinks?.first()?.href
@@ -54,22 +49,21 @@ fun LibraryListContent(
                 ?: MediaType.IMAGE
 
             val listCardData = ListCardData(
-                favorites = favorites,
+                favorites = state.favorites,
                 item = item,
                 url = itemMetaDataUrl,
                 image = image,
                 itemTitle = itemTitle,
                 dateText = itemDate,
                 mediaTypeString = mediaTypeString,
-                description = itemDescription,
-                imageScaleType = imageScaleType
+                description = itemDescription
             )
 
             ListCard(
                 sendEvent = sendEvent,
                 encodeText = encodeText,
-                navController = navController,
-                data = listCardData
+                data = listCardData,
+                navigate = navigate
             )
         }
     }

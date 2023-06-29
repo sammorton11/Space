@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import com.samm.space.R
 import com.samm.space.core.Constants.fastInAnimation
+import com.samm.space.core.Constants.imageScaleType
 import com.samm.space.core.MediaType
 
 /**
@@ -28,7 +29,6 @@ import com.samm.space.core.MediaType
 @Composable
 fun CardImage(
     imageLink: String?,
-    scale: ContentScale,
     mediaType: MediaType,
 ) {
 
@@ -60,7 +60,7 @@ fun CardImage(
                         .fillMaxSize()
                         .sizeIn(minHeight = 125.dp)
                         .semantics { testTag = "Card Image" },
-                    contentScale = scale,
+                    contentScale = imageScaleType,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )
             }
@@ -72,7 +72,7 @@ fun CardImage(
                         .fillMaxSize()
                         .sizeIn(minHeight = 125.dp)
                         .semantics { testTag = "Card Image" },
-                    contentScale = scale,
+                    contentScale = imageScaleType,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),
                 )
             }

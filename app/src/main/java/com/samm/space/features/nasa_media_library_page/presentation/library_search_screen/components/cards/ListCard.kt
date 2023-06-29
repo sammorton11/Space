@@ -15,11 +15,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.samm.space.common.presentation.buttons.FavoritesButton
 import com.samm.space.core.MediaType
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
@@ -30,7 +28,7 @@ import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 fun ListCard(
     sendEvent: (LibraryUiEvent) -> Unit,
     encodeText: (text: String?) -> String,
-    navController: NavController,
+    navigate: (route: String) -> Unit,
     data: ListCardData
 ){
     val roundedCornerAmount = 10
@@ -43,12 +41,10 @@ fun ListCard(
             .padding(8.dp)
             .semantics { testTag = "List Card" },
         onClick = {
-            sendEvent(
-                LibraryUiEvent.OnCardClick(
-                    route = "cardDetails/${encodedUrl}/${encodedDescription}/" +
-                            "${data.mediaTypeString.type}/${encodeText(data.itemTitle)}/$encodedDateText",
-                    navController = navController
-                ))
+            navigate(
+                "cardDetails/${encodedUrl}/${encodedDescription}/" +
+                    "${data.mediaTypeString.type}/${encodeText(data.itemTitle)}/$encodedDateText"
+            )
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount)
     ) {
@@ -56,7 +52,6 @@ fun ListCard(
         Box {
             CardImage(
                 imageLink = data.image,
-                scale = data.imageScaleType,
                 mediaType = data.mediaTypeString
             )
 
@@ -91,13 +86,12 @@ fun ListCard(
 }
 
 data class ListCardData(
-    var favorites: List<Item>,
+    var favorites: List<Item>?,
     var item: Item?,
     var url: String?,
     var image: String?,
     var itemTitle: String?,
     var dateText: String?,
     var description: String?,
-    var mediaTypeString: MediaType,
-    var imageScaleType: ContentScale
+    var mediaTypeString: MediaType
 )

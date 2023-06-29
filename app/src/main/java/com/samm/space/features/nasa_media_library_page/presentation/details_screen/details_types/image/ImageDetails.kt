@@ -1,16 +1,13 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.image
 
-import android.content.Context
 import androidx.compose.runtime.Composable
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
 
 @Composable
 fun ImageDetails(
-    mUri: String,
+    uri: String,
     mediaType: String,
-    context: Context,
-    url: String,
     title: String?,
     date: String?,
     description: String
@@ -21,10 +18,8 @@ fun ImageDetails(
 
         is WindowInfo.WindowType.Compact -> {
             ImageDetailsCompact(
-                mUri = mUri,
+                uri = uri,
                 mediaType = mediaType,
-                context = context,
-                url = url,
                 title = title,
                 date = date,
                 description = description
@@ -32,10 +27,8 @@ fun ImageDetails(
         }
         is WindowInfo.WindowType.Medium -> {
             ImageDetailsMedium(
-                mUri = mUri,
+                uri = uri,
                 mediaType = mediaType,
-                context = context,
-                url = url,
                 title = title,
                 date = date,
                 description = description
@@ -43,10 +36,8 @@ fun ImageDetails(
         }
         is WindowInfo.WindowType.Expanded -> {
             ImageDetailsExpanded(
-                mUri = mUri,
+                uri = uri,
                 mediaType = mediaType,
-                context = context,
-                url = url,
                 title = title,
                 date = date,
                 description = description

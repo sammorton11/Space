@@ -1,7 +1,6 @@
 package com.samm.space.common.presentation.buttons
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.layout.padding
@@ -10,16 +9,17 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.samm.space.core.Constants
 
 @Composable
-fun OpenChromeButton(
-    context: Context,
-    uri: String,
-) {
+fun OpenChromeButton(uri: String?) {
+
+    val context = LocalContext.current
+
     OutlinedButton(
         onClick = {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))

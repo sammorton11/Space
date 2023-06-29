@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ShareButton(
-    uri: Uri,
+    uri: Uri?,
     mediaType: String,
     mimeType: String
 ) {

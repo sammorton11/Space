@@ -1,6 +1,5 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.image
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -23,10 +22,8 @@ import com.samm.space.features.nasa_media_library_page.presentation.details_scre
 
 @Composable
 fun ImageDetailsExpanded(
-    mUri: String,
+    uri: String,
     mediaType: String,
-    context: Context,
-    url: String,
     title: String?,
     date: String?,
     description: String
@@ -40,7 +37,7 @@ fun ImageDetailsExpanded(
     ) {
 
         DetailsImage(
-            imageLink = mUri,
+            imageLink = uri,
             scale = ContentScale.None
         )
 
@@ -58,14 +55,13 @@ fun ImageDetailsExpanded(
                     content = description
                 )
                 DownloadFile(
-                    url = url,
-                    context = context,
-                    filename = url,
+                    url = uri,
+                    filename = uri,
                     mimeType = Constants.imageMimeTypeForDownload,
                     subPath = Constants.imageSubPathForDownload
                 )
                 ShareButton(
-                    uri = url.toUri(),
+                    uri = uri.toUri(),
                     mimeType = Constants.imageMimeTypeForDownload,
                     mediaType = mediaType
                 )

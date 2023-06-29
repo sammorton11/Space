@@ -5,6 +5,7 @@ import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import java.nio.charset.StandardCharsets
 
@@ -13,6 +14,7 @@ object Constants {
     const val BASE_URL_MARS_DATA = "https://api.nasa.gov/"
     const val API_KEY = "qGqHQYIgYmjxAKCaFJHaN9I3XTvpbHQHS8N7yMNO"
     const val NO_BACKGROUND = 0
+    val imageScaleType = ContentScale.FillBounds
 
     val utf8Encoding = StandardCharsets.UTF_8.toString()
     var BASE_URL = "https://images-api.nasa.gov/"

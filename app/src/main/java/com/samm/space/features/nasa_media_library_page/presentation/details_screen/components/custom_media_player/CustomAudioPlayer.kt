@@ -65,12 +65,15 @@ fun CustomAudioPlayer(
     var progress by remember { mutableStateOf(0f) }
     var position by remember { mutableStateOf(mMediaPlayer.currentPosition.milliseconds) }
 
+
+
     Card(
         modifier = Modifier
             .padding(25.dp)
             .sizeIn(maxWidth = 475.dp)
             .fillMaxSize()
     ) {
+
         Box(
             modifier = Modifier
                 .fillMaxSize()

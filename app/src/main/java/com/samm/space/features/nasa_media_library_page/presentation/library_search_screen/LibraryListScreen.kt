@@ -11,16 +11,15 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavController
 import com.samm.space.common.presentation.ProgressBar
 import com.samm.space.common.presentation.labels.ErrorText
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
 import com.samm.space.core.Constants.NO_BACKGROUND
+import com.samm.space.core.Constants.imageScaleType
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
 import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.other.SearchField
 import com.samm.space.features.nasa_media_library_page.presentation.state.MediaLibraryState
@@ -29,14 +28,11 @@ import kotlinx.coroutines.flow.Flow
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MediaLibraryScreen(
+fun LibraryListScreen(
     event: (LibraryUiEvent) -> Unit,
-    favorites: List<Item>,
     state: MediaLibraryState,
-    navController: NavController,
+    navigate: (route: String) -> Unit,
     getSavedSearchText: () -> Flow<String>,
-    backgroundType: Int,
-    listFilterType: String,
     filteredList: (data: List<Item?>, filterType: String) -> List<Item?>,
     encodeText: (text: String?) -> String
 ) {
@@ -44,8 +40,7 @@ fun MediaLibraryScreen(
     val lazyGridState = rememberLazyStaggeredGridState()
     val scrollState = remember { derivedStateOf { lazyGridState.firstVisibleItemIndex } }
     val window = rememberWindowInfo()
-    val savedSearchTextState = getSavedSearchText().collectAsStateWithLifecycle("")
-    val imageScaleType = ContentScale.FillBounds
+    val savedSearchTextState = getSavedSearchText().collectAsStateWithLifecycle("").value
 
     val gridCells = when (window.screenWidthInfo) {
         is WindowInfo.WindowType.Compact -> 2
@@ -54,13 +49,13 @@ fun MediaLibraryScreen(
     }
 
     val modifier = Modifier.then(
-        if (backgroundType == NO_BACKGROUND) {
+        if (state.backgroundType == NO_BACKGROUND) {
             Modifier.fillMaxSize()
         } else {
             Modifier
                 .fillMaxSize()
                 .paint(
-                    painter = painterResource(id = backgroundType),
+                    painter = painterResource(id = state.backgroundType),
                     contentScale = imageScaleType
                 )
         }
@@ -73,7 +68,7 @@ fun MediaLibraryScreen(
                     event(LibraryUiEvent.SearchLibrary(query))
                     event(LibraryUiEvent.UpdateFilterType(""))
                 },
-                savedQuery = savedSearchTextState.value
+                savedQuery = savedSearchTextState
             )
         }
 
@@ -83,23 +78,20 @@ fun MediaLibraryScreen(
             }
             state.data.isNotEmpty() -> {
                 LibraryListContent(
-                    favorites = favorites,
+                    state = state,
                     sendEvent = event,
-                    navController = navController,
-                    filterType = listFilterType,
-                    data = state.data,
                     scrollState = lazyGridState,
                     gridCells = gridCells,
-                    imageScaleType = imageScaleType,
                     filteredList = filteredList,
-                    encodeText = encodeText
+                    encodeText = encodeText,
+                    navigate = navigate
                 )
             }
             state.error.isNotBlank() -> {
                 ErrorText(error = state.error)
                 Button(
                     onClick = {
-                        event(LibraryUiEvent.SearchLibrary(savedSearchTextState.value))
+                        event(LibraryUiEvent.SearchLibrary(savedSearchTextState))
                     }
                 ) {
                     Text(text = "Refresh")

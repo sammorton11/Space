@@ -55,7 +55,6 @@ fun ApodScreen(
         is WindowInfo.WindowType.Expanded -> {
             ApodComponentsForLargeScreen(
                 state = state,
-                context = context,
                 hdImage = hdImage,
                 explanation = explanation,
                 date = date,

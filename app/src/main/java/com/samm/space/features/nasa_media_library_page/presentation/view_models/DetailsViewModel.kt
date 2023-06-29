@@ -6,8 +6,6 @@ import android.os.Environment
 import android.util.Log
 import android.webkit.MimeTypeMap
 import androidx.activity.result.ActivityResultLauncher
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,9 +13,11 @@ import com.samm.space.core.Constants
 import com.samm.space.core.MediaType
 import com.samm.space.core.Resource
 import com.samm.space.features.nasa_media_library_page.domain.repository.MediaLibraryRepository
-import com.samm.space.features.nasa_media_library_page.presentation.state.MediaDataState
+import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -36,21 +36,21 @@ class DetailsViewModel @Inject constructor(
     private val mediaLibraryRepository: MediaLibraryRepository
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(MediaDataState())
-    val state: State<MediaDataState> = _state
+    private val _state = MutableStateFlow(DetailsScreenState())
+    val state: StateFlow<DetailsScreenState> = _state
 
     fun getMediaData(url: String) {
         mediaLibraryRepository.videoDataFlow(url).onEach { response ->
-            val mediaData = response.data
+
             when (response) {
                 is Resource.Success -> {
-                    _state.value = MediaDataState(data = mediaData)
+                    _state.value = DetailsScreenState(data = response.data)
                 }
                 is Resource.Error -> {
-                    _state.value = response.message?.let { MediaDataState(error = it) }!!
+                    _state.value = response.message?.let { DetailsScreenState(error = it) }!!
                 }
                 is Resource.Loading -> {
-                    _state.value = MediaDataState(isLoading = true)
+                    _state.value = DetailsScreenState(isLoading = true)
                 }
             }
         }.launchIn(viewModelScope)
@@ -84,13 +84,14 @@ class DetailsViewModel @Inject constructor(
             }
         }
         catch (e: JSONException) {
-            e.toString()
+            Log.e("Error converting String response to a JSON Array", e.toString())
         }
         return arrayList
     }
 
     fun fileTypeCheck(array: ArrayList<String>, mediaType: MediaType): String {
-
+        Log.d("fileTypeCheck", array.toString())
+        Log.d("fileTypeCheck - type", mediaType.type)
         for (i in 0 until array.size) {
             val file = array[i].replace("http://", "https://")
 
@@ -103,10 +104,21 @@ class DetailsViewModel @Inject constructor(
                 }
                 MediaType.AUDIO -> {
                     when {
-                        file.contains(".wav") -> { return file }
-                        file.contains(".m4a") -> { return file }
+                        file.contains(".wav") -> {
+                            Log.d("audio file", file)
+                            return file
+                        }
+                        file.contains(".m4a") -> {
+                            Log.d("audio file", file)
+                            return file
+                        }
                         // Using replace() because a letter 'k' was being added to the end of some audio files.
-                        file.contains(".mp3") -> { return file.replace(".mp3k", ".mp3") }
+                        file.contains(".mp3") -> {
+                            Log.d("audio file", file)
+                            val editedFile = file.replace(".mp3k", ".mp3")
+                            Log.d("audio file - editedFile", editedFile)
+                            return editedFile
+                        }
                     }
                 }
                 MediaType.IMAGE -> {
@@ -129,8 +141,6 @@ class DetailsViewModel @Inject constructor(
         }
         return decodedText
     }
-
-
 
     fun shareFile(
         uri: String,

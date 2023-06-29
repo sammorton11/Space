@@ -21,7 +21,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
@@ -36,10 +35,10 @@ import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 fun FavoriteScreen(
     libraryFavoriteState: LibraryFavoriteState,
     sendEvent: (LibraryUiEvent) -> Unit,
-    navController: NavController,
+    navigate: (route: String) -> Unit,
     encodeText: (text: String?) -> String
 ) {
-    val libraryFavoritesList = libraryFavoriteState.libraryFavorites
+    val libraryFavoritesList = libraryFavoriteState.libraryFavorites?.reversed()
     val lazyGridState = rememberLazyStaggeredGridState()
     val window = rememberWindowInfo()
     val imageScaleType = ContentScale.FillBounds
@@ -116,15 +115,14 @@ fun FavoriteScreen(
                             itemTitle = itemTitle,
                             dateText = itemDate,
                             mediaTypeString = mediaTypeString,
-                            description = itemDescription,
-                            imageScaleType = imageScaleType
+                            description = itemDescription
                         )
 
                         ListCard(
                             sendEvent = sendEvent,
                             encodeText = encodeText,
-                            navController = navController,
-                            data = listCardData
+                            data = listCardData,
+                            navigate = navigate
                         )
                     }
                 }

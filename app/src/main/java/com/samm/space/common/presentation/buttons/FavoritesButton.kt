@@ -28,18 +28,18 @@ import kotlinx.coroutines.delay
 @Composable
 fun FavoritesButton(
     item: Item,
-    favorites: List<Item>,
+    favorites: List<Item>?,
     event: (LibraryUiEvent) -> Unit,
 ) {
 
-    val inFavoritesList = favorites.any { it.href == item.href }
+    val inFavoritesList = favorites?.any { it.href == item.href }
     var isFavorite by remember { mutableStateOf(inFavoritesList) }
     var isAnimated by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
 
     val iconColor by animateColorAsState(
         targetValue =
-        if (isFavorite)
+        if (isFavorite == true)
             MaterialTheme.colorScheme.secondary
         else
             MaterialTheme.colorScheme.onSurface
@@ -57,7 +57,7 @@ fun FavoritesButton(
         }
     }
 
-    val icon = if (inFavoritesList) {
+    val icon = if ( isFavorite == true) {
         Icons.Default.Favorite
     } else {
         Icons.Default.FavoriteBorder
@@ -66,7 +66,7 @@ fun FavoritesButton(
     IconButton(
         onClick = {
             event(LibraryUiEvent.ToggleFavorite(item))
-            isFavorite = !isFavorite
+            isFavorite = !isFavorite!!
             isAnimated = true
         },
         interactionSource = interactionSource,

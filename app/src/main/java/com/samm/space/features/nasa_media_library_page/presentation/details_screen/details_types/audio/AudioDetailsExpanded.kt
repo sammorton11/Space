@@ -1,7 +1,6 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.audio
 
 import CustomAudioPlayer
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -25,9 +24,8 @@ import com.samm.space.features.nasa_media_library_page.presentation.details_scre
 @Composable
 fun AudioDetailsExpanded(
     audioPlayerUri: String,
-    mUri: String,
+    uri: String,
     mediaType: String,
-    context: Context,
     title: String?,
     date: String?,
     description: String
@@ -64,18 +62,16 @@ fun AudioDetailsExpanded(
                     content = description
                 )
                 OpenChromeButton(
-                    context = context,
-                    uri = mUri
+                    uri = uri
                 )
                 DownloadFile(
-                    url = mUri,
-                    context = context,
-                    filename = mUri,
+                    url = uri,
+                    filename = uri,
                     mimeType = Constants.audioMimeTypeForDownload,
                     subPath = Constants.audioSubPathForDownload
                 )
                 ShareButton(
-                    uri = mUri.toUri(),
+                    uri = uri.toUri(),
                     mimeType = Constants.audioMimeTypeForDownload,
                     mediaType = mediaType
                 )

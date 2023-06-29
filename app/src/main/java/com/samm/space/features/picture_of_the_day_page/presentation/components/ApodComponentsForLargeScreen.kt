@@ -1,6 +1,5 @@
 package com.samm.space.features.picture_of_the_day_page.presentation.components
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,7 +24,6 @@ import com.samm.space.features.picture_of_the_day_page.presentation.state.ApodSt
 @Composable
 fun ApodComponentsForLargeScreen(
     state: ApodState,
-    context: Context,
     hdImage: String?,
     explanation: String?,
     date: String?, copyright: String?,
@@ -60,7 +58,6 @@ fun ApodComponentsForLargeScreen(
 
                             DownloadFile(
                                 url = image,
-                                context = context,
                                 filename = hdImage,
                                 mimeType = Constants.imageMimeTypeForDownload,
                                 subPath = Constants.imageSubPathForDownload

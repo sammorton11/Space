@@ -19,13 +19,13 @@ class FileHandler {
 
     fun downloadFile(
         context: Context,
-        url: String,
-        fileName: String,
-        mimeType: String,
-        subPath: String,
+        url: String?,
+        fileName: String?,
+        mimeType: String?,
+        subPath: String?,
     ) {
         val downloadManager = context.getSystemService(DownloadManager::class.java)
-        val request = DownloadManager.Request(url.toUri())
+        val request = DownloadManager.Request(url?.toUri())
             .setTitle(fileName)
             .setMimeType(mimeType)
             .setDescription("Downloading...")

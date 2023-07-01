@@ -1,15 +1,20 @@
 package com.samm.space.features.picture_of_the_day_page.presentation
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Resource
+import com.samm.space.features.favorites_page.presentation.state.ApodFavoriteState
+import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 import com.samm.space.features.picture_of_the_day_page.domain.repository.ApodRepository
 import com.samm.space.features.picture_of_the_day_page.presentation.state.ApodState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -17,6 +22,9 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
 
     private val _state = MutableStateFlow(ApodState())
     val state: StateFlow<ApodState> = _state
+
+    private val _favoriteState = MutableStateFlow(ApodFavoriteState())
+    var favoriteState: StateFlow<ApodFavoriteState> = _favoriteState
 
     init {
         getApodState()
@@ -36,5 +44,31 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun getApodFavorites() = viewModelScope.launch(Dispatchers.IO) {
+        val favorites = repository.getAllFavorites()
+
+        favorites.collect {
+            _favoriteState.value.apodFavorites = it
+        }
+    }
+
+    fun insert(item: Apod) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insertFavorite(item)
+    }
+    fun delete(item: Apod) = viewModelScope.launch(Dispatchers.IO) {
+        repository.deleteFavorite(item)
+    }
+
+    fun encodeText(text: String?): String {
+        val encodedText = text?.let {
+            Uri.encode(it)
+        } ?: "Not Available"
+
+        return Uri.Builder()
+            .encodedPath(encodedText)
+            .build()
+            .toString()
     }
 }

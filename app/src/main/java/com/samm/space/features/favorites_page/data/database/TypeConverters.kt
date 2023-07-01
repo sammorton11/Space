@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.samm.space.features.nasa_media_library_page.domain.models.Data
 import com.samm.space.features.nasa_media_library_page.domain.models.Link
+import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 
 class ListConverter {
     @TypeConverter
@@ -44,5 +45,20 @@ class ItemConverter {
             return gson.toJson(links)
         }
         return gson.toJson(listOf(Link("", "", "")))
+    }
+}
+
+
+class ApodTypeConverters {
+    private val gson = Gson()
+
+    @TypeConverter
+    fun fromApod(apod: Apod): String {
+        return gson.toJson(apod)
+    }
+
+    @TypeConverter
+    fun toApod(json: String): Apod {
+        return gson.fromJson(json, Apod::class.java)
     }
 }

@@ -11,7 +11,7 @@ interface MediaLibraryRepository {
     suspend fun getVideoData(url: String): String?
     fun searchImageVideoLibrary(query: String): Flow<Resource<NasaLibraryResponse?>>
     fun savedQueryFlow(): Flow<String?>
-    fun videoDataFlow(url: String): Flow<Resource<String?>>
+    fun mediaDataFlow(url: String): Flow<Resource<String?>>
     suspend fun insertFavorite(item: Item)
     suspend fun deleteFavorite(item: Item)
     suspend fun updateFavorite(itemId: Int, isFavorite: Boolean)

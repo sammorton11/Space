@@ -31,7 +31,7 @@ import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun FavoriteScreen(
+fun LibraryFavoritesScreen(
     libraryFavoriteState: LibraryFavoriteState,
     sendEvent: (LibraryUiEvent) -> Unit,
     navigate: (route: String) -> Unit,
@@ -57,7 +57,7 @@ fun FavoriteScreen(
             .semantics { testTag = "Favorites Screen" }
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Title(text = "Favorites", paddingValue = 8.dp)
+            Title(text = "Library Favorites", paddingValue = 8.dp)
         }
 
         OutlinedTextField(

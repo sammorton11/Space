@@ -1,5 +1,6 @@
 package com.samm.space.features.picture_of_the_day_page.presentation.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,11 +19,14 @@ import com.samm.space.common.presentation.labels.ErrorText
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.common.presentation.util.DateConverter
 import com.samm.space.core.MediaType
+import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 import com.samm.space.features.picture_of_the_day_page.presentation.state.ApodState
 
 @Composable
 fun ApodComponents(
     state: ApodState,
+    insert: (item: Apod) -> Unit,
+    delete: (item: Apod) -> Unit,
     refresh: () -> Unit
 ) {
 
@@ -48,10 +52,18 @@ fun ApodComponents(
                         text = "Picture of the Day",
                         paddingValue = 15.dp
                     )
-                    PictureOfTheDay(
-                        imageLink = hdImage
-                    )
+                    Box(modifier = Modifier) {
+                        PictureOfTheDay(
+                            imageLink = hdImage
+                        )
+                    }
+
                     ApodExplanation(text = explanation)
+
+                    Button(onClick = { insert(state.data) }) {
+                        Text(text = "Add to Favorites")
+                    }
+
                     hdImage?.let { image ->
                         ShareButton(
                             uri = image.toUri(),

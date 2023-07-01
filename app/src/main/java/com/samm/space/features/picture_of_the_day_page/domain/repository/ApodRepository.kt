@@ -5,6 +5,11 @@ import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 import kotlinx.coroutines.flow.Flow
 
 interface ApodRepository {
+
     suspend fun getData(): Apod?
     fun getApodData(): Flow<Resource<Apod?>>
+
+    fun getAllFavorites(): Flow<List<Apod>>
+    suspend fun insertFavorite(item: Apod)
+    suspend fun deleteFavorite(item: Apod)
 }

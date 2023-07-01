@@ -18,7 +18,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     private val api: NasaApi,
     private val apiMetaData: MetadataApi,
     private val database: SpaceExplorerDatabase
-    ): MediaLibraryRepository {
+): MediaLibraryRepository {
 
     private val dataStore = DataStoreManager
 
@@ -32,19 +32,6 @@ class MediaLibraryRepositoryImpl @Inject constructor(
 
     override fun searchImageVideoLibrary(query: String) = flow {
         DataStoreManager.saveLastSearchText(query)
-
-//        try {
-//            emit(Resource.Loading())
-//            val response = getData(query)
-//            Log.d("Response", response.toString())
-//            emit(Resource.Success(response))
-//        }
-//        catch (e: HttpException){
-//            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
-//        }
-//        catch (e: IOException){
-//            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
-//        }
         emit(Resource.Loading())
         val response = getData(query)
         emit(Resource.Success(response))
@@ -52,7 +39,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
         emit(Resource.Error(it.localizedMessage ?: "Unexpected Error"))
     }
 
-    override fun videoDataFlow(url: String) = flow {
+    override fun mediaDataFlow(url: String) = flow {
         try {
             emit(Resource.Loading())
             val response = getVideoData(url)

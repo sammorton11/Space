@@ -76,7 +76,7 @@ class FakeMediaLibraryRepositoryMock @Inject constructor (
         emit("Fake saved query")
     }
 
-    override fun videoDataFlow(url: String) = flow {
+    override fun mediaDataFlow(url: String) = flow {
         try {
             emit(Resource.Loading())
             val response = getVideoData(url)

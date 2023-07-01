@@ -12,7 +12,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.samm.space.core.Constants
-import com.samm.space.features.favorites_page.presentation.FavoriteScreen
+import com.samm.space.features.favorites_page.presentation.ApodFavoritesScreen
+import com.samm.space.features.favorites_page.presentation.FavoritesScreen
+import com.samm.space.features.favorites_page.presentation.LibraryFavoritesScreen
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.DetailsScreen
 import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.LibraryListScreen
 import com.samm.space.features.nasa_media_library_page.presentation.view_models.DetailsViewModel
@@ -25,6 +27,7 @@ fun AppNavigation(navController: NavController) {
 
     val mediaDataViewModel: DetailsViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
+    apodViewModel.getApodFavorites()
     val libraryViewModel: MediaLibraryViewModel = hiltViewModel()
 
     val favorites = libraryViewModel.favoriteState.collectAsState().value
@@ -102,16 +105,33 @@ fun AppNavigation(navController: NavController) {
             val state = apodViewModel.state.collectAsStateWithLifecycle().value
             ApodScreen(
                 state = state,
+                insert = apodViewModel::insert,
+                delete = apodViewModel::delete,
                 refresh = apodViewModel::getApodState
             )
         }
 
         composable("favorites_screen") {
-            FavoriteScreen(
+            FavoritesScreen(navController = navController)
+        }
+
+        composable("library-favorites-screen") {
+            LibraryFavoritesScreen(
                 libraryFavoriteState = favorites,
                 sendEvent = libraryViewModel::sendEvent,
                 navigate = navController::navigate,
                 encodeText = libraryViewModel::encodeText
+            )
+        }
+        composable("apod-favorites-screen") {
+            val state = apodViewModel.favoriteState.collectAsStateWithLifecycle().value
+
+            ApodFavoritesScreen(
+                state = state,
+                insert = apodViewModel::insert,
+                delete = apodViewModel::delete,
+                navigate = navController::navigate,
+                encodeText = apodViewModel::encodeText
             )
         }
     }

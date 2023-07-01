@@ -28,7 +28,7 @@ class DetailsViewModel @Inject constructor(
     val state: StateFlow<DetailsScreenState> = _state
 
     fun getMediaData(url: String) {
-        mediaLibraryRepository.videoDataFlow(url).onEach { response ->
+        mediaLibraryRepository.mediaDataFlow(url).onEach { response ->
 
             when (response) {
                 is Resource.Success -> {

@@ -1,4 +1,4 @@
-package com.samm.space.common.presentation.buttons
+package com.samm.space.features.picture_of_the_day_page.presentation.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
@@ -21,18 +21,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import com.samm.space.features.nasa_media_library_page.domain.models.Item
-import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 import kotlinx.coroutines.delay
 
 @Composable
-fun FavoritesButton(
-    item: Item,
-    favorites: List<Item>?,
-    event: (LibraryUiEvent) -> Unit,
+fun ApodFavoritesButton(
+    item: Apod,
+    favorites: List<Apod>?,
+    insert: (item: Apod) -> Unit,
+    delete: (item: Apod) -> Unit
 ) {
 
-    val inFavoritesList = favorites?.any { it.href == item.href }
+    val inFavoritesList = favorites?.any { it.url == item.url }
     var isFavorite by remember { mutableStateOf(inFavoritesList) }
     var isAnimated by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -65,7 +65,11 @@ fun FavoritesButton(
 
     IconButton(
         onClick = {
-            event(LibraryUiEvent.ToggleFavorite(item))
+            if (isFavorite == false) {
+                insert(item)
+            } else {
+                delete(item)
+            }
             isFavorite = !isFavorite!!
             isAnimated = true
         },

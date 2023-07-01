@@ -36,7 +36,7 @@ class FileHandler {
         downloadManager.enqueue(request)
     }
 
-    // Todo: This is stupid and you need to move it to the view model - completely redo this
+    // Todo: Move this to a view model
     suspend fun shareFile(
         uri: String,
         mimeType: String,

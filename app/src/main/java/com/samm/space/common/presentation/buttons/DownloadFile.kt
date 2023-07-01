@@ -11,28 +11,29 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import com.samm.space.common.presentation.util.FileHandler
 import com.samm.space.core.Constants.buttonWidth
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @Composable
 fun DownloadFile(
+    event: (LibraryUiEvent) -> Unit,
     url: String?,
     filename: String?,
     mimeType: String,
     subPath: String
 ) {
-    val utils = FileHandler()
+
     val context = LocalContext.current
 
     OutlinedButton(
         onClick = {
-            utils.downloadFile(
+            event(LibraryUiEvent.DownloadFile(
                 context = context,
                 url = url,
-                fileName = filename,
+                filename = filename,
                 mimeType = mimeType,
                 subPath = subPath
-            )
+            ))
             Toast.makeText(context, "Downloading...", Toast.LENGTH_SHORT).show()
         },
         modifier = Modifier

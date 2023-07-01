@@ -34,7 +34,7 @@ fun CardImage(
 
     Card(
         modifier = fastInAnimation,
-        shape = AbsoluteRoundedCornerShape(10),
+        shape = AbsoluteRoundedCornerShape(10)
     ) {
 
         when(mediaType) {

@@ -1,12 +1,6 @@
 package com.samm.space.features.nasa_media_library_page.presentation.view_models
 
-import android.content.Context
-import android.content.Intent
-import android.os.Environment
 import android.util.Log
-import android.webkit.MimeTypeMap
-import androidx.activity.result.ActivityResultLauncher
-import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Constants
@@ -15,19 +9,13 @@ import com.samm.space.core.Resource
 import com.samm.space.features.nasa_media_library_page.domain.repository.MediaLibraryRepository
 import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.json.JSONArray
 import org.json.JSONException
-import java.io.File
 import java.io.UnsupportedEncodingException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.net.URLDecoder
 import javax.inject.Inject
 
@@ -140,50 +128,5 @@ class DetailsViewModel @Inject constructor(
             Log.e("Decoding Failed", e.localizedMessage ?: "Unexpected Exception")
         }
         return decodedText
-    }
-
-    fun shareFile(
-        uri: String,
-        mimeType: String,
-        shareLauncher: ActivityResultLauncher<Intent>,
-        type: String,
-        context: Context
-    ) = viewModelScope.launch(Dispatchers.IO) {
-
-        val filename = "file.${MimeTypeMap.getSingleton().getExtensionFromMimeType(mimeType)}"
-        val directory = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)
-        val file = File(directory, filename)
-
-        // Download the image
-        val connection = withContext(Dispatchers.IO) {
-            URL(uri).openConnection()
-        } as HttpURLConnection
-
-        connection.doInput = true
-
-        connection.connect()
-
-        val inputStream = connection.inputStream
-
-        file.outputStream().use { outputStream ->
-            inputStream.copyTo(outputStream)
-        }
-
-        inputStream.close()
-
-        connection.disconnect()
-
-        // Create a content URI for the image using FileProvider
-        val contentUri = FileProvider.getUriForFile(
-            context,
-            "${context.packageName}.fileprovider",
-            file
-        )
-
-        // Share the image
-        val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.type = "$type/*"
-        shareIntent.putExtra(Intent.EXTRA_STREAM, contentUri)
-        shareLauncher.launch(Intent.createChooser(shareIntent, "Share file"))
     }
 }

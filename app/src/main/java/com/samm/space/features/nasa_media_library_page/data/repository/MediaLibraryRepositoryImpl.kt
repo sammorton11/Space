@@ -12,8 +12,6 @@ import com.samm.space.features.nasa_media_library_page.domain.repository.MediaLi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
-import java.io.IOException
 import javax.inject.Inject
 
 class MediaLibraryRepositoryImpl @Inject constructor(
@@ -35,18 +33,23 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     override fun searchImageVideoLibrary(query: String) = flow {
         DataStoreManager.saveLastSearchText(query)
 
-        try {
-            emit(Resource.Loading())
-            val response = getData(query)
-            Log.d("Response", response.toString())
-            emit(Resource.Success(response))
-        }
-        catch (e: HttpException){
-            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
-        }
-        catch (e: IOException){
-            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
-        }
+//        try {
+//            emit(Resource.Loading())
+//            val response = getData(query)
+//            Log.d("Response", response.toString())
+//            emit(Resource.Success(response))
+//        }
+//        catch (e: HttpException){
+//            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+//        }
+//        catch (e: IOException){
+//            emit(Resource.Error(e.localizedMessage ?: "Unexpected Error"))
+//        }
+        emit(Resource.Loading())
+        val response = getData(query)
+        emit(Resource.Success(response))
+    }.catch {
+        emit(Resource.Error(it.localizedMessage ?: "Unexpected Error"))
     }
 
     override fun videoDataFlow(url: String) = flow {

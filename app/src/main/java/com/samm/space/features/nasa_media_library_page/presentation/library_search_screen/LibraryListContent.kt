@@ -62,7 +62,7 @@ fun LibraryListContent(
             ListCard(
                 sendEvent = sendEvent,
                 encodeText = encodeText,
-                data = listCardData,
+                state = listCardData,
                 navigate = navigate
             )
         }

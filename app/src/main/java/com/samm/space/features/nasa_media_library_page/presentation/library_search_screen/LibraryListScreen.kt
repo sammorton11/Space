@@ -29,8 +29,8 @@ import kotlinx.coroutines.flow.Flow
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun LibraryListScreen(
-    event: (LibraryUiEvent) -> Unit,
     state: MediaLibraryState,
+    event: (LibraryUiEvent) -> Unit,
     navigate: (route: String) -> Unit,
     getSavedSearchText: () -> Flow<String>,
     filteredList: (data: List<Item?>, filterType: String) -> List<Item?>,

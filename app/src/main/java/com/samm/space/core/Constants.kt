@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets
 
 object Constants {
 
-    const val BASE_URL_MARS_DATA = "https://api.nasa.gov/"
+    const val BASE_URL_APOD = "https://api.nasa.gov/"
     const val API_KEY = "qGqHQYIgYmjxAKCaFJHaN9I3XTvpbHQHS8N7yMNO"
     const val NO_BACKGROUND = 0
     val imageScaleType = ContentScale.FillBounds
@@ -35,7 +35,7 @@ object Constants {
         )
     )
     val fastInAnimation = Modifier.animateContentSize(
-        animationSpec = tween(durationMillis = 1500,
+        animationSpec = tween(durationMillis = 500,
             easing = FastOutSlowInEasing
         )
     )

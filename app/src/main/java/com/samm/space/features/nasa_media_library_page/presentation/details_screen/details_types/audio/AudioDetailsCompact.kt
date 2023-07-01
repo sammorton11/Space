@@ -18,17 +18,25 @@ import com.samm.space.common.presentation.buttons.ShareButton
 import com.samm.space.common.presentation.labels.DateLabel
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.core.Constants
+import com.samm.space.core.MediaType
+import com.samm.space.core.MediaType.Companion.toMediaType
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.components.DescriptionText
+import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @Composable
 fun AudioDetailsCompact(
-    audioPlayerUri: String,
-    uri: String,
-    mediaType: String,
-    title: String?,
-    date: String?,
-    description: String
+    state: DetailsScreenState,
+    event: (LibraryUiEvent) -> Unit,
+    getUri: (String?, MediaType) -> String
 ) {
+
+    val mediaType = state.type?.toMediaType()
+    val data = state.data
+    val audioPlayerUri = mediaType?.let { getUri(data, it) }
+    val description = state.description
+    val title = state.title
+    val date = state.date
 
     LazyColumn (
         modifier = Modifier
@@ -55,15 +63,15 @@ fun AudioDetailsCompact(
                 uri = audioPlayerUri
             )
             DownloadFile(
+                event = event,
                 url = audioPlayerUri,
                 filename = audioPlayerUri,
                 mimeType = Constants.audioMimeTypeForDownload,
                 subPath = Constants.audioSubPathForDownload
             )
             ShareButton(
-                uri = uri.toUri(),
-                mimeType = Constants.audioMimeTypeForDownload,
-                mediaType = mediaType
+                uri = audioPlayerUri?.toUri(),
+                mediaType = mediaType?.type
             )
             DateLabel(date = date)
         }

@@ -13,22 +13,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import com.samm.space.common.presentation.ProgressBar
-import com.samm.space.common.presentation.buttons.DownloadFile
 import com.samm.space.common.presentation.buttons.ShareButton
 import com.samm.space.common.presentation.labels.ErrorText
 import com.samm.space.common.presentation.labels.Title
-import com.samm.space.core.Constants
+import com.samm.space.common.presentation.util.DateConverter
 import com.samm.space.core.MediaType
 import com.samm.space.features.picture_of_the_day_page.presentation.state.ApodState
 
 @Composable
 fun ApodComponentsForLargeScreen(
     state: ApodState,
-    hdImage: String?,
-    explanation: String?,
-    date: String?, copyright: String?,
     refresh: () -> Unit
 ) {
+
+    val data = state.data
+    val hdImage = data?.hdurl
+    val explanation = data?.explanation
+    val copyright = data?.copyright
+    val date = data?.date?.let { DateConverter.formatDisplayDate(data.date) }
+
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -41,7 +44,6 @@ fun ApodComponentsForLargeScreen(
             state.isLoading -> {
                 ProgressBar()
             }
-
             state.data?.url?.isNotEmpty() == true -> {
                 PictureOfTheDay(imageLink = hdImage)
 
@@ -49,23 +51,13 @@ fun ApodComponentsForLargeScreen(
                     .padding(25.dp)
                     .fillMaxSize()
                 ) {
-
                     item {
 
                         Title(text = "Picture of the Day", paddingValue = 15.dp)
                         ApodExplanation(explanation)
                         hdImage?.let { image ->
-
-                            DownloadFile(
-                                url = image,
-                                filename = hdImage,
-                                mimeType = Constants.imageMimeTypeForDownload,
-                                subPath = Constants.imageSubPathForDownload
-                            )
-
                             ShareButton(
                                 uri = image.toUri(),
-                                mimeType = Constants.imageMimeTypeForDownload,
                                 mediaType = MediaType.IMAGE.type
                             )
                         }
@@ -74,7 +66,6 @@ fun ApodComponentsForLargeScreen(
                     }
                 }
             }
-
             state.error?.isNotBlank() == true -> {
                 ErrorText(error = state.error)
                 Button(onClick = { refresh() }) {
@@ -82,6 +73,5 @@ fun ApodComponentsForLargeScreen(
                 }
             }
         }
-
     }
 }

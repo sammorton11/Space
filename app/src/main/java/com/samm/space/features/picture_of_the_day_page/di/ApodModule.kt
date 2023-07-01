@@ -1,6 +1,7 @@
 package com.samm.space.features.picture_of_the_day_page.di
 
 import com.samm.space.core.Constants.BASE_URL_APOD
+import com.samm.space.features.favorites_page.data.database.SpaceExplorerDatabase
 import com.samm.space.features.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.features.picture_of_the_day_page.data.repository.ApodRepositoryImpl
 import com.samm.space.features.picture_of_the_day_page.domain.repository.ApodRepository
@@ -29,7 +30,7 @@ object ApodModule {
 
     @Provides
     @Singleton
-    fun provideApodRepository(api: ApodApi): ApodRepository {
-        return ApodRepositoryImpl(api)
+    fun provideApodRepository(api: ApodApi, database: SpaceExplorerDatabase): ApodRepository {
+        return ApodRepositoryImpl(api, database)
     }
 }

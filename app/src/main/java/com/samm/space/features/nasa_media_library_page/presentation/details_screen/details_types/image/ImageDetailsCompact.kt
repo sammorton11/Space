@@ -1,10 +1,15 @@
 package com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.image
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -32,13 +37,30 @@ fun ImageDetailsCompact(
     getUri: (String?, MediaType) -> String
 ) {
 
+    var uri by remember { mutableStateOf("") }
+
     val mediaType = state.type?.toMediaType()
+    Log.d("media type", mediaType?.type.toString())
     val data = state.data
-    val uri = mediaType?.let { getUri(data, it) }
+
+    /*
+        Todo - note:
+        When the user is on the Library screen the metaDataUrl will be a json file
+        that will need to be dealt with.
+
+        If they are going to the details screen for a favorite APOD, it will simply be a jpg file.
+        This logic will be improved. Might just make separate composables for the
+        ApodFavorites Screen.
+     */
+    uri = if (state.metaDataUrl?.contains(".json") == true) {
+       mediaType?.let { getUri(data, it) }.toString()
+    } else {
+        state.metaDataUrl.toString()
+    }
+
     val description = state.description
     val title = state.title
     val date = state.date
-
 
     LazyColumn (
         modifier = Modifier
@@ -54,7 +76,6 @@ fun ImageDetailsCompact(
                 text = title,
                 paddingValue = 15.dp
             )
-
             DetailsImage(
                 imageLink = uri,
                 scale = ContentScale.Fit
@@ -73,7 +94,7 @@ fun ImageDetailsCompact(
                 subPath = Constants.imageSubPathForDownload
             )
             ShareButton(
-                uri = uri?.toUri(),
+                uri = uri.toUri(),
                 mediaType = mediaType?.type
             )
             DateLabel(date = date)

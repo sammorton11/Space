@@ -1,5 +1,6 @@
-package com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards
+package com.samm.space.features.picture_of_the_day_page.presentation.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,22 +19,28 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
-import com.samm.space.core.MediaType
-import com.samm.space.features.favorites_page.presentation.FavoritesButton
-import com.samm.space.features.nasa_media_library_page.domain.models.Item
-import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
+import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.CardImage
+import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.CardTitle
+import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCardData
 import com.samm.space.features.picture_of_the_day_page.domain.models.Apod
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListCard(
-    sendEvent: (LibraryUiEvent) -> Unit,
+fun ApodFavoritesListCard(
+    insert: (item: Apod) -> Unit,
+    delete: (item: Apod) -> Unit,
     encodeText: (text: String?) -> String,
     navigate: (route: String) -> Unit,
     state: ListCardData
 ){
+
+    Log.d("Url", state.url.toString())
+
     val roundedCornerAmount = 10
+
     val encodedUrl = encodeText(state.url)
+    Log.d("Url", encodedUrl)
+
     val encodedDescription = encodeText(state.description)
     val encodedDateText = encodeText(state.dateText)
 
@@ -61,11 +68,15 @@ fun ListCard(
                 horizontalArrangement = Arrangement.End
             ) {
 
-                state.item?.let {
-                    FavoritesButton(
+                Log.d("Apod data", state.apod.toString())
+
+                state.apod?.let {
+
+                    ApodFavoritesButton(
                         item = it,
-                        favorites = state.favorites,
-                        event = sendEvent,
+                        favorites = state.apodFavorites,
+                        insert = insert,
+                        delete = delete
                     )
                 }
             }
@@ -87,16 +98,3 @@ fun ListCard(
         }
     }
 }
-
-data class ListCardData(
-    var favorites: List<Item>? = null,
-    var apodFavorites: List<Apod>? = null,
-    var item: Item? = null,
-    var apod: Apod? = null,
-    var url: String?,
-    var image: String?,
-    var itemTitle: String?,
-    var dateText: String?,
-    var description: String?,
-    var mediaTypeString: MediaType
-)

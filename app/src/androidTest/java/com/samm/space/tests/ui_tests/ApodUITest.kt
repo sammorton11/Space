@@ -11,6 +11,7 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.samm.space.features.picture_of_the_day_page.presentation.ApodScreen
 import com.samm.space.features.picture_of_the_day_page.presentation.ApodViewModel
 import com.samm.space.ui.theme.SpaceTheme
@@ -58,8 +59,13 @@ class ApodUITest: BaseTest() {
                         color = MaterialTheme.colorScheme.background
                     ) {
                         val viewModel: ApodViewModel = hiltViewModel()
-                        val state = viewModel.state
-                        ApodScreen(stateFlow = state, refresh = viewModel::getApodState)
+                        val state = viewModel.state.collectAsStateWithLifecycle().value
+                        ApodScreen(
+                            state = state,
+                            insert = viewModel::insert,
+                            delete = viewModel::delete,
+                            refresh = viewModel::getApodState
+                        )
                     }
                 }
             }

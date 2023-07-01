@@ -1,6 +1,6 @@
 package com.samm.space.features.picture_of_the_day_page.di
 
-import com.samm.space.core.Constants.BASE_URL_MARS_DATA
+import com.samm.space.core.Constants.BASE_URL_APOD
 import com.samm.space.features.picture_of_the_day_page.data.network.ApodApi
 import com.samm.space.features.picture_of_the_day_page.data.repository.ApodRepositoryImpl
 import com.samm.space.features.picture_of_the_day_page.domain.repository.ApodRepository
@@ -16,11 +16,12 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object ApodModule {
+
     @Provides
     @Singleton
     fun provideApodApi(): ApodApi {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL_MARS_DATA)
+            .baseUrl(BASE_URL_APOD)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApodApi::class.java)

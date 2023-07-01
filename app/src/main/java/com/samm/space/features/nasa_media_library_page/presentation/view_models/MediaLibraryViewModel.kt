@@ -1,8 +1,10 @@
 package com.samm.space.features.nasa_media_library_page.presentation.view_models
 
+import android.app.DownloadManager
+import android.content.Context
 import android.net.Uri
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
+import android.os.Environment
+import androidx.core.net.toUri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,8 +31,8 @@ class MediaLibraryViewModel @Inject constructor (
     private val mediaLibraryRepository: MediaLibraryRepository
 ): ViewModel() {
 
-    private val _state = mutableStateOf(MediaLibraryState())
-    val state: State<MediaLibraryState> = _state
+    private val _state = MutableStateFlow(MediaLibraryState())
+    val state: StateFlow<MediaLibraryState> = _state
 
     private val _listFilterType = MutableLiveData<String>()
     val listFilterType: LiveData<String> = _listFilterType
@@ -41,10 +43,29 @@ class MediaLibraryViewModel @Inject constructor (
     private val _favoriteState = MutableStateFlow(LibraryFavoriteState())
     var favoriteState: StateFlow<LibraryFavoriteState> = _favoriteState
 
+    private fun fetchLibraryData(query: String) {
+        mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
 
+            val itemsList = response.data?.collection?.items
+
+            when(response) {
+                is Resource.Success -> {
+                    _state.value = MediaLibraryState(data = itemsList ?: emptyList())
+                }
+                is Resource.Error -> {
+                    _state.value = MediaLibraryState(error = "Error: ${response.message}")
+                }
+                is Resource.Loading -> {
+                    _state.value = MediaLibraryState(isLoading = true)
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    // Event handling
     private fun handleEvent(event: LibraryUiEvent) {
         when (event) {
-            is LibraryUiEvent.SearchLibrary -> getData(event.query)
+            is LibraryUiEvent.SearchLibrary -> fetchLibraryData(event.query)
             is LibraryUiEvent.ChangeBackground -> updateBackgroundType(event.id)
             is LibraryUiEvent.UpdateFilterType -> updateListFilterType(event.type)
             is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
@@ -52,6 +73,13 @@ class MediaLibraryViewModel @Inject constructor (
             is LibraryUiEvent.RemoveFavorite -> removeFavorite(item = event.item)
             is LibraryUiEvent.UpdateFavorite -> updateFavorite(event.id, event.isFavorite)
             is LibraryUiEvent.ToggleFavorite -> toggleFavorite(item = event.item)
+            is LibraryUiEvent.DownloadFile -> downloadFile(
+                context = event.context,
+                url = event.url,
+                subPath = event.subPath,
+                fileName = event.filename,
+                mimeType = event.mimeType
+            )
         }
     }
 
@@ -59,6 +87,15 @@ class MediaLibraryViewModel @Inject constructor (
         handleEvent(event)
     }
 
+
+    // Handle favorites logic
+    fun getAllFavorites() = viewModelScope.launch {
+        val favorites = mediaLibraryRepository.getAllFavorites()
+
+        favorites.collect { listOfFavorites ->
+            _favoriteState.value.libraryFavorites = listOfFavorites
+        }
+    }
     private fun toggleFavorite(item: Item) {
         if (favoriteState.value.libraryFavorites?.any { it.href == item.href } == true) {
             removeFavorite(item)
@@ -66,7 +103,6 @@ class MediaLibraryViewModel @Inject constructor (
             insertFavorite(item)
         }
     }
-
     private fun updateFavorite(id: Int, isFavorite: Boolean) = viewModelScope.launch(Dispatchers.IO) {
         mediaLibraryRepository.updateFavorite(id, isFavorite)
     }
@@ -74,16 +110,6 @@ class MediaLibraryViewModel @Inject constructor (
     private fun insertFavorite(item: Item) = viewModelScope.launch  {
         mediaLibraryRepository.insertFavorite(item = item)
     }
-
-
-    fun getAllFavorites() {
-        viewModelScope.launch {
-            mediaLibraryRepository.getAllFavorites().collect { favorites ->
-                _favoriteState.value.libraryFavorites = favorites
-            }
-        }
-    }
-
     private fun removeFavorite(item: Item) = viewModelScope.launch(Dispatchers.IO) {
         favoriteState.value.libraryFavorites?.forEach { favoriteItem ->
             if (favoriteItem.href == item.href) {
@@ -93,35 +119,9 @@ class MediaLibraryViewModel @Inject constructor (
         }
     }
 
+
     private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {
         _state.value = MediaLibraryState(data = filterList(data, type))
-    }
-
-    fun getData(query: String) {
-        mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->
-
-            val success = response.data
-            val error = response.message
-            val itemsList = success?.collection?.items
-
-            when(response) {
-                is Resource.Success -> {
-                    _state.value = MediaLibraryState(data = itemsList ?: emptyList())
-                }
-                is Resource.Error -> {
-                    _state.value = MediaLibraryState(error = "Error: $error")
-                }
-                is Resource.Loading -> {
-                    _state.value = MediaLibraryState(isLoading = true)
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    fun getSavedSearchText(): Flow<String> {
-        return mediaLibraryRepository
-            .savedQueryFlow()
-            .map { query -> query ?: "Search" }
     }
 
     private fun updateListFilterType(filterType: String) {
@@ -130,6 +130,31 @@ class MediaLibraryViewModel @Inject constructor (
 
     private fun updateBackgroundType(backgroundType: Int) {
         _backgroundType.value = backgroundType
+    }
+
+    private fun downloadFile(
+        context: Context,
+        url: String?,
+        fileName: String?,
+        mimeType: String?,
+        subPath: String?,
+    ) {
+        val downloadManager = context.getSystemService(DownloadManager::class.java)
+        val request = DownloadManager.Request(url?.toUri())
+            .setTitle(fileName)
+            .setMimeType(mimeType)
+            .setDescription("Downloading...")
+            .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
+            .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, subPath)
+            .setAllowedOverMetered(true)
+            .setAllowedOverRoaming(true)
+        downloadManager.enqueue(request)
+    }
+
+    fun getSavedSearchText(): Flow<String> {
+        return mediaLibraryRepository
+            .savedQueryFlow()
+            .map { query -> query ?: "Search" }
     }
 
     fun encodeText(text: String?): String {

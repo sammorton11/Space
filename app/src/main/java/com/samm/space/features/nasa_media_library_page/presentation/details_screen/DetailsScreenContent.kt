@@ -8,44 +8,35 @@ import com.samm.space.features.nasa_media_library_page.presentation.details_scre
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.image.ImageDetails
 import com.samm.space.features.nasa_media_library_page.presentation.details_screen.details_types.video.VideoDetails
 import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @Composable
 fun DetailsScreenContent(
     state: DetailsScreenState,
+    event: (LibraryUiEvent) -> Unit,
     getUri: (String?, MediaType) -> String
 ) {
 
-    val mediaType = state.type?.toMediaType()
-    val data = state.data
-    val mediaFileUri = mediaType?.let { getUri(data, it) }
-
-    when (mediaType) {
+    when (state.type?.toMediaType()) {
         MediaType.VIDEO -> {
             VideoDetails(
-                mediaType = mediaType.type,
-                uri = mediaFileUri,
-                title = state.title,
-                date = state.date,
-                description = state.description!!
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
         MediaType.AUDIO -> {
             AudioDetails(
-                audioPlayerUri = mediaFileUri ?: "",
-                uri = mediaFileUri!!,
-                mediaType = mediaType.type,
-                title = state.title,
-                date = state.date,
-                description = state.description!!
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
         MediaType.IMAGE -> {
             ImageDetails(
-                uri = mediaFileUri!!,
-                mediaType = mediaType.type,
-                title = state.title,
-                date = state.date,
-                description = state.description!!
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
         else -> {

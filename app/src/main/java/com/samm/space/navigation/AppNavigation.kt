@@ -21,9 +21,7 @@ import com.samm.space.features.picture_of_the_day_page.presentation.ApodScreen
 import com.samm.space.features.picture_of_the_day_page.presentation.ApodViewModel
 
 @Composable
-fun AppNavigation(
-    navController: NavController
-) {
+fun AppNavigation(navController: NavController) {
 
     val mediaDataViewModel: DetailsViewModel = hiltViewModel()
     val apodViewModel: ApodViewModel = hiltViewModel()
@@ -38,11 +36,10 @@ fun AppNavigation(
     ) {
 
         composable("library_search_screen") {
-            val state = libraryViewModel.state.value
+            val state = libraryViewModel.state.collectAsStateWithLifecycle().value
 
             val backgroundType = libraryViewModel.backgroundType
                 .observeAsState(initial = Constants.NO_BACKGROUND).value
-
             val filterType = libraryViewModel.listFilterType
                 .observeAsState("").value
 
@@ -94,6 +91,7 @@ fun AppNavigation(
 
                 DetailsScreen(
                     state = updatedState,
+                    event = libraryViewModel::sendEvent,
                     getMediaData = mediaDataViewModel::getMediaData,
                     getUri = mediaDataViewModel::getUri
                 )
@@ -101,9 +99,9 @@ fun AppNavigation(
         }
 
         composable("apod_screen") {
-            val state = apodViewModel.state
+            val state = apodViewModel.state.collectAsStateWithLifecycle().value
             ApodScreen(
-                stateFlow = state,
+                state = state,
                 refresh = apodViewModel::getApodState
             )
         }

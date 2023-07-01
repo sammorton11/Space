@@ -30,7 +30,6 @@ object DataStoreManager {
             preferences[LAST_SEARCH_TEXT_KEY] = lastSearchText
         }
     }
-
     suspend fun getLastSearchText(): String? {
         val preferences = dataStore.data.first()
         return preferences[LAST_SEARCH_TEXT_KEY]

@@ -3,14 +3,15 @@ package com.samm.space.features.nasa_media_library_page.presentation.details_scr
 import androidx.compose.runtime.Composable
 import com.samm.space.common.presentation.util.WindowInfo
 import com.samm.space.common.presentation.util.rememberWindowInfo
+import com.samm.space.core.MediaType
+import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @Composable
 fun ImageDetails(
-    uri: String,
-    mediaType: String,
-    title: String?,
-    date: String?,
-    description: String
+    state: DetailsScreenState,
+    event: (LibraryUiEvent) -> Unit,
+    getUri: (String?, MediaType) -> String
 ) {
     val window = rememberWindowInfo()
 
@@ -18,29 +19,23 @@ fun ImageDetails(
 
         is WindowInfo.WindowType.Compact -> {
             ImageDetailsCompact(
-                uri = uri,
-                mediaType = mediaType,
-                title = title,
-                date = date,
-                description = description
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
         is WindowInfo.WindowType.Medium -> {
             ImageDetailsMedium(
-                uri = uri,
-                mediaType = mediaType,
-                title = title,
-                date = date,
-                description = description
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
         is WindowInfo.WindowType.Expanded -> {
             ImageDetailsExpanded(
-                uri = uri,
-                mediaType = mediaType,
-                title = title,
-                date = date,
-                description = description
+                state = state,
+                event = event,
+                getUri = getUri
             )
         }
     }

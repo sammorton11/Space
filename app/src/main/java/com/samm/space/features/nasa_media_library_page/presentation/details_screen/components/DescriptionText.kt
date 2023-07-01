@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DescriptionText(content: String) {
+fun DescriptionText(content: String?) {
 
     var isExpanded by remember { mutableStateOf(false) }
 
@@ -33,19 +33,21 @@ fun DescriptionText(content: String) {
 
         CompositionLocalProvider {
             SelectionContainer {
-                Text(
-                    text = content,
-                    modifier = Modifier
-                        .semantics { testTag = "Details Text" }
-                        .padding(top = 8.dp)
-                        .animateContentSize()
-                        .clickable {
-                            isExpanded = !isExpanded
-                        },
-                    overflow = TextOverflow.Ellipsis,
-                    softWrap = true,
-                    maxLines = if (!isExpanded) 5 else 1000
-                )
+                if (content != null) {
+                    Text(
+                        text = content,
+                        modifier = Modifier
+                            .semantics { testTag = "Details Text" }
+                            .padding(top = 8.dp)
+                            .animateContentSize()
+                            .clickable {
+                                isExpanded = !isExpanded
+                            },
+                        overflow = TextOverflow.Ellipsis,
+                        softWrap = true,
+                        maxLines = if (!isExpanded) 5 else 1000
+                    )
+                }
             }
         }
     }

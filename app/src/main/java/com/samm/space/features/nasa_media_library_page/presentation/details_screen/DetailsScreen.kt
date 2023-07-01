@@ -6,12 +6,14 @@ import com.samm.space.common.presentation.ProgressBar
 import com.samm.space.common.presentation.labels.ErrorText
 import com.samm.space.core.MediaType
 import com.samm.space.features.nasa_media_library_page.presentation.state.DetailsScreenState
+import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 
 @Composable
 fun DetailsScreen(
     state: DetailsScreenState,
-    getMediaData: (url: String) -> Unit,
-    getUri: (String?, MediaType) -> String
+    event: (LibraryUiEvent) -> Unit,
+    getUri: (String?, MediaType) -> String,
+    getMediaData: (url: String) -> Unit
 ) {
 
     val mediaDataUrl = state.metaDataUrl
@@ -25,6 +27,7 @@ fun DetailsScreen(
         state.data?.isNotEmpty() == true -> {
             DetailsScreenContent(
                 state = state,
+                event = event,
                 getUri = getUri
             )
         }
@@ -33,4 +36,3 @@ fun DetailsScreen(
         }
     }
 }
-

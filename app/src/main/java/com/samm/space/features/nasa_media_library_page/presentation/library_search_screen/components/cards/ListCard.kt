@@ -29,12 +29,12 @@ fun ListCard(
     sendEvent: (LibraryUiEvent) -> Unit,
     encodeText: (text: String?) -> String,
     navigate: (route: String) -> Unit,
-    data: ListCardData
+    state: ListCardData
 ){
     val roundedCornerAmount = 10
-    val encodedUrl = encodeText(data.url)
-    val encodedDescription = encodeText(data.description)
-    val encodedDateText = encodeText(data.dateText)
+    val encodedUrl = encodeText(state.url)
+    val encodedDescription = encodeText(state.description)
+    val encodedDateText = encodeText(state.dateText)
 
     Card(
         modifier = Modifier
@@ -43,7 +43,7 @@ fun ListCard(
         onClick = {
             navigate(
                 "cardDetails/${encodedUrl}/${encodedDescription}/" +
-                    "${data.mediaTypeString.type}/${encodeText(data.itemTitle)}/$encodedDateText"
+                    "${state.mediaTypeString.type}/${encodeText(state.itemTitle)}/$encodedDateText"
             )
         },
         shape = AbsoluteRoundedCornerShape(roundedCornerAmount)
@@ -51,8 +51,8 @@ fun ListCard(
 
         Box {
             CardImage(
-                imageLink = data.image,
-                mediaType = data.mediaTypeString
+                imageLink = state.image,
+                mediaType = state.mediaTypeString
             )
 
             Row(
@@ -61,8 +61,8 @@ fun ListCard(
             ) {
 
                 FavoritesButton(
-                    item = data.item!!,
-                    favorites = data.favorites,
+                    item = state.item!!,
+                    favorites = state.favorites,
                     event = sendEvent,
                 )
             }
@@ -79,7 +79,7 @@ fun ListCard(
                         )
                     )
             ) {
-                CardTitle(title = data.itemTitle)
+                CardTitle(title = state.itemTitle)
             }
         }
     }

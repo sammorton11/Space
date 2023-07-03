@@ -107,7 +107,8 @@ fun AppNavigation(navController: NavController) {
                 state = state,
                 insert = apodViewModel::insert,
                 delete = apodViewModel::delete,
-                refresh = apodViewModel::getApodState
+                refresh = apodViewModel::getApodState,
+                getData = apodViewModel::getDataByDate
             )
         }
 

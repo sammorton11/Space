@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface ApodRepository {
 
     suspend fun getData(): Apod?
+    suspend fun getDataByDate(date: String): Apod?
     fun getApodData(): Flow<Resource<Apod?>>
 
     fun getAllFavorites(): Flow<List<Apod>>

@@ -20,6 +20,10 @@ class ApodRepositoryImpl @Inject constructor(
         return api.getApod()
     }
 
+    override suspend fun getDataByDate(date: String): Apod? {
+        return api.getApodByDate(date = date)
+    }
+
     override fun getApodData() = flow {
         emit(Resource.Loading())
         val response = getData()

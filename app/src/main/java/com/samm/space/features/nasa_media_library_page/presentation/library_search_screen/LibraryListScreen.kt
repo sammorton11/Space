@@ -1,6 +1,8 @@
 package com.samm.space.features.nasa_media_library_page.presentation.library_search_screen
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -11,6 +13,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,8 +51,13 @@ fun LibraryListScreen(
         is WindowInfo.WindowType.Expanded -> 4
     }
 
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+//    val isPortraitMode = LocalConfiguration.current.orientation == Configuration.ORIENTATION_PORTRAIT
+
     val modifier = Modifier.then(
-        if (state.backgroundType == NO_BACKGROUND) {
+        if (state.backgroundType == NO_BACKGROUND || !isPortrait) {
             Modifier.fillMaxSize()
         } else {
             Modifier
@@ -61,40 +69,46 @@ fun LibraryListScreen(
         }
     )
 
-    Column(modifier = modifier.testTag("Media Library Screen")) {
-        if (scrollState.value == 0 || state.data.size <= 2) {
-            SearchField(
-                onSearch = { query ->
-                    event(LibraryUiEvent.SearchLibrary(query))
-                    event(LibraryUiEvent.UpdateFilterType(""))
-                },
-                savedQuery = savedSearchTextState
-            )
-        }
+    Box(modifier = modifier) {
 
-        when {
-            state.isLoading -> {
-                ProgressBar()
-            }
-            state.data.isNotEmpty() -> {
-                LibraryListContent(
-                    state = state,
-                    sendEvent = event,
-                    scrollState = lazyGridState,
-                    gridCells = gridCells,
-                    filteredList = filteredList,
-                    encodeText = encodeText,
-                    navigate = navigate
+
+        Column(modifier = Modifier.testTag("Media Library Screen")) {
+            if (scrollState.value == 0 || state.data.size <= 2) {
+                SearchField(
+                    onSearch = { query ->
+                        event(LibraryUiEvent.SearchLibrary(query))
+                        event(LibraryUiEvent.UpdateFilterType(""))
+                    },
+                    savedQuery = savedSearchTextState
                 )
             }
-            state.error.isNotBlank() -> {
-                ErrorText(error = state.error)
-                Button(
-                    onClick = {
-                        event(LibraryUiEvent.SearchLibrary(savedSearchTextState))
+
+            when {
+                state.isLoading -> {
+                    ProgressBar()
+                }
+
+                state.data.isNotEmpty() -> {
+                    LibraryListContent(
+                        state = state,
+                        sendEvent = event,
+                        scrollState = lazyGridState,
+                        gridCells = gridCells,
+                        filteredList = filteredList,
+                        encodeText = encodeText,
+                        navigate = navigate
+                    )
+                }
+
+                state.error.isNotBlank() -> {
+                    ErrorText(error = state.error)
+                    Button(
+                        onClick = {
+                            event(LibraryUiEvent.SearchLibrary(savedSearchTextState))
+                        }
+                    ) {
+                        Text(text = "Refresh")
                     }
-                ) {
-                    Text(text = "Refresh")
                 }
             }
         }

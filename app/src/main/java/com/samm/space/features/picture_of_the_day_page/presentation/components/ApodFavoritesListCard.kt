@@ -71,7 +71,6 @@ fun ApodFavoritesListCard(
                 Log.d("Apod data", state.apod.toString())
 
                 state.apod?.let {
-
                     ApodFavoritesButton(
                         item = it,
                         favorites = state.apodFavorites,

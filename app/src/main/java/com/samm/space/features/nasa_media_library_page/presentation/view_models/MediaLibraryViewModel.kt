@@ -31,6 +31,7 @@ class MediaLibraryViewModel @Inject constructor (
     private val mediaLibraryRepository: MediaLibraryRepository
 ): ViewModel() {
 
+
     private val _state = MutableStateFlow(MediaLibraryState())
     val state: StateFlow<MediaLibraryState> = _state
 
@@ -42,6 +43,8 @@ class MediaLibraryViewModel @Inject constructor (
 
     private val _favoriteState = MutableStateFlow(LibraryFavoriteState())
     var favoriteState: StateFlow<LibraryFavoriteState> = _favoriteState
+
+
 
     private fun fetchLibraryData(query: String) {
         mediaLibraryRepository.searchImageVideoLibrary(query).onEach { response ->

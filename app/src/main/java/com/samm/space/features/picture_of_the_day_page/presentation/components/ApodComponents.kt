@@ -60,9 +60,7 @@ fun ApodComponents(
 
                     ApodExplanation(text = explanation)
 
-                    Button(onClick = { insert(state.data) }) {
-                        Text(text = "Add to Favorites")
-                    }
+                    AddFavoriteButton(insert = insert, state = state)
 
                     hdImage?.let { image ->
                         ShareButton(

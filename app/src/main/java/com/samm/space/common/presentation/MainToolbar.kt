@@ -1,5 +1,6 @@
 package com.samm.space.common.presentation
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
@@ -18,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -35,6 +37,9 @@ fun MyToolbar(
     event: (LibraryUiEvent) -> Unit,
     navBackStackEntry: NavBackStackEntry?
 ) {
+
+    val configuration = LocalConfiguration.current
+    val isPortrait = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     val current = navBackStackEntry?.destination?.route
     Log.d("route", current.toString())
@@ -75,11 +80,13 @@ fun MyToolbar(
                     modifier = Modifier.semantics { testTag = "Options Menu Drop Down" },
                     offset = changeBackGroundMenuOffset,
                     content = {
-                        DropdownMenuItem(
-                            text = { Text(text = "Change Background") },
-                            modifier = Modifier.semantics { testTag = "Change Background Button" },
-                            onClick = { expandedChangeBackground = true }
-                        )
+                        if (isPortrait) {
+                            DropdownMenuItem(
+                                text = { Text(text = "Change Background") },
+                                modifier = Modifier.semantics { testTag = "Change Background Button" },
+                                onClick = { expandedChangeBackground = true }
+                            )
+                        }
                         DropdownMenuItem(
                             text = { Text(text = "Sort") },
                             modifier = Modifier.semantics { testTag = "Sort Button" },
@@ -128,10 +135,9 @@ fun MyToolbar(
                     offset = backgroundListMenuOffset
                 ) {
                     val backgroundItems = mapOf(
-                        "Planets Background" to R.drawable.space_background_01,
-                        "Space Man Background" to R.drawable.space_background_02,
+                        "Mountains & Galaxy Background" to R.drawable.space_background_01,
                         "Galaxy Background" to R.drawable.space_background_03,
-                        "Sci-Fi Planets Background" to R.drawable.space_background_04,
+                        "Planet Background" to R.drawable.space_background_04,
                         "No Background" to Constants.NO_BACKGROUND
                     )
 
@@ -145,7 +151,6 @@ fun MyToolbar(
                         )
                     }
                 }
-
             }
         }
     )

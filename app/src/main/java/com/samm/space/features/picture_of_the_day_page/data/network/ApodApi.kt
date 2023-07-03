@@ -6,9 +6,18 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface ApodApi {
+
     @GET("planetary/apod")
     suspend fun getApod(
         @Query("api_key")
         apiKey: String = API_KEY
+    ): Apod?
+
+    @GET("planetary/apod")
+    suspend fun getApodByDate(
+        @Query("api_key")
+        apiKey: String = API_KEY,
+        @Query("date")
+        date: String,
     ): Apod?
 }

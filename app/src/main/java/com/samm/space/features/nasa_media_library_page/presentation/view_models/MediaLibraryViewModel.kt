@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.samm.space.core.FilterType
 import com.samm.space.core.Resource
 import com.samm.space.features.favorites_page.presentation.state.LibraryFavoriteState
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
@@ -35,15 +36,14 @@ class MediaLibraryViewModel @Inject constructor (
     private val _state = MutableStateFlow(MediaLibraryState())
     val state: StateFlow<MediaLibraryState> = _state
 
-    private val _listFilterType = MutableLiveData<String>()
-    val listFilterType: LiveData<String> = _listFilterType
+    private val _listFilterType = MutableLiveData<FilterType>()
+    val listFilterType: LiveData<FilterType> = _listFilterType
 
     private val _backgroundType = MutableLiveData<Int>()
     val backgroundType: LiveData<Int> = _backgroundType
 
     private val _favoriteState = MutableStateFlow(LibraryFavoriteState())
     var favoriteState: StateFlow<LibraryFavoriteState> = _favoriteState
-
 
 
     private fun fetchLibraryData(query: String) {
@@ -85,11 +85,9 @@ class MediaLibraryViewModel @Inject constructor (
             )
         }
     }
-
     fun sendEvent(event: LibraryUiEvent) {
         handleEvent(event)
     }
-
 
     // Handle favorites logic
     fun getAllFavorites() = viewModelScope.launch {
@@ -109,7 +107,6 @@ class MediaLibraryViewModel @Inject constructor (
     private fun updateFavorite(id: Int, isFavorite: Boolean) = viewModelScope.launch(Dispatchers.IO) {
         mediaLibraryRepository.updateFavorite(id, isFavorite)
     }
-
     private fun insertFavorite(item: Item) = viewModelScope.launch  {
         mediaLibraryRepository.insertFavorite(item = item)
     }
@@ -122,12 +119,11 @@ class MediaLibraryViewModel @Inject constructor (
         }
     }
 
-
-    private fun setFilterListState(data: List<Item?>, type: String) = viewModelScope.launch {
+    private fun setFilterListState(data: List<Item?>, type: FilterType) = viewModelScope.launch {
         _state.value = MediaLibraryState(data = filterList(data, type))
     }
 
-    private fun updateListFilterType(filterType: String) {
+    private fun updateListFilterType(filterType: FilterType) {
         _listFilterType.value = filterType
     }
 
@@ -172,11 +168,11 @@ class MediaLibraryViewModel @Inject constructor (
     }
 
     // Filters out items containing the filter type value - image, video, or audio
-    fun filterList(data: List<Item?>, filterType: String): List<Item?> {
+    fun filterList(data: List<Item?>, filterType: FilterType): List<Item?> {
         return data.filter { item ->
             val dataList = item?.data?.first()
             val mediaType = dataList?.media_type
-            filterType.let { mediaType?.contains(it) } ?: false
+            filterType.value.let { mediaType?.contains(it) } ?: false
         }
     }
 }

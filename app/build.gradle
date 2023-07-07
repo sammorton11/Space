@@ -14,14 +14,13 @@ android {
         applicationId "com.samm.space"
         minSdk 29
         targetSdk 33
-        versionCode 8
-        versionName "8.0"
+        versionCode 9
+        versionName "9.0"
 
         testInstrumentationRunner "com.samm.space.hilttestrunner.CustomTestRunner"
         vectorDrawables {
             useSupportLibrary true
         }
-
     }
 
     buildTypes {

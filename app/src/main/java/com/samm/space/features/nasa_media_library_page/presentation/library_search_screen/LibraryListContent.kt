@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
+import com.samm.space.core.FilterType
 import com.samm.space.core.MediaType
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
 import com.samm.space.features.nasa_media_library_page.presentation.library_search_screen.components.cards.ListCard
@@ -24,7 +25,7 @@ fun LibraryListContent(
     scrollState: LazyStaggeredGridState,
     gridCells: Int,
     navigate: (route: String) -> Unit,
-    filteredList: (data: List<Item?>, filterType: String) -> List<Item?>,
+    filteredList: (data: List<Item?>, filterType: FilterType) -> List<Item?>,
     encodeText: (text: String?) -> String
 ) {
 

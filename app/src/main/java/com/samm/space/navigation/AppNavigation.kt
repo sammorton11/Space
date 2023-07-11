@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.samm.space.core.Constants
+import com.samm.space.core.FilterType
 import com.samm.space.features.favorites_page.presentation.ApodFavoritesScreen
 import com.samm.space.features.favorites_page.presentation.FavoritesScreen
 import com.samm.space.features.favorites_page.presentation.LibraryFavoritesScreen
@@ -44,7 +45,7 @@ fun AppNavigation(navController: NavController) {
             val backgroundType = libraryViewModel.backgroundType
                 .observeAsState(initial = Constants.NO_BACKGROUND).value
             val filterType = libraryViewModel.listFilterType
-                .observeAsState("").value
+                .observeAsState(FilterType.ALL).value
 
             val updatedState = state.copy(
                 favorites = favorites.libraryFavorites,
@@ -107,7 +108,8 @@ fun AppNavigation(navController: NavController) {
                 state = state,
                 insert = apodViewModel::insert,
                 delete = apodViewModel::delete,
-                refresh = apodViewModel::getApodState
+                refresh = apodViewModel::getApodState,
+                getData = apodViewModel::getDataByDate
             )
         }
 

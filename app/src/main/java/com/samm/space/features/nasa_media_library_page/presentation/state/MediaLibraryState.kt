@@ -1,5 +1,6 @@
 package com.samm.space.features.nasa_media_library_page.presentation.state
 
+import com.samm.space.core.FilterType
 import com.samm.space.features.nasa_media_library_page.domain.models.Item
 
 data class MediaLibraryState(
@@ -8,5 +9,5 @@ data class MediaLibraryState(
     val error: String = "",
     val favorites: List<Item>? = null,
     val backgroundType: Int = 0,
-    val listFilterType: String = ""
+    val listFilterType: FilterType = FilterType.ALL
 )

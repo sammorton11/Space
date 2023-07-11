@@ -1,6 +1,6 @@
 package com.samm.space.common.presentation
 
-import android.util.Log
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -27,6 +28,7 @@ import androidx.navigation.NavBackStackEntry
 import com.samm.space.R
 import com.samm.space.common.presentation.labels.Title
 import com.samm.space.core.Constants
+import com.samm.space.core.FilterType
 import com.samm.space.features.nasa_media_library_page.util.LibraryUiEvent
 import java.util.Locale
 
@@ -36,8 +38,9 @@ fun MyToolbar(
     navBackStackEntry: NavBackStackEntry?
 ) {
 
-    val current = navBackStackEntry?.destination?.route
-    Log.d("route", current.toString())
+    val configuration = LocalConfiguration.current
+    val isPortraitMode = configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    val currentScreen = navBackStackEntry?.destination?.route
 
     var expandedOptionsMenu by remember { mutableStateOf(false) }
     var expandedSortingMenu by remember { mutableStateOf(false) }
@@ -46,9 +49,6 @@ fun MyToolbar(
     val changeBackGroundMenuOffset = DpOffset(0.dp, 12.dp)
     val backgroundListMenuOffset = DpOffset(0.dp, 130.dp)
     val sortMenuOffset = DpOffset(0.dp, 130.dp)
-
-    val onTertiaryContainer = MaterialTheme.colorScheme.onTertiaryContainer
-    val container = MaterialTheme.colorScheme.onPrimaryContainer
 
     var selectedItemIndex by remember { mutableStateOf(0) }
 
@@ -62,7 +62,7 @@ fun MyToolbar(
             Title("Space Explorer", 0.dp)
         },
         actions = {
-            if (current == "library_search_screen") {
+            if (currentScreen == "library_search_screen") {
                 IconButton(
                     onClick = { expandedOptionsMenu = true },
                     modifier = Modifier.semantics { testTag = "Options Menu Button" }
@@ -75,13 +75,15 @@ fun MyToolbar(
                     modifier = Modifier.semantics { testTag = "Options Menu Drop Down" },
                     offset = changeBackGroundMenuOffset,
                     content = {
+                        if (isPortraitMode) {
+                            DropdownMenuItem(
+                                text = { Text(text = "Change Background") },
+                                modifier = Modifier.semantics { testTag = "Change Background Button" },
+                                onClick = { expandedChangeBackground = true }
+                            )
+                        }
                         DropdownMenuItem(
-                            text = { Text(text = "Change Background") },
-                            modifier = Modifier.semantics { testTag = "Change Background Button" },
-                            onClick = { expandedChangeBackground = true }
-                        )
-                        DropdownMenuItem(
-                            text = { Text(text = "Sort") },
+                            text = { Text(text = "Filter Results") },
                             modifier = Modifier.semantics { testTag = "Sort Button" },
                             onClick = {
                                 expandedSortingMenu = true
@@ -96,23 +98,27 @@ fun MyToolbar(
                     offset = sortMenuOffset
                 ) {
 
-                    val itemList = listOf("", "image", "video", "audio")
+                    val itemList = FilterType.values()
 
                     itemList.forEachIndexed { index, item ->
 
                         var label by remember { mutableStateOf("") }
-                        label = if (item == "") "All" else item
+                        label = if (item.value == "") "All" else item.value // for the All label
+
 
                         val capitalizedLabel = label.replaceFirstChar {
-                            if (it.isLowerCase()) it.titlecase(
-                                Locale.ENGLISH
-                            ) else it.toString()
+                            it.titlecase(Locale.ENGLISH)
                         }
 
                         DropdownMenuItem(
                             text = { Text(text = capitalizedLabel) },
                             modifier = Modifier.testTag("Filter List Button"),
-                            colors = MenuDefaults.itemColors(if (index == selectedItemIndex) onTertiaryContainer else container),
+                            colors = MenuDefaults.itemColors(
+                                if (index == selectedItemIndex)
+                                    MaterialTheme.colorScheme.onTertiaryContainer
+                                else
+                                    MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
                             onClick = {
                                 selectedItemIndex = index
                                 event(LibraryUiEvent.UpdateFilterType(item))
@@ -128,10 +134,9 @@ fun MyToolbar(
                     offset = backgroundListMenuOffset
                 ) {
                     val backgroundItems = mapOf(
-                        "Planets Background" to R.drawable.space_background_01,
-                        "Space Man Background" to R.drawable.space_background_02,
+                        "Mountains & Galaxy Background" to R.drawable.space_background_01,
                         "Galaxy Background" to R.drawable.space_background_03,
-                        "Sci-Fi Planets Background" to R.drawable.space_background_04,
+                        "Planet Background" to R.drawable.space_background_04,
                         "No Background" to Constants.NO_BACKGROUND
                     )
 
@@ -145,7 +150,6 @@ fun MyToolbar(
                         )
                     }
                 }
-
             }
         }
     )

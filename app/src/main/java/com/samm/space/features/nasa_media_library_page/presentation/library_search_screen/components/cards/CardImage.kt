@@ -58,7 +58,7 @@ fun CardImage(
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxSize()
-                        .sizeIn(minHeight = 125.dp)
+                        .sizeIn(minHeight = 125.dp, maxHeight = 200.dp)
                         .semantics { testTag = "Card Image" },
                     contentScale = imageScaleType,
                     colorFilter = ColorFilter.colorMatrix(ColorMatrix()),

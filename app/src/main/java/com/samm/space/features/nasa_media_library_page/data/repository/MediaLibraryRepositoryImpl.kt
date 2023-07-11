@@ -23,6 +23,7 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     private val dataStore = DataStoreManager
 
     override suspend fun getData(query: String): NasaLibraryResponse? {
+        DataStoreManager.saveLastSearchText(query)
         return api.fetchData(query)
     }
 
@@ -31,7 +32,6 @@ class MediaLibraryRepositoryImpl @Inject constructor(
     }
 
     override fun searchImageVideoLibrary(query: String) = flow {
-        DataStoreManager.saveLastSearchText(query)
         emit(Resource.Loading())
         val response = getData(query)
         emit(Resource.Success(response))

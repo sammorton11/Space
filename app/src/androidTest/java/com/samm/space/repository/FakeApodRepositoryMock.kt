@@ -17,6 +17,10 @@ class FakeApodRepositoryMock @Inject constructor (private val api: ApodApi): Apo
         return api.getApod()
     }
 
+    override suspend fun getDataByDate(date: String): Apod? {
+        TODO("Not yet implemented")
+    }
+
     override fun getApodData(): Flow<Resource<Apod?>> = flow {
         try {
             emit(Resource.Loading())
@@ -30,5 +34,17 @@ class FakeApodRepositoryMock @Inject constructor (private val api: ApodApi): Apo
         catch (e: IOException){
             emit(Resource.Error(e.toString()))
         }
+    }
+
+    override fun getAllFavorites(): Flow<List<Apod>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun insertFavorite(item: Apod) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun deleteFavorite(item: Apod) {
+        TODO("Not yet implemented")
     }
 }

@@ -10,7 +10,7 @@ import com.samm.space.features.favorites_page.data.database.ApodTypeConverters
 data class Apod(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val copyright: String,
+    val copyright: String? = null ?: "",
     val date: String,
     val explanation: String,
     val hdurl: String,

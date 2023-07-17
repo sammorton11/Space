@@ -32,7 +32,6 @@ class MediaLibraryViewModel @Inject constructor (
     private val mediaLibraryRepository: MediaLibraryRepository
 ): ViewModel() {
 
-
     private val _state = MutableStateFlow(MediaLibraryState())
     val state: StateFlow<MediaLibraryState> = _state
 
@@ -74,7 +73,6 @@ class MediaLibraryViewModel @Inject constructor (
             is LibraryUiEvent.FilterList -> setFilterListState(event.data, event.type)
             is LibraryUiEvent.AddLibraryFavorite -> insertFavorite(item = event.item)
             is LibraryUiEvent.RemoveFavorite -> removeFavorite(item = event.item)
-            is LibraryUiEvent.UpdateFavorite -> updateFavorite(event.id, event.isFavorite)
             is LibraryUiEvent.ToggleFavorite -> toggleFavorite(item = event.item)
             is LibraryUiEvent.DownloadFile -> downloadFile(
                 context = event.context,
@@ -104,9 +102,6 @@ class MediaLibraryViewModel @Inject constructor (
             insertFavorite(item)
         }
     }
-    private fun updateFavorite(id: Int, isFavorite: Boolean) = viewModelScope.launch(Dispatchers.IO) {
-        mediaLibraryRepository.updateFavorite(id, isFavorite)
-    }
     private fun insertFavorite(item: Item) = viewModelScope.launch  {
         mediaLibraryRepository.insertFavorite(item = item)
     }
@@ -119,17 +114,17 @@ class MediaLibraryViewModel @Inject constructor (
         }
     }
 
+    // Options Menu logic
     private fun setFilterListState(data: List<Item?>, type: FilterType) = viewModelScope.launch {
         _state.value = MediaLibraryState(data = filterList(data, type))
     }
-
     private fun updateListFilterType(filterType: FilterType) {
         _listFilterType.value = filterType
     }
-
     private fun updateBackgroundType(backgroundType: Int) {
         _backgroundType.value = backgroundType
     }
+
 
     private fun downloadFile(
         context: Context,

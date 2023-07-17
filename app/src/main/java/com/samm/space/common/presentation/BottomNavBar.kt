@@ -38,9 +38,12 @@ fun BottomNavBar(onClick: (index: Int) -> Unit) {
         )
 
 
-    BottomAppBar(modifier = Modifier
-        .fillMaxWidth()
-        .height(56.dp)) {
+    BottomAppBar(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+    ) {
+
         iconList.forEachIndexed { index, _ ->
             var title by remember { mutableStateOf("") }
             when(index) {

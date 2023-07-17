@@ -1,6 +1,7 @@
 package com.samm.space.features.picture_of_the_day_page.presentation
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.samm.space.core.Resource
@@ -82,8 +83,8 @@ class ApodViewModel @Inject constructor(private val repository: ApodRepository):
 
     fun insert(item: Apod) = viewModelScope.launch(Dispatchers.IO) {
         val list = favoriteState.value.apodFavorites
-        val isItemAlreadyExists = list?.any { it.hdurl == item.hdurl }
-
+        val isItemAlreadyExists = list?.any { it.title == item.title }
+        Log.d("insert apod item", item.toString())
         if (isItemAlreadyExists == false) {
             repository.insertFavorite(item)
         }

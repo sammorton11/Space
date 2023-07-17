@@ -15,9 +15,7 @@ fun DetailsScreen(
     getUri: (String?, MediaType) -> String,
     getMediaData: (url: String) -> Unit
 ) {
-
     val mediaDataUrl = state.metaDataUrl
-
     LaunchedEffect(mediaDataUrl) { getMediaData(mediaDataUrl ?: "") }
 
     when {

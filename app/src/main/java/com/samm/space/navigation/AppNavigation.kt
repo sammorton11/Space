@@ -83,7 +83,7 @@ fun AppNavigation(navController: NavController) {
             val date = backStackEntry.arguments?.getString("date")
 
 
-            if(urlId != null && descriptionId != null && mediaType != null) {
+            if((urlId != null) && (descriptionId != null) && (mediaType != null)) {
 
                 val updatedState = state.copy(
                     date = date,

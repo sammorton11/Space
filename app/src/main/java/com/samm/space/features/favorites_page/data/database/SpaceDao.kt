@@ -18,7 +18,7 @@ interface SpaceDao {
     @Query("SELECT * FROM apod")
     fun getAllApodFavorites(): Flow<List<Apod>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert()
     suspend fun insertFavorite(apod: Apod)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
